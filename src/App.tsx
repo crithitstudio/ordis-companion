@@ -1,4 +1,4 @@
-import { useState, Suspense, lazy, useMemo } from 'react';
+import { useState, Suspense, lazy, useMemo } from "react";
 import {
   Database,
   RefreshCw,
@@ -14,62 +14,119 @@ import {
   Upload,
   Keyboard,
   X,
-  Search
-} from 'lucide-react';
+  Search,
+} from "lucide-react";
 
-import { useWorldState, useTickTimer } from './hooks/useWorldState';
-import { useKeyboardShortcuts, getShortcutsList } from './hooks/useKeyboardShortcuts';
-import { useTheme } from './contexts/ThemeContext';
-import { downloadUserData, triggerImportDialog } from './utils/userData';
-import { LoadingSpinner } from './components/ui';
-import { RelicDropTableModal } from './components/relics/RelicDropTableModal';
-import type { TabName } from './types';
+import { useWorldState, useTickTimer } from "./hooks/useWorldState";
+import {
+  useKeyboardShortcuts,
+  getShortcutsList,
+} from "./hooks/useKeyboardShortcuts";
+import { useTheme } from "./contexts/ThemeContext";
+import { downloadUserData, triggerImportDialog } from "./utils/userData";
+import { LoadingSpinner } from "./components/ui";
+import { RelicDropTableModal } from "./components/relics/RelicDropTableModal";
+import type { TabName } from "./types";
 
 // Lazy load view components for code-splitting
-const DashboardView = lazy(() => import('./components/dashboard/DashboardView').then(m => ({ default: m.DashboardView })));
-const CodexView = lazy(() => import('./components/codex/CodexView').then(m => ({ default: m.CodexView })));
-const TrackerView = lazy(() => import('./components/tracker/TrackerView').then(m => ({ default: m.TrackerView })));
-const MasteryView = lazy(() => import('./components/mastery/MasteryView').then(m => ({ default: m.MasteryView })));
-const RelicsView = lazy(() => import('./components/relics/RelicsView').then(m => ({ default: m.RelicsView })));
-const GuideView = lazy(() => import('./components/guide/GuideView').then(m => ({ default: m.GuideView })));
+const DashboardView = lazy(() =>
+  import("./components/dashboard/DashboardView").then((m) => ({
+    default: m.DashboardView,
+  })),
+);
+const CodexView = lazy(() =>
+  import("./components/codex/CodexView").then((m) => ({
+    default: m.CodexView,
+  })),
+);
+const TrackerView = lazy(() =>
+  import("./components/tracker/TrackerView").then((m) => ({
+    default: m.TrackerView,
+  })),
+);
+const MasteryView = lazy(() =>
+  import("./components/mastery/MasteryView").then((m) => ({
+    default: m.MasteryView,
+  })),
+);
+const RelicsView = lazy(() =>
+  import("./components/relics/RelicsView").then((m) => ({
+    default: m.RelicsView,
+  })),
+);
+const GuideView = lazy(() =>
+  import("./components/guide/GuideView").then((m) => ({
+    default: m.GuideView,
+  })),
+);
 
 const TABS: { id: TabName; label: string; icon: typeof Home }[] = [
-  { id: 'dashboard', label: 'Dashboard', icon: Home },
-  { id: 'codex', label: 'Codex', icon: Book },
-  { id: 'tracker', label: 'Tracker', icon: Package },
-  { id: 'mastery', label: 'Mastery', icon: Star },
-  { id: 'relics', label: 'Relics', icon: Gem },
-  { id: 'guide', label: 'Guide', icon: Bookmark },
+  { id: "dashboard", label: "Dashboard", icon: Home },
+  { id: "codex", label: "Codex", icon: Book },
+  { id: "tracker", label: "Tracker", icon: Package },
+  { id: "mastery", label: "Mastery", icon: Star },
+  { id: "relics", label: "Relics", icon: Gem },
+  { id: "guide", label: "Guide", icon: Bookmark },
 ];
 
 export default function OrdisApp() {
   const { worldState, error, refresh } = useWorldState();
   const { theme, toggleTheme } = useTheme();
-  const [activeTab, setActiveTab] = useState<TabName>('dashboard');
+  const [activeTab, setActiveTab] = useState<TabName>("dashboard");
   const [showShortcuts, setShowShortcuts] = useState(false);
   const [showRelicDrops, setShowRelicDrops] = useState(false);
-  const [importMessage, setImportMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
+  const [importMessage, setImportMessage] = useState<{
+    type: "success" | "error";
+    text: string;
+  } | null>(null);
 
   // Trigger re-render every second for countdown timers
   useTickTimer(1000);
 
   // Define keyboard shortcuts
-  const shortcuts = useMemo(() => [
-    { key: '1', handler: () => setActiveTab('dashboard'), description: 'Go to Dashboard' },
-    { key: '2', handler: () => setActiveTab('codex'), description: 'Go to Codex' },
-    { key: '3', handler: () => setActiveTab('tracker'), description: 'Go to Tracker' },
-    { key: '4', handler: () => setActiveTab('mastery'), description: 'Go to Mastery' },
-    { key: '5', handler: () => setActiveTab('relics'), description: 'Go to Relics' },
-    { key: '6', handler: () => setActiveTab('guide'), description: 'Go to Guide' },
-    { key: 'r', handler: refresh, description: 'Refresh data' },
-  ], [toggleTheme, refresh]);
+  const shortcuts = useMemo(
+    () => [
+      {
+        key: "1",
+        handler: () => setActiveTab("dashboard"),
+        description: "Go to Dashboard",
+      },
+      {
+        key: "2",
+        handler: () => setActiveTab("codex"),
+        description: "Go to Codex",
+      },
+      {
+        key: "3",
+        handler: () => setActiveTab("tracker"),
+        description: "Go to Tracker",
+      },
+      {
+        key: "4",
+        handler: () => setActiveTab("mastery"),
+        description: "Go to Mastery",
+      },
+      {
+        key: "5",
+        handler: () => setActiveTab("relics"),
+        description: "Go to Relics",
+      },
+      {
+        key: "6",
+        handler: () => setActiveTab("guide"),
+        description: "Go to Guide",
+      },
+      { key: "r", handler: refresh, description: "Refresh data" },
+    ],
+    [refresh],
+  );
 
   useKeyboardShortcuts(shortcuts);
 
   const handleImport = (result: { success: boolean; message: string }) => {
     setImportMessage({
-      type: result.success ? 'success' : 'error',
-      text: result.message
+      type: result.success ? "success" : "error",
+      text: result.message,
     });
     if (result.success) {
       // Reload to apply imported data
@@ -81,17 +138,23 @@ export default function OrdisApp() {
 
   const renderActiveView = () => {
     switch (activeTab) {
-      case 'dashboard':
-        return <DashboardView worldState={worldState} error={error} onRetry={refresh} />;
-      case 'codex':
+      case "dashboard":
+        return (
+          <DashboardView
+            worldState={worldState}
+            error={error}
+            onRetry={refresh}
+          />
+        );
+      case "codex":
         return <CodexView />;
-      case 'tracker':
+      case "tracker":
         return <TrackerView />;
-      case 'mastery':
+      case "mastery":
         return <MasteryView />;
-      case 'relics':
+      case "relics":
         return <RelicsView />;
-      case 'guide':
+      case "guide":
         return <GuideView />;
       default:
         return null;
@@ -123,10 +186,10 @@ export default function OrdisApp() {
               <button
                 onClick={toggleTheme}
                 className="p-2 rounded-lg text-slate-400 hover:text-slate-200 hover:bg-slate-800 transition-colors"
-                aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} theme`}
+                aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} theme`}
                 title="Toggle theme (T)"
               >
-                {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
+                {theme === "dark" ? <Sun size={20} /> : <Moon size={20} />}
               </button>
 
               {/* Relic Drop Table */}
@@ -161,7 +224,7 @@ export default function OrdisApp() {
 
               {/* Keyboard Shortcuts */}
               <button
-                onClick={() => setShowShortcuts(s => !s)}
+                onClick={() => setShowShortcuts((s) => !s)}
                 className="p-2 rounded-lg text-slate-400 hover:text-slate-200 hover:bg-slate-800 transition-colors"
                 aria-label="Show keyboard shortcuts"
                 title="Keyboard shortcuts (?)"
@@ -171,7 +234,11 @@ export default function OrdisApp() {
 
               {/* Auto-updating indicator */}
               <div className="flex items-center gap-2 text-slate-400 text-sm ml-2">
-                <RefreshCw size={14} className="animate-spin" style={{ animationDuration: '15s' }} />
+                <RefreshCw
+                  size={14}
+                  className="animate-spin"
+                  style={{ animationDuration: "15s" }}
+                />
                 <span className="hidden sm:inline">Auto-updating</span>
               </div>
             </div>
@@ -180,7 +247,10 @@ export default function OrdisApp() {
 
         {/* Tab Navigation */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border-t border-slate-800/50">
-          <nav className="flex overflow-x-auto scrollbar-hide -mb-px" role="tablist">
+          <nav
+            className="flex overflow-x-auto scrollbar-hide -mb-px"
+            role="tablist"
+          >
             {TABS.map((tab, idx) => (
               <button
                 key={tab.id}
@@ -188,14 +258,17 @@ export default function OrdisApp() {
                 role="tab"
                 aria-selected={activeTab === tab.id}
                 aria-controls={`${tab.id}-panel`}
-                className={`flex items-center gap-2 px-4 py-3 text-sm font-medium border-b-2 transition-colors whitespace-nowrap ${activeTab === tab.id
-                  ? 'border-cyan-500 text-cyan-400'
-                  : 'border-transparent text-slate-500 hover:text-slate-300 hover:border-slate-700'
-                  }`}
+                className={`flex items-center gap-2 px-4 py-3 text-sm font-medium border-b-2 transition-colors whitespace-nowrap ${
+                  activeTab === tab.id
+                    ? "border-cyan-500 text-cyan-400"
+                    : "border-transparent text-slate-500 hover:text-slate-300 hover:border-slate-700"
+                }`}
               >
                 <tab.icon size={18} />
                 <span className="hidden sm:inline">{tab.label}</span>
-                <span className="text-[10px] text-slate-600 hidden md:inline">({idx + 1})</span>
+                <span className="text-[10px] text-slate-600 hidden md:inline">
+                  ({idx + 1})
+                </span>
               </button>
             ))}
           </nav>
@@ -204,26 +277,44 @@ export default function OrdisApp() {
 
       {/* Import Message Toast */}
       {importMessage && (
-        <div className={`fixed top-20 right-4 z-50 px-4 py-3 rounded-lg shadow-lg ${importMessage.type === 'success' ? 'bg-green-900 text-green-200' : 'bg-red-900 text-red-200'}`}>
+        <div
+          className={`fixed top-20 right-4 z-50 px-4 py-3 rounded-lg shadow-lg ${importMessage.type === "success" ? "bg-green-900 text-green-200" : "bg-red-900 text-red-200"}`}
+        >
           {importMessage.text}
         </div>
       )}
 
       {/* Keyboard Shortcuts Modal */}
       {showShortcuts && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4" onClick={() => setShowShortcuts(false)}>
-          <div className="bg-slate-900 border border-slate-700 rounded-xl max-w-md w-full p-6" onClick={e => e.stopPropagation()}>
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4"
+          onClick={() => setShowShortcuts(false)}
+        >
+          <div
+            className="bg-slate-900 border border-slate-700 rounded-xl max-w-md w-full p-6"
+            onClick={(e) => e.stopPropagation()}
+          >
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-bold text-cyan-400">Keyboard Shortcuts</h2>
-              <button onClick={() => setShowShortcuts(false)} className="text-slate-400 hover:text-white">
+              <h2 className="text-lg font-bold text-cyan-400">
+                Keyboard Shortcuts
+              </h2>
+              <button
+                onClick={() => setShowShortcuts(false)}
+                className="text-slate-400 hover:text-white"
+              >
                 <X size={20} />
               </button>
             </div>
             <div className="space-y-2">
               {getShortcutsList(shortcuts).map((s, i) => (
-                <div key={i} className="flex items-center justify-between py-2 border-b border-slate-800 last:border-0">
+                <div
+                  key={i}
+                  className="flex items-center justify-between py-2 border-b border-slate-800 last:border-0"
+                >
                   <span className="text-slate-300">{s.description}</span>
-                  <kbd className="px-2 py-1 bg-slate-800 text-slate-400 rounded text-sm font-mono">{s.keys}</kbd>
+                  <kbd className="px-2 py-1 bg-slate-800 text-slate-400 rounded text-sm font-mono">
+                    {s.keys}
+                  </kbd>
                 </div>
               ))}
             </div>
@@ -244,25 +335,48 @@ export default function OrdisApp() {
           <div className="flex flex-col md:flex-row justify-between items-center gap-6 md:gap-4 text-sm text-slate-600">
             {/* Left: Copyright */}
             <div className="order-3 md:order-1 whitespace-nowrap">
-              &copy; {new Date().getFullYear()} <a href="https://crithitstudio.com" target="_blank" rel="noopener noreferrer" className="hover:text-cyan-400 transition-colors">CritHit Studio</a>
+              &copy; {new Date().getFullYear()}{" "}
+              <a
+                href="https://crithitstudio.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-cyan-400 transition-colors"
+              >
+                CritHit Studio
+              </a>
             </div>
 
             {/* Center: Credits */}
             <div className="order-1 md:order-2 text-center flex-1 mx-4">
               <p>
-                Data from the{' '}
-                <a href="https://www.warframe.com" target="_blank" rel="noopener noreferrer" className="text-cyan-500 hover:text-cyan-400 underline">
+                Data from the{" "}
+                <a
+                  href="https://www.warframe.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-cyan-500 hover:text-cyan-400 underline"
+                >
                   Official Warframe API
                 </a>
-                . Item data from{' '}
-                <a href="https://github.com/WFCD/warframe-items" target="_blank" rel="noopener noreferrer" className="text-cyan-500 hover:text-cyan-400 underline">
+                . Item data from{" "}
+                <a
+                  href="https://github.com/WFCD/warframe-items"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-cyan-500 hover:text-cyan-400 underline"
+                >
                   WFCD warframe-items
                 </a>
                 .
               </p>
               <p className="text-slate-700 text-xs mt-1">
-                Fan-made tool. Warframe is a registered trademark of{' '}
-                <a href="https://www.digitalextremes.com" target="_blank" rel="noopener noreferrer" className="text-slate-500 hover:text-slate-400 underline">
+                Fan-made tool. Warframe is a registered trademark of{" "}
+                <a
+                  href="https://www.digitalextremes.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-slate-500 hover:text-slate-400 underline"
+                >
                   Digital Extremes Ltd
                 </a>
               </p>
@@ -270,14 +384,25 @@ export default function OrdisApp() {
 
             {/* Right: Attribution */}
             <div className="order-2 md:order-3 whitespace-nowrap">
-              Made with ❤️ by Joé from <a href="https://github.com/crithitstudio" target="_blank" rel="noopener noreferrer" className="text-cyan-500 hover:text-cyan-400 transition-colors">CritHit Studio</a>
+              Made with ❤️ by Joé from{" "}
+              <a
+                href="https://github.com/crithitstudio"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-cyan-500 hover:text-cyan-400 transition-colors"
+              >
+                CritHit Studio
+              </a>
             </div>
           </div>
         </div>
       </footer>
 
       {/* Relic Drop Table Modal */}
-      <RelicDropTableModal isOpen={showRelicDrops} onClose={() => setShowRelicDrops(false)} />
+      <RelicDropTableModal
+        isOpen={showRelicDrops}
+        onClose={() => setShowRelicDrops(false)}
+      />
     </div>
   );
 }
