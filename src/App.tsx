@@ -61,9 +61,7 @@ export default function OrdisApp() {
     { key: '4', handler: () => setActiveTab('mastery'), description: 'Go to Mastery' },
     { key: '5', handler: () => setActiveTab('relics'), description: 'Go to Relics' },
     { key: '6', handler: () => setActiveTab('guide'), description: 'Go to Guide' },
-    { key: 't', handler: toggleTheme, description: 'Toggle theme' },
     { key: 'r', handler: refresh, description: 'Refresh data' },
-    { key: '?', handler: () => setShowShortcuts(s => !s), description: 'Show shortcuts' },
   ], [toggleTheme, refresh]);
 
   useKeyboardShortcuts(shortcuts);
@@ -242,25 +240,39 @@ export default function OrdisApp() {
 
       {/* Footer */}
       <footer className="border-t border-slate-900 bg-slate-950 py-8 mt-12">
-        <div className="max-w-7xl mx-auto px-4 text-center">
-          <p className="text-slate-600 text-sm">
-            Data from the{' '}
-            <a href="https://www.warframe.com" target="_blank" rel="noopener noreferrer" className="text-cyan-500 hover:text-cyan-400 underline">
-              Official Warframe API
-            </a>
-            . Item data from{' '}
-            <a href="https://github.com/WFCD/warframe-items" target="_blank" rel="noopener noreferrer" className="text-cyan-500 hover:text-cyan-400 underline">
-              WFCD warframe-items
-            </a>
-            .
-          </p>
-          <p className="text-slate-700 text-xs mt-2">
-            Fan-made tool. Warframe is a registered trademark of{' '}
-            <a href="https://www.digitalextremes.com" target="_blank" rel="noopener noreferrer" className="text-slate-500 hover:text-slate-400 underline">
-              Digital Extremes Ltd
-            </a>
-            . Press <kbd className="px-1.5 py-0.5 bg-slate-800 rounded text-[10px]">?</kbd> for shortcuts.
-          </p>
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-6 md:gap-4 text-sm text-slate-600">
+            {/* Left: Copyright */}
+            <div className="order-3 md:order-1 whitespace-nowrap">
+              &copy; {new Date().getFullYear()} <a href="https://crithitstudio.com" target="_blank" rel="noopener noreferrer" className="hover:text-cyan-400 transition-colors">CritHit Studio</a>
+            </div>
+
+            {/* Center: Credits */}
+            <div className="order-1 md:order-2 text-center flex-1 mx-4">
+              <p>
+                Data from the{' '}
+                <a href="https://www.warframe.com" target="_blank" rel="noopener noreferrer" className="text-cyan-500 hover:text-cyan-400 underline">
+                  Official Warframe API
+                </a>
+                . Item data from{' '}
+                <a href="https://github.com/WFCD/warframe-items" target="_blank" rel="noopener noreferrer" className="text-cyan-500 hover:text-cyan-400 underline">
+                  WFCD warframe-items
+                </a>
+                .
+              </p>
+              <p className="text-slate-700 text-xs mt-1">
+                Fan-made tool. Warframe is a registered trademark of{' '}
+                <a href="https://www.digitalextremes.com" target="_blank" rel="noopener noreferrer" className="text-slate-500 hover:text-slate-400 underline">
+                  Digital Extremes Ltd
+                </a>
+              </p>
+            </div>
+
+            {/* Right: Attribution */}
+            <div className="order-2 md:order-3 whitespace-nowrap">
+              Made with ❤️ by Joé from <a href="https://github.com/crithitstudio" target="_blank" rel="noopener noreferrer" className="text-cyan-500 hover:text-cyan-400 transition-colors">CritHit Studio</a>
+            </div>
+          </div>
         </div>
       </footer>
 

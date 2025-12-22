@@ -42,6 +42,9 @@ self.addEventListener('activate', (event) => {
 
 // Fetch event - network-first for API, cache-first for static
 self.addEventListener('fetch', (event) => {
+    // Only handle GET requests
+    if (event.request.method !== 'GET') return;
+
     const url = new URL(event.request.url);
 
     // API requests - network first, cache fallback
