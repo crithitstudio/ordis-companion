@@ -1,0 +1,88 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Light Theme Overrides */
+:root.light {
+  /* Override Tailwind slate colors for light mode */
+  --color-bg: #f8fafc;
+  --color-bg-secondary: #f1f5f9;
+  --color-text: #0f172a;
+  --color-text-secondary: #475569;
+  --color-border: #e2e8f0;
+}
+
+:root.light body {
+  background-color: #f8fafc;
+  color: #0f172a;
+}
+
+/* Light mode component overrides */
+:root.light .bg-slate-950 {
+  background-color: #f8fafc;
+}
+
+:root.light .bg-slate-900,
+:root.light .bg-slate-900\/90 {
+  background-color: #f1f5f9;
+}
+
+:root.light .bg-slate-800,
+:root.light .bg-slate-800\/50,
+:root.light .bg-slate-800\/60,
+:root.light .bg-slate-800\/30 {
+  background-color: #e2e8f0;
+}
+
+:root.light .text-slate-200 {
+  color: #1e293b;
+}
+
+:root.light .text-slate-300 {
+  color: #334155;
+}
+
+:root.light .text-slate-400 {
+  color: #475569;
+}
+
+:root.light .text-slate-500 {
+  color: #64748b;
+}
+
+:root.light .text-slate-600 {
+  color: #475569;
+}
+
+:root.light .text-slate-700 {
+  color: #334155;
+}
+
+:root.light .border-slate-700,
+:root.light .border-slate-800,
+:root.light .border-slate-800\/50 {
+  border-color: #cbd5e1;
+}
+
+:root.light .border-slate-900 {
+  border-color: #e2e8f0;
+}
+
+/* Scrollbar styles */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Custom animations */
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.animate-in {
+  animation: fade-in 0.3s ease-out;
+}

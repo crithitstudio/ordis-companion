@@ -1,0 +1,1 @@
+import{r as o}from"./index-CDvsc1fC.js";function u(e){const[s,a]=o.useState(()=>{try{const t=localStorage.getItem(e);if(t)return new Set(JSON.parse(t))}catch{}return new Set}),n=o.useCallback(t=>{a(c=>{const r=t(c);return localStorage.setItem(e,JSON.stringify([...r])),r})},[e]);return[s,n]}export{u};
