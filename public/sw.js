@@ -54,10 +54,13 @@ self.addEventListener('fetch', (event) => {
                 .then((response) => {
                     // Clone and cache successful API responses
                     if (response.ok) {
-                        const responseClone = response.clone();
-                        caches.open(CACHE_NAME).then((cache) => {
-                            cache.put(event.request, responseClone);
-                        });
+                        const contentType = response.headers.get('content-type');
+                        if (contentType && !contentType.includes('text/html')) {
+                            const responseClone = response.clone();
+                            caches.open(CACHE_NAME).then((cache) => {
+                                cache.put(event.request, responseClone);
+                            });
+                        }
                     }
                     return response;
                 })
