@@ -1,4 +1,4 @@
-# Ordis Companion
+# Ordis Companion | [![CI](https://github.com/Crithit-Studio/ordis-companion/actions/workflows/ci.yml/badge.svg)](https://github.com/Crithit-Studio/ordis-companion/actions/workflows/ci.yml)
 
 A tactical companion for Warframe players, designed to help you track World State, manage relics, and plan your farming.
 
@@ -14,6 +14,7 @@ A tactical companion for Warframe players, designed to help you track World Stat
 ## Tech Stack
 
 Built with modern web technologies:
+
 - [React 19](https://react.dev/)
 - [TypeScript](https://www.typescriptlang.org/)
 - [Vite](https://vitejs.dev/)
@@ -23,23 +24,27 @@ Built with modern web technologies:
 ## Getting Started
 
 ### Prerequisites
+
 - Node.js (v18 or later recommended)
 - npm
 
 ### Installation
 
 1. Clone the repository:
+
    ```bash
    git clone https://github.com/Crithit-Studio/ordis-companion.git
    cd ordis-companion
    ```
 
 2. Install dependencies:
+
    ```bash
    npm install
    ```
 
 3. Start the development server:
+
    ```bash
    npm run dev
    ```
@@ -54,6 +59,10 @@ Built with modern web technologies:
 - World State data provided by the [Warframe Status API](https://warframestat.us/).
 - Item data sourced from [WFCD/warframe-items](https://github.com/WFCD/warframe-items).
 - Warframe is a registered trademark of Digital Extremes Ltd. This project is a fan-made tool and is not affiliated with Digital Extremes.
+
+## Contributing
+
+Contributions are welcome! Please read our [Contributing Guidelines](CONTRIBUTING.md) for details on how to submit pull requests.
 
 ## License
 

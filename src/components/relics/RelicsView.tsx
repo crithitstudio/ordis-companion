@@ -176,10 +176,11 @@ export function RelicsView() {
                   onClick={() =>
                     updateRelic(relic.id, { wanted: !relic.wanted })
                   }
-                  className={`w-full py-1 rounded text-sm transition-colors ${relic.wanted
+                  className={`w-full py-1 rounded text-sm transition-colors ${
+                    relic.wanted
                       ? "bg-amber-600/20 text-amber-400"
                       : "bg-slate-700/50 text-slate-400 hover:bg-slate-700"
-                    }`}
+                  }`}
                 >
                   {relic.wanted ? "★ Wanted" : "☆ Mark as Wanted"}
                 </button>
