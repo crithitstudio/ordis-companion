@@ -1,4 +1,4 @@
-# Ordis Companion | [![CI](https://github.com/Crithit-Studio/ordis-companion/actions/workflows/ci.yml/badge.svg)](https://github.com/Crithit-Studio/ordis-companion/actions/workflows/ci.yml)
+# [Ordis Companion](https://ordis-companion.crithitstudio.com) | [![CI](https://github.com/Crithit-Studio/ordis-companion/actions/workflows/ci.yml/badge.svg)](https://github.com/Crithit-Studio/ordis-companion/actions/workflows/ci.yml)
 
 A tactical companion for Warframe players, designed to help you track World State, manage relics, and plan your farming.
 

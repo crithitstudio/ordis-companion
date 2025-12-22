@@ -344,6 +344,16 @@ export default function OrdisApp() {
               >
                 CritHit Studio
               </a>
+              <span className="mx-2">•</span>
+              <a
+                href="https://github.com/Crithit-Studio/ordis-companion/issues"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-slate-500 hover:text-red-400 transition-colors"
+                title="Report a bug"
+              >
+                Report Bug
+              </a>
             </div>
 
             {/* Center: Credits */}
