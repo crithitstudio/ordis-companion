@@ -18,6 +18,8 @@ import {
   Target,
   Users,
   Sword,
+  Menu,
+  MoreHorizontal,
 } from "lucide-react";
 
 import { useWorldState, useTickTimer } from "./hooks/useWorldState";
@@ -90,12 +92,18 @@ const TABS: { id: TabName; label: string; icon: typeof Home }[] = [
   { id: "guide", label: "Guide", icon: Bookmark },
 ];
 
+// Mobile bottom nav shows first 4 tabs + More
+const MOBILE_TABS = TABS.slice(0, 4);
+const MORE_TABS = TABS.slice(4);
+
 export default function OrdisApp() {
   const { worldState, error, refresh } = useWorldState();
   const { theme, toggleTheme } = useTheme();
   const [activeTab, setActiveTab] = useState<TabName>("dashboard");
   const [showShortcuts, setShowShortcuts] = useState(false);
   const [showRelicDrops, setShowRelicDrops] = useState(false);
+  const [showMobileMenu, setShowMobileMenu] = useState(false);
+  const [showMoreTabs, setShowMoreTabs] = useState(false);
   const [importMessage, setImportMessage] = useState<{
     type: "success" | "error";
     text: string;
@@ -208,13 +216,13 @@ export default function OrdisApp() {
       {/* Header */}
       <header className="sticky top-0 z-40 bg-slate-900/90 backdrop-blur-md border-b border-slate-800 shadow-xl">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <div className="flex items-center gap-3">
-              <div className="bg-cyan-500/10 p-2 rounded-lg border border-cyan-500/20">
-                <Database className="text-cyan-400" size={24} />
+          <div className="flex items-center justify-between h-14 sm:h-16">
+            <div className="flex items-center gap-2 sm:gap-3">
+              <div className="bg-cyan-500/10 p-1.5 sm:p-2 rounded-lg border border-cyan-500/20">
+                <Database className="text-cyan-400" size={20} />
               </div>
               <div>
-                <h1 className="text-xl font-bold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
+                <h1 className="text-lg sm:text-xl font-bold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
                   ORDIS
                 </h1>
                 <span className="text-[10px] text-slate-500 uppercase tracking-widest hidden sm:block">
@@ -223,7 +231,8 @@ export default function OrdisApp() {
               </div>
             </div>
 
-            <div className="flex items-center gap-2">
+            {/* Desktop Header Actions */}
+            <div className="hidden md:flex items-center gap-2">
               {/* Theme Toggle */}
               <button
                 onClick={toggleTheme}
@@ -281,14 +290,44 @@ export default function OrdisApp() {
                   className="animate-spin"
                   style={{ animationDuration: "15s" }}
                 />
-                <span className="hidden sm:inline">Auto-updating</span>
+                <span>Auto-updating</span>
               </div>
+            </div>
+
+            {/* Mobile Header Actions */}
+            <div className="flex md:hidden items-center gap-1">
+              {/* Theme Toggle - always visible */}
+              <button
+                onClick={toggleTheme}
+                className="btn-icon-mobile text-slate-400 hover:text-slate-200"
+                aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} theme`}
+              >
+                {theme === "dark" ? <Sun size={22} /> : <Moon size={22} />}
+              </button>
+
+              {/* Relic Search - always visible */}
+              <button
+                onClick={() => setShowRelicDrops(true)}
+                className="btn-icon-mobile text-slate-400 hover:text-slate-200"
+                aria-label="Relic drop tables"
+              >
+                <Search size={22} />
+              </button>
+
+              {/* Mobile Menu Button */}
+              <button
+                onClick={() => setShowMobileMenu(true)}
+                className="btn-icon-mobile text-slate-400 hover:text-slate-200"
+                aria-label="Open menu"
+              >
+                <Menu size={22} />
+              </button>
             </div>
           </div>
         </div>
 
-        {/* Tab Navigation */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border-t border-slate-800/50">
+        {/* Desktop Tab Navigation */}
+        <div className="hidden md:block max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border-t border-slate-800/50">
           <nav
             className="flex overflow-x-auto scrollbar-hide -mb-px"
             role="tablist"
@@ -300,15 +339,14 @@ export default function OrdisApp() {
                 role="tab"
                 aria-selected={activeTab === tab.id}
                 aria-controls={`${tab.id}-panel`}
-                className={`flex items-center gap-2 px-4 py-3 text-sm font-medium border-b-2 transition-colors whitespace-nowrap ${
-                  activeTab === tab.id
-                    ? "border-cyan-500 text-cyan-400"
-                    : "border-transparent text-slate-500 hover:text-slate-300 hover:border-slate-700"
-                }`}
+                className={`flex items-center gap-2 px-4 py-3 text-sm font-medium border-b-2 transition-colors whitespace-nowrap ${activeTab === tab.id
+                  ? "border-cyan-500 text-cyan-400"
+                  : "border-transparent text-slate-500 hover:text-slate-300 hover:border-slate-700"
+                  }`}
               >
                 <tab.icon size={18} />
-                <span className="hidden sm:inline">{tab.label}</span>
-                <span className="text-[10px] text-slate-600 hidden md:inline">
+                <span>{tab.label}</span>
+                <span className="text-[10px] text-slate-600">
                   ({idx + 1})
                 </span>
               </button>
@@ -365,14 +403,14 @@ export default function OrdisApp() {
       )}
 
       {/* Main Content Area */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 pb-24 md:pb-8">
         <Suspense fallback={<LoadingSpinner message="Loading view..." />}>
           {renderActiveView()}
         </Suspense>
       </main>
 
-      {/* Footer */}
-      <footer className="border-t border-slate-900 bg-slate-950 py-8 mt-12">
+      {/* Footer - hidden on mobile due to bottom nav */}
+      <footer className="hidden md:block border-t border-slate-900 bg-slate-950 py-8 mt-12">
         <div className="max-w-7xl mx-auto px-4">
           <div className="flex flex-col md:flex-row justify-between items-center gap-6 md:gap-4 text-sm text-slate-600">
             {/* Left: Copyright */}
@@ -449,6 +487,152 @@ export default function OrdisApp() {
           </div>
         </div>
       </footer>
+
+      {/* Mobile Bottom Navigation */}
+      <nav className="fixed bottom-0 left-0 right-0 z-40 md:hidden bottom-nav border-t border-slate-800">
+        <div className="flex items-center justify-around h-16">
+          {MOBILE_TABS.map((tab) => (
+            <button
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id)}
+              className={`bottom-nav-item flex-1 ${activeTab === tab.id ? "active text-cyan-400" : "text-slate-500"}`}
+              aria-label={tab.label}
+            >
+              <tab.icon size={22} />
+              <span>{tab.label}</span>
+            </button>
+          ))}
+          {/* More Button */}
+          <button
+            onClick={() => setShowMoreTabs(true)}
+            className={`bottom-nav-item flex-1 ${MORE_TABS.some(t => t.id === activeTab) ? "active text-cyan-400" : "text-slate-500"}`}
+            aria-label="More tabs"
+          >
+            <MoreHorizontal size={22} />
+            <span>More</span>
+          </button>
+        </div>
+      </nav>
+
+      {/* Mobile Menu Drawer */}
+      {showMobileMenu && (
+        <div
+          className="fixed inset-0 z-50 mobile-menu-overlay"
+          onClick={() => setShowMobileMenu(false)}
+        >
+          <div
+            className="absolute bottom-0 left-0 right-0 bg-slate-900 mobile-drawer"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Drawer Handle */}
+            <div className="flex justify-center pt-3 pb-2">
+              <div className="w-12 h-1 bg-slate-700 rounded-full" />
+            </div>
+
+            <div className="p-4 space-y-2">
+              <h3 className="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-3">Settings & Tools</h3>
+
+              {/* Export */}
+              <button
+                onClick={() => {
+                  downloadUserData();
+                  setShowMobileMenu(false);
+                }}
+                className="flex items-center gap-3 w-full p-3 rounded-lg text-slate-200 hover:bg-slate-800 transition-colors"
+              >
+                <Download size={20} className="text-slate-400" />
+                <span>Export Data</span>
+              </button>
+
+              {/* Import */}
+              <button
+                onClick={() => {
+                  triggerImportDialog(handleImport);
+                  setShowMobileMenu(false);
+                }}
+                className="flex items-center gap-3 w-full p-3 rounded-lg text-slate-200 hover:bg-slate-800 transition-colors"
+              >
+                <Upload size={20} className="text-slate-400" />
+                <span>Import Data</span>
+              </button>
+
+              {/* Keyboard Shortcuts - desktop only info */}
+              <button
+                onClick={() => {
+                  setShowShortcuts(true);
+                  setShowMobileMenu(false);
+                }}
+                className="flex items-center gap-3 w-full p-3 rounded-lg text-slate-200 hover:bg-slate-800 transition-colors"
+              >
+                <Keyboard size={20} className="text-slate-400" />
+                <span>Keyboard Shortcuts</span>
+              </button>
+
+              {/* Auto-updating indicator */}
+              <div className="flex items-center gap-3 p-3 text-slate-400">
+                <RefreshCw
+                  size={20}
+                  className="animate-spin"
+                  style={{ animationDuration: "15s" }}
+                />
+                <span>Auto-updating enabled</span>
+              </div>
+            </div>
+
+            {/* Attribution for mobile */}
+            <div className="p-4 pt-2 border-t border-slate-800 text-center text-xs text-slate-600">
+              Made with ❤️ by{" "}
+              <a
+                href="https://crithitstudio.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-cyan-500"
+              >
+                CritHit Studio
+              </a>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* More Tabs Drawer */}
+      {showMoreTabs && (
+        <div
+          className="fixed inset-0 z-50 mobile-menu-overlay"
+          onClick={() => setShowMoreTabs(false)}
+        >
+          <div
+            className="absolute bottom-0 left-0 right-0 bg-slate-900 mobile-drawer"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Drawer Handle */}
+            <div className="flex justify-center pt-3 pb-2">
+              <div className="w-12 h-1 bg-slate-700 rounded-full" />
+            </div>
+
+            <div className="p-4 space-y-1">
+              <h3 className="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-3">More Views</h3>
+
+              {MORE_TABS.map((tab) => (
+                <button
+                  key={tab.id}
+                  onClick={() => {
+                    setActiveTab(tab.id);
+                    setShowMoreTabs(false);
+                  }}
+                  className={`flex items-center gap-3 w-full p-3 rounded-lg transition-colors ${activeTab === tab.id
+                      ? "bg-cyan-900/30 text-cyan-400"
+                      : "text-slate-200 hover:bg-slate-800"
+                    }`}
+                >
+                  <tab.icon size={20} className={activeTab === tab.id ? "text-cyan-400" : "text-slate-400"} />
+                  <span>{tab.label}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Relic Drop Table Modal */}
       <RelicDropTableModal

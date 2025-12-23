@@ -49,7 +49,7 @@ export function Modal({
       aria-labelledby={title ? "modal-title" : undefined}
     >
       <div
-        className={`bg-slate-900 border border-cyan-700/50 rounded-xl ${maxWidth} w-full max-h-[80vh] overflow-y-auto shadow-2xl`}
+        className={`bg-slate-900 border border-cyan-700/50 rounded-xl ${maxWidth} w-full max-h-[80vh] overflow-y-auto shadow-2xl sm:rounded-xl sm:max-h-[80vh] max-sm:!max-w-full max-sm:!max-h-full max-sm:!h-full max-sm:!rounded-none max-sm:border-0`}
         onClick={(e) => e.stopPropagation()}
       >
         {title && (
