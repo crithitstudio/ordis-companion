@@ -151,7 +151,9 @@
 
 /* Hover lift effect */
 .hover-lift {
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .hover-lift:hover {
@@ -167,7 +169,6 @@
 
 /* Progress bar animation */
 @keyframes progress-pulse {
-
   0%,
   100% {
     opacity: 1;
@@ -204,7 +205,6 @@
 
 /* Mobile-friendly touch targets */
 @media (max-width: 768px) {
-
   button,
   a,
   select,
@@ -228,7 +228,6 @@
 
 /* Skeleton loading animation */
 @keyframes skeleton-pulse {
-
   0%,
   100% {
     opacity: 0.4;
@@ -240,7 +239,12 @@
 }
 
 .skeleton {
-  background: linear-gradient(90deg, rgba(51, 65, 85, 0.5) 25%, rgba(71, 85, 105, 0.5) 50%, rgba(51, 65, 85, 0.5) 75%);
+  background: linear-gradient(
+    90deg,
+    rgba(51, 65, 85, 0.5) 25%,
+    rgba(71, 85, 105, 0.5) 50%,
+    rgba(51, 65, 85, 0.5) 75%
+  );
   background-size: 200% 100%;
   animation: skeleton-pulse 1.5s ease-in-out infinite;
   border-radius: 0.375rem;
@@ -248,7 +252,6 @@
 
 /* Respect reduced motion preference */
 @media (prefers-reduced-motion: reduce) {
-
   *,
   *::before,
   *::after {
@@ -330,7 +333,7 @@
 }
 
 .ripple::after {
-  content: '';
+  content: "";
   position: absolute;
   top: 50%;
   left: 50%;
@@ -339,7 +342,9 @@
   background: rgba(255, 255, 255, 0.2);
   border-radius: 50%;
   transform: translate(-50%, -50%);
-  transition: width 0.3s ease, height 0.3s ease;
+  transition:
+    width 0.3s ease,
+    height 0.3s ease;
 }
 
 .ripple:active::after {
@@ -359,10 +364,12 @@
 }
 
 .shimmer {
-  background: linear-gradient(90deg,
-      rgba(51, 65, 85, 0.3) 25%,
-      rgba(100, 116, 139, 0.3) 50%,
-      rgba(51, 65, 85, 0.3) 75%);
+  background: linear-gradient(
+    90deg,
+    rgba(51, 65, 85, 0.3) 25%,
+    rgba(100, 116, 139, 0.3) 50%,
+    rgba(51, 65, 85, 0.3) 75%
+  );
   background-size: 200% 100%;
   animation: shimmer 1.5s ease-in-out infinite;
 }
@@ -382,7 +389,10 @@
 
 /* Card hover animations */
 .card-interactive {
-  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
 }
 
 .card-interactive:hover {
@@ -396,7 +406,6 @@
 }
 
 @keyframes icon-bounce {
-
   0%,
   100% {
     transform: scale(1);
@@ -421,7 +430,7 @@
 }
 
 .pulse-notification::before {
-  content: '';
+  content: "";
   position: absolute;
   inset: -4px;
   border-radius: 50%;
@@ -431,7 +440,6 @@
 
 /* Improved mobile responsiveness */
 @media (max-width: 640px) {
-
   /* Smaller text on mobile */
   .text-responsive {
     font-size: 0.875rem;
@@ -498,7 +506,7 @@
 }
 
 .tab-indicator::after {
-  content: '';
+  content: "";
   position: absolute;
   bottom: 0;
   left: 0;

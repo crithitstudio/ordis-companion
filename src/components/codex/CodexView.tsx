@@ -124,94 +124,108 @@ export function CodexView() {
     });
 
     return items;
-  }, [allItems, searchQuery, selectedCategory, maxMastery, showTradableOnly, sortBy, sortDirection]);
+  }, [
+    allItems,
+    searchQuery,
+    selectedCategory,
+    maxMastery,
+    showTradableOnly,
+    sortBy,
+    sortDirection,
+  ]);
 
-  const toggleSort = useCallback((option: SortOption) => {
-    if (sortBy === option) {
-      setSortDirection((prev) => (prev === "asc" ? "desc" : "asc"));
-    } else {
-      setSortBy(option);
-      setSortDirection("asc");
-    }
-  }, [sortBy]);
+  const toggleSort = useCallback(
+    (option: SortOption) => {
+      if (sortBy === option) {
+        setSortDirection((prev) => (prev === "asc" ? "desc" : "asc"));
+      } else {
+        setSortBy(option);
+        setSortDirection("asc");
+      }
+    },
+    [sortBy],
+  );
 
   // Render a single item row
-  const renderItem = useCallback((item: CodexItem) => {
-    const itemInfo = itemsData[item.path];
-    const imageUrl = itemInfo ? getItemImageUrl(itemInfo) : null;
-    const isExpanded = expandedItem === item.path;
+  const renderItem = useCallback(
+    (item: CodexItem) => {
+      const itemInfo = itemsData[item.path];
+      const imageUrl = itemInfo ? getItemImageUrl(itemInfo) : null;
+      const isExpanded = expandedItem === item.path;
 
-    return (
-      <div className="bg-slate-800/30 rounded-lg border border-slate-700/50 hover:border-cyan-700/50 transition-colors mb-2">
-        <button
-          onClick={() => setExpandedItem(isExpanded ? null : item.path)}
-          className="w-full p-3 flex items-center justify-between text-left"
-        >
-          <div className="flex items-center gap-3">
-            {imageUrl && (
-              <img
-                src={imageUrl}
-                alt={item.name}
-                className="w-10 h-10 object-contain rounded bg-slate-900"
-                onError={(e) => {
-                  (e.target as HTMLImageElement).style.display = "none";
-                }}
-              />
-            )}
-            <div>
-              <h3 className="text-slate-200 font-medium">{item.name}</h3>
-              <div className="flex items-center gap-2 text-xs text-slate-500">
-                <span>{item.category}</span>
-                {item.masteryReq > 0 && (
-                  <span className="text-yellow-500">MR{item.masteryReq}</span>
-                )}
-                {item.tradable && (
-                  <span className="text-green-400">Tradable</span>
-                )}
+      return (
+        <div className="bg-slate-800/30 rounded-lg border border-slate-700/50 hover:border-cyan-700/50 transition-colors mb-2">
+          <button
+            onClick={() => setExpandedItem(isExpanded ? null : item.path)}
+            className="w-full p-3 flex items-center justify-between text-left"
+          >
+            <div className="flex items-center gap-3">
+              {imageUrl && (
+                <img
+                  src={imageUrl}
+                  alt={item.name}
+                  className="w-10 h-10 object-contain rounded bg-slate-900"
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).style.display = "none";
+                  }}
+                />
+              )}
+              <div>
+                <h3 className="text-slate-200 font-medium">{item.name}</h3>
+                <div className="flex items-center gap-2 text-xs text-slate-500">
+                  <span>{item.category}</span>
+                  {item.masteryReq > 0 && (
+                    <span className="text-yellow-500">MR{item.masteryReq}</span>
+                  )}
+                  {item.tradable && (
+                    <span className="text-green-400">Tradable</span>
+                  )}
+                </div>
               </div>
             </div>
-          </div>
-          <div className="flex items-center gap-2">
-            <a
-              href={`https://wiki.warframe.com/${encodeURIComponent(item.name.replace(/ /g, "_"))}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={(e) => e.stopPropagation()}
-              className="p-2 text-slate-400 hover:text-cyan-400 transition-colors"
-              title="View on Wiki"
-            >
-              <ExternalLink size={16} />
-            </a>
-            {isExpanded ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
-          </div>
-        </button>
-        {isExpanded && (
-          <div className="px-4 pb-4 border-t border-slate-700/50 pt-3">
-            <div className="flex flex-wrap gap-2">
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setSelectedItemPath(item.path);
-                }}
-                className="flex items-center gap-2 px-3 py-2 bg-cyan-600/20 text-cyan-400 rounded-lg text-sm hover:bg-cyan-600/30 transition-colors"
-              >
-                <Info size={14} /> View Details
-              </button>
+            <div className="flex items-center gap-2">
               <a
                 href={`https://wiki.warframe.com/${encodeURIComponent(item.name.replace(/ /g, "_"))}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-2 px-3 py-2 bg-orange-600/20 text-orange-400 rounded-lg text-sm hover:bg-orange-600/30 transition-colors"
+                onClick={(e) => e.stopPropagation()}
+                className="p-2 text-slate-400 hover:text-cyan-400 transition-colors"
+                title="View on Wiki"
               >
-                <ExternalLink size={14} /> Wiki
+                <ExternalLink size={16} />
               </a>
-              <AddToTrackerButton itemName={item.name} />
+              {isExpanded ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
             </div>
-          </div>
-        )}
-      </div>
-    );
-  }, [expandedItem]);
+          </button>
+          {isExpanded && (
+            <div className="px-4 pb-4 border-t border-slate-700/50 pt-3">
+              <div className="flex flex-wrap gap-2">
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setSelectedItemPath(item.path);
+                  }}
+                  className="flex items-center gap-2 px-3 py-2 bg-cyan-600/20 text-cyan-400 rounded-lg text-sm hover:bg-cyan-600/30 transition-colors"
+                >
+                  <Info size={14} /> View Details
+                </button>
+                <a
+                  href={`https://wiki.warframe.com/${encodeURIComponent(item.name.replace(/ /g, "_"))}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 px-3 py-2 bg-orange-600/20 text-orange-400 rounded-lg text-sm hover:bg-orange-600/30 transition-colors"
+                >
+                  <ExternalLink size={14} /> Wiki
+                </a>
+                <AddToTrackerButton itemName={item.name} />
+              </div>
+            </div>
+          )}
+        </div>
+      );
+    },
+    [expandedItem],
+  );
 
   return (
     <div className="space-y-6">
@@ -299,14 +313,17 @@ export function CodexView() {
                   <button
                     key={option}
                     onClick={() => toggleSort(option)}
-                    className={`px-3 py-1 rounded text-sm transition-colors ${sortBy === option
+                    className={`px-3 py-1 rounded text-sm transition-colors ${
+                      sortBy === option
                         ? "bg-cyan-600 text-white"
                         : "bg-slate-800/50 text-slate-400 hover:bg-slate-700"
-                      }`}
+                    }`}
                   >
                     {option.charAt(0).toUpperCase() + option.slice(1)}
                     {sortBy === option && (
-                      <span className="ml-1">{sortDirection === "asc" ? "↑" : "↓"}</span>
+                      <span className="ml-1">
+                        {sortDirection === "asc" ? "↑" : "↓"}
+                      </span>
                     )}
                   </button>
                 ))}
@@ -321,10 +338,11 @@ export function CodexView() {
             <button
               key={cat}
               onClick={() => setSelectedCategory(cat)}
-              className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${selectedCategory === cat
+              className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${
+                selectedCategory === cat
                   ? "bg-cyan-600 text-white"
                   : "bg-slate-800/50 text-slate-400 hover:bg-slate-700 hover:text-slate-300"
-                }`}
+              }`}
             >
               {cat === "all" ? "All" : cat}
             </button>
@@ -393,10 +411,11 @@ function AddToTrackerButton({ itemName }: { itemName: string }) {
         e.stopPropagation();
         handleAdd();
       }}
-      className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm transition-colors ${added
+      className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm transition-colors ${
+        added
           ? "bg-green-600/20 text-green-400"
           : "bg-cyan-600/20 text-cyan-400 hover:bg-cyan-600/30"
-        }`}
+      }`}
     >
       {added ? <Check size={14} /> : <Plus size={14} />}
       {added ? "Added!" : "Track"}

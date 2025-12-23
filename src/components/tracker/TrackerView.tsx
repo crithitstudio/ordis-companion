@@ -30,7 +30,7 @@ interface TrackerItem extends SavedItem {
 // Get components for an item from itemsData
 function getItemComponents(itemName: string): ItemComponent[] {
   const item = Object.values(itemsData).find(
-    (i) => i.name?.toLowerCase() === itemName.toLowerCase()
+    (i) => i.name?.toLowerCase() === itemName.toLowerCase(),
   );
   return item?.components || [];
 }
@@ -47,7 +47,15 @@ const PRIORITY_LABELS = {
   low: "Low",
 };
 
-const SUGGESTED_TAGS = ["Warframe", "Prime", "Weapon", "Mod", "Resource", "Quest", "Nightwave"];
+const SUGGESTED_TAGS = [
+  "Warframe",
+  "Prime",
+  "Weapon",
+  "Mod",
+  "Resource",
+  "Quest",
+  "Nightwave",
+];
 
 export function TrackerView() {
   const { addToast } = useToast();
@@ -58,7 +66,9 @@ export function TrackerView() {
   });
   const [newItemName, setNewItemName] = useState("");
   const [newItemNotes, setNewItemNotes] = useState("");
-  const [newItemPriority, setNewItemPriority] = useState<"high" | "medium" | "low">("medium");
+  const [newItemPriority, setNewItemPriority] = useState<
+    "high" | "medium" | "low"
+  >("medium");
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
 
   // Filter state
@@ -124,65 +134,87 @@ export function TrackerView() {
     setNewItemNotes("");
     setSelectedTags([]);
     addToast(`Added "${newItem.name}" to tracker`, "success");
-  }, [newItemName, newItemNotes, newItemPriority, selectedTags, items, saveItems, addToast]);
+  }, [
+    newItemName,
+    newItemNotes,
+    newItemPriority,
+    selectedTags,
+    items,
+    saveItems,
+    addToast,
+  ]);
 
-  const toggleComplete = useCallback((id: string) => {
-    const item = items.find(i => i.id === id);
-    saveItems(
-      items.map((item) =>
-        item.id === id ? { ...item, completed: !item.completed } : item,
-      ),
-    );
-    if (item && !item.completed) {
-      addToast(`Completed "${item.name}"!`, "success");
-    }
-  }, [items, saveItems, addToast]);
+  const toggleComplete = useCallback(
+    (id: string) => {
+      const item = items.find((i) => i.id === id);
+      saveItems(
+        items.map((item) =>
+          item.id === id ? { ...item, completed: !item.completed } : item,
+        ),
+      );
+      if (item && !item.completed) {
+        addToast(`Completed "${item.name}"!`, "success");
+      }
+    },
+    [items, saveItems, addToast],
+  );
 
-  const removeItem = useCallback((id: string) => {
-    const item = items.find(i => i.id === id);
-    saveItems(items.filter((item) => item.id !== id));
-    if (item) {
-      addToast(`Removed "${item.name}"`, "info");
-    }
-  }, [items, saveItems, addToast]);
+  const removeItem = useCallback(
+    (id: string) => {
+      const item = items.find((i) => i.id === id);
+      saveItems(items.filter((item) => item.id !== id));
+      if (item) {
+        addToast(`Removed "${item.name}"`, "info");
+      }
+    },
+    [items, saveItems, addToast],
+  );
 
-  const moveItem = useCallback((id: string, direction: "up" | "down") => {
-    const index = items.findIndex(i => i.id === id);
-    if (index === -1) return;
+  const moveItem = useCallback(
+    (id: string, direction: "up" | "down") => {
+      const index = items.findIndex((i) => i.id === id);
+      if (index === -1) return;
 
-    const newIndex = direction === "up" ? index - 1 : index + 1;
-    if (newIndex < 0 || newIndex >= items.length) return;
+      const newIndex = direction === "up" ? index - 1 : index + 1;
+      if (newIndex < 0 || newIndex >= items.length) return;
 
-    const newItems = [...items];
-    [newItems[index], newItems[newIndex]] = [newItems[newIndex], newItems[index]];
-    saveItems(newItems);
-  }, [items, saveItems]);
+      const newItems = [...items];
+      [newItems[index], newItems[newIndex]] = [
+        newItems[newIndex],
+        newItems[index],
+      ];
+      saveItems(newItems);
+    },
+    [items, saveItems],
+  );
 
-  const updatePriority = useCallback((id: string, priority: "high" | "medium" | "low") => {
-    saveItems(
-      items.map((item) =>
-        item.id === id ? { ...item, priority } : item,
-      ),
-    );
-  }, [items, saveItems]);
+  const updatePriority = useCallback(
+    (id: string, priority: "high" | "medium" | "low") => {
+      saveItems(
+        items.map((item) => (item.id === id ? { ...item, priority } : item)),
+      );
+    },
+    [items, saveItems],
+  );
 
   // Toggle component completion
-  const toggleComponent = useCallback((itemId: string, componentName: string) => {
-    saveItems(
-      items.map((item) => {
-        if (item.id !== itemId) return item;
-        const progress = { ...(item.componentProgress || {}) };
-        progress[componentName] = !progress[componentName];
-        return { ...item, componentProgress: progress };
-      }),
-    );
-  }, [items, saveItems]);
+  const toggleComponent = useCallback(
+    (itemId: string, componentName: string) => {
+      saveItems(
+        items.map((item) => {
+          if (item.id !== itemId) return item;
+          const progress = { ...(item.componentProgress || {}) };
+          progress[componentName] = !progress[componentName];
+          return { ...item, componentProgress: progress };
+        }),
+      );
+    },
+    [items, saveItems],
+  );
 
   const toggleTag = useCallback((tag: string) => {
-    setSelectedTags(prev =>
-      prev.includes(tag)
-        ? prev.filter(t => t !== tag)
-        : [...prev, tag]
+    setSelectedTags((prev) =>
+      prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag],
     );
   }, []);
 
@@ -191,13 +223,16 @@ export function TrackerView() {
     let filtered = items;
 
     if (filterPriority !== "all") {
-      filtered = filtered.filter(i => i.priority === filterPriority);
+      filtered = filtered.filter((i) => i.priority === filterPriority);
     }
 
     // Sort by priority within each group
     const priorityOrder = { high: 0, medium: 1, low: 2, undefined: 3 };
     const sortByPriority = (a: TrackerItem, b: TrackerItem) => {
-      return (priorityOrder[a.priority || "low"] || 3) - (priorityOrder[b.priority || "low"] || 3);
+      return (
+        (priorityOrder[a.priority || "low"] || 3) -
+        (priorityOrder[b.priority || "low"] || 3)
+      );
     };
 
     return {
@@ -216,7 +251,8 @@ export function TrackerView() {
           </span>
         </h2>
         <p className="text-slate-400 mb-6">
-          Track items you're crafting, farming, or working towards. Set priorities and organize with tags.
+          Track items you're crafting, farming, or working towards. Set
+          priorities and organize with tags.
         </p>
 
         {/* Add New Item */}
@@ -267,7 +303,9 @@ export function TrackerView() {
                       className="w-full px-4 py-2 flex items-center justify-between hover:bg-slate-700 transition-colors text-left border-b border-slate-700/50 last:border-0"
                     >
                       <span className="text-slate-200">{item.name}</span>
-                      <span className="text-xs text-slate-500">{item.type}</span>
+                      <span className="text-xs text-slate-500">
+                        {item.type}
+                      </span>
                     </button>
                   ))}
                 </div>
@@ -291,12 +329,15 @@ export function TrackerView() {
                 <button
                   key={p}
                   onClick={() => setNewItemPriority(p)}
-                  className={`px-3 py-1 rounded text-xs font-medium transition-colors ${newItemPriority === p
-                    ? p === "high" ? "bg-red-600 text-white"
-                      : p === "medium" ? "bg-yellow-600 text-white"
-                        : "bg-slate-600 text-white"
-                    : "bg-slate-800 text-slate-400 hover:bg-slate-700"
-                    }`}
+                  className={`px-3 py-1 rounded text-xs font-medium transition-colors ${
+                    newItemPriority === p
+                      ? p === "high"
+                        ? "bg-red-600 text-white"
+                        : p === "medium"
+                          ? "bg-yellow-600 text-white"
+                          : "bg-slate-600 text-white"
+                      : "bg-slate-800 text-slate-400 hover:bg-slate-700"
+                  }`}
                 >
                   {p.charAt(0).toUpperCase() + p.slice(1)}
                 </button>
@@ -312,10 +353,11 @@ export function TrackerView() {
               <button
                 key={tag}
                 onClick={() => toggleTag(tag)}
-                className={`px-2 py-0.5 rounded text-xs transition-colors ${selectedTags.includes(tag)
-                  ? "bg-purple-600 text-white"
-                  : "bg-slate-800 text-slate-400 hover:bg-slate-700"
-                  }`}
+                className={`px-2 py-0.5 rounded text-xs transition-colors ${
+                  selectedTags.includes(tag)
+                    ? "bg-purple-600 text-white"
+                    : "bg-slate-800 text-slate-400 hover:bg-slate-700"
+                }`}
               >
                 {tag}
               </button>
@@ -336,8 +378,11 @@ export function TrackerView() {
         <div className="flex items-center gap-3 mb-4">
           <button
             onClick={() => setShowFilters(!showFilters)}
-            className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm transition-colors ${showFilters ? "bg-purple-600 text-white" : "bg-slate-800 text-slate-400 hover:bg-slate-700"
-              }`}
+            className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm transition-colors ${
+              showFilters
+                ? "bg-purple-600 text-white"
+                : "bg-slate-800 text-slate-400 hover:bg-slate-700"
+            }`}
           >
             <Filter size={16} /> Filters
           </button>
@@ -370,7 +415,9 @@ export function TrackerView() {
             <div className="space-y-2">
               {pendingItems.map((item, idx) => {
                 const components = getItemComponents(item.name);
-                const completedCount = components.filter(c => item.componentProgress?.[c.name]).length;
+                const completedCount = components.filter(
+                  (c) => item.componentProgress?.[c.name],
+                ).length;
                 return (
                   <div key={item.id} className="space-y-2">
                     <div
@@ -414,10 +461,15 @@ export function TrackerView() {
                         </h4>
                         <div className="flex items-center gap-2 text-xs">
                           {item.priority && (
-                            <span className={`${item.priority === "high" ? "text-red-400" :
-                              item.priority === "medium" ? "text-yellow-400" :
-                                "text-slate-500"
-                              }`}>
+                            <span
+                              className={`${
+                                item.priority === "high"
+                                  ? "text-red-400"
+                                  : item.priority === "medium"
+                                    ? "text-yellow-400"
+                                    : "text-slate-500"
+                              }`}
+                            >
                               {PRIORITY_LABELS[item.priority]}
                             </span>
                           )}
@@ -437,19 +489,31 @@ export function TrackerView() {
                       {/* Component Button (if item has components) */}
                       {components.length > 0 && (
                         <button
-                          onClick={() => setExpandedItemId(expandedItemId === item.id ? null : item.id)}
+                          onClick={() =>
+                            setExpandedItemId(
+                              expandedItemId === item.id ? null : item.id,
+                            )
+                          }
                           className="flex items-center gap-1 px-2 py-1 bg-slate-700/50 hover:bg-slate-700 rounded text-xs text-slate-300 transition-colors"
                         >
                           <Wrench size={12} />
                           {completedCount}/{components.length}
-                          <ChevronRight size={12} className={`transition-transform ${expandedItemId === item.id ? 'rotate-90' : ''}`} />
+                          <ChevronRight
+                            size={12}
+                            className={`transition-transform ${expandedItemId === item.id ? "rotate-90" : ""}`}
+                          />
                         </button>
                       )}
 
                       {/* Priority Selector */}
                       <select
                         value={item.priority || "low"}
-                        onChange={(e) => updatePriority(item.id, e.target.value as "high" | "medium" | "low")}
+                        onChange={(e) =>
+                          updatePriority(
+                            item.id,
+                            e.target.value as "high" | "medium" | "low",
+                          )
+                        }
                         className="px-2 py-1 bg-slate-800 border border-slate-700 rounded text-xs text-slate-300"
                       >
                         <option value="high">High</option>
@@ -475,25 +539,36 @@ export function TrackerView() {
                         </h5>
                         <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                           {components.map((comp) => {
-                            const completed = item.componentProgress?.[comp.name] || false;
+                            const completed =
+                              item.componentProgress?.[comp.name] || false;
                             return (
                               <button
                                 key={comp.name}
-                                onClick={() => toggleComponent(item.id, comp.name)}
-                                className={`flex items-center gap-2 p-2 rounded text-xs transition-colors ${completed
-                                  ? "bg-green-900/30 text-green-400 border border-green-600/30"
-                                  : "bg-slate-800/50 text-slate-400 border border-slate-700/50 hover:border-slate-600"
-                                  }`}
+                                onClick={() =>
+                                  toggleComponent(item.id, comp.name)
+                                }
+                                className={`flex items-center gap-2 p-2 rounded text-xs transition-colors ${
+                                  completed
+                                    ? "bg-green-900/30 text-green-400 border border-green-600/30"
+                                    : "bg-slate-800/50 text-slate-400 border border-slate-700/50 hover:border-slate-600"
+                                }`}
                               >
                                 <div
-                                  className={`w-4 h-4 rounded border flex items-center justify-center flex-shrink-0 ${completed ? "bg-green-600 border-green-600" : "border-slate-600"
-                                    }`}
+                                  className={`w-4 h-4 rounded border flex items-center justify-center flex-shrink-0 ${
+                                    completed
+                                      ? "bg-green-600 border-green-600"
+                                      : "border-slate-600"
+                                  }`}
                                 >
-                                  {completed && <Check size={10} className="text-white" />}
+                                  {completed && (
+                                    <Check size={10} className="text-white" />
+                                  )}
                                 </div>
                                 <span className="truncate">{comp.name}</span>
                                 {comp.count > 1 && (
-                                  <span className="text-slate-500">x{comp.count}</span>
+                                  <span className="text-slate-500">
+                                    x{comp.count}
+                                  </span>
                                 )}
                               </button>
                             );
@@ -512,7 +587,8 @@ export function TrackerView() {
         {completedItems.length > 0 && (
           <div>
             <h3 className="text-slate-300 font-medium mb-3 flex items-center gap-2">
-              <Check size={18} className="text-green-400" /> Completed ({completedItems.length})
+              <Check size={18} className="text-green-400" /> Completed (
+              {completedItems.length})
             </h3>
             <div className="space-y-2">
               {completedItems.map((item) => (
@@ -548,6 +624,6 @@ export function TrackerView() {
           </div>
         )}
       </div>
-    </div >
+    </div>
   );
 }

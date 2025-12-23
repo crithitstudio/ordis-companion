@@ -219,44 +219,130 @@ const DAILY_ACTIVITIES = [
 
 const PROGRESSION_MILESTONES = [
   // Early Game
-  { id: "complete-tutorial", text: "Complete Vor's Prize quest", category: "Early" },
-  { id: "rank-mods", text: "Rank damage mods to 6+ (Serration, etc.)", category: "Early" },
+  {
+    id: "complete-tutorial",
+    text: "Complete Vor's Prize quest",
+    category: "Early",
+  },
+  {
+    id: "rank-mods",
+    text: "Rank damage mods to 6+ (Serration, etc.)",
+    category: "Early",
+  },
   { id: "reach-mr5", text: "Reach Mastery Rank 5", category: "Early" },
   { id: "unlock-mars", text: "Unlock Mars Junction", category: "Early" },
-  { id: "first-reactor", text: "Install Orokin Reactor on your main frame", category: "Early" },
+  {
+    id: "first-reactor",
+    text: "Install Orokin Reactor on your main frame",
+    category: "Early",
+  },
   { id: "join-clan", text: "Join or create a Clan", category: "Early" },
-  { id: "activate-syndicate", text: "Activate your first Syndicate", category: "Early" },
-  { id: "first-forma", text: "Apply first Forma to a weapon", category: "Early" },
+  {
+    id: "activate-syndicate",
+    text: "Activate your first Syndicate",
+    category: "Early",
+  },
+  {
+    id: "first-forma",
+    text: "Apply first Forma to a weapon",
+    category: "Early",
+  },
   // Mid Game
-  { id: "complete-natah", text: "Complete Natah quest (unlocks Second Dream)", category: "Mid" },
-  { id: "complete-second-dream", text: "Complete The Second Dream quest", category: "Mid" },
-  { id: "complete-war-within", text: "Complete The War Within quest", category: "Mid" },
+  {
+    id: "complete-natah",
+    text: "Complete Natah quest (unlocks Second Dream)",
+    category: "Mid",
+  },
+  {
+    id: "complete-second-dream",
+    text: "Complete The Second Dream quest",
+    category: "Mid",
+  },
+  {
+    id: "complete-war-within",
+    text: "Complete The War Within quest",
+    category: "Mid",
+  },
   { id: "reach-mr10", text: "Reach Mastery Rank 10", category: "Mid" },
-  { id: "get-prime-frame", text: "Build your first Prime Warframe", category: "Mid" },
-  { id: "max-syndicate", text: "Max rank a Syndicate (buy augments)", category: "Mid" },
-  { id: "unlock-helminth", text: "Unlock Helminth subsume ability transfer", category: "Mid" },
-  { id: "complete-chains", text: "Complete Chains of Harrow quest", category: "Mid" },
+  {
+    id: "get-prime-frame",
+    text: "Build your first Prime Warframe",
+    category: "Mid",
+  },
+  {
+    id: "max-syndicate",
+    text: "Max rank a Syndicate (buy augments)",
+    category: "Mid",
+  },
+  {
+    id: "unlock-helminth",
+    text: "Unlock Helminth subsume ability transfer",
+    category: "Mid",
+  },
+  {
+    id: "complete-chains",
+    text: "Complete Chains of Harrow quest",
+    category: "Mid",
+  },
   // Late Game
-  { id: "complete-sacrifice", text: "Complete The Sacrifice quest", category: "Late" },
-  { id: "complete-new-war", text: "Complete The New War quest", category: "Late" },
-  { id: "unlock-arbitrations", text: "Unlock Arbitrations (all star chart nodes)", category: "Late" },
-  { id: "unlock-steel-path", text: "Unlock Steel Path (MR required)", category: "Late" },
+  {
+    id: "complete-sacrifice",
+    text: "Complete The Sacrifice quest",
+    category: "Late",
+  },
+  {
+    id: "complete-new-war",
+    text: "Complete The New War quest",
+    category: "Late",
+  },
+  {
+    id: "unlock-arbitrations",
+    text: "Unlock Arbitrations (all star chart nodes)",
+    category: "Late",
+  },
+  {
+    id: "unlock-steel-path",
+    text: "Unlock Steel Path (MR required)",
+    category: "Late",
+  },
   { id: "reach-mr20", text: "Reach Mastery Rank 20", category: "Late" },
-  { id: "get-kuva-tenet", text: "Acquire first Kuva/Tenet weapon", category: "Late" },
-  { id: "max-focus", text: "Max a Focus school (Zenurik recommended first)", category: "Late" },
+  {
+    id: "get-kuva-tenet",
+    text: "Acquire first Kuva/Tenet weapon",
+    category: "Late",
+  },
+  {
+    id: "max-focus",
+    text: "Max a Focus school (Zenurik recommended first)",
+    category: "Late",
+  },
   // Endgame
-  { id: "complete-zariman", text: "Complete Angels of the Zariman content", category: "Endgame" },
+  {
+    id: "complete-zariman",
+    text: "Complete Angels of the Zariman content",
+    category: "Endgame",
+  },
   { id: "reach-mr30", text: "Reach Mastery Rank 30", category: "Endgame" },
-  { id: "complete-duviri", text: "Complete Duviri Paradox content", category: "Endgame" },
+  {
+    id: "complete-duviri",
+    text: "Complete Duviri Paradox content",
+    category: "Endgame",
+  },
   { id: "farm-arcanes", text: "Farm and max Arcane sets", category: "Endgame" },
-  { id: "reach-legendary", text: "Reach Legendary Rank (LR1+)", category: "Endgame" },
+  {
+    id: "reach-legendary",
+    text: "Reach Legendary Rank (LR1+)",
+    category: "Endgame",
+  },
 ];
 
 export function GuideView() {
-  const [completedMilestones, setCompletedMilestones] = useState<Set<string>>(() => {
-    const saved = localStorage.getItem("ordis-progression-milestones");
-    return saved ? new Set(JSON.parse(saved)) : new Set();
-  });
+  const [completedMilestones, setCompletedMilestones] = useState<Set<string>>(
+    () => {
+      const saved = localStorage.getItem("ordis-progression-milestones");
+      return saved ? new Set(JSON.parse(saved)) : new Set();
+    },
+  );
 
   const toggleMilestone = (id: string) => {
     setCompletedMilestones((prev) => {
@@ -266,7 +352,10 @@ export function GuideView() {
       } else {
         newSet.add(id);
       }
-      localStorage.setItem("ordis-progression-milestones", JSON.stringify([...newSet]));
+      localStorage.setItem(
+        "ordis-progression-milestones",
+        JSON.stringify([...newSet]),
+      );
       return newSet;
     });
   };
@@ -347,10 +436,15 @@ export function GuideView() {
               key={section.category}
               className="bg-slate-800/30 rounded-lg p-4 border border-slate-700/50"
             >
-              <h3 className="text-slate-200 font-medium mb-3">{section.category}</h3>
+              <h3 className="text-slate-200 font-medium mb-3">
+                {section.category}
+              </h3>
               <ul className="space-y-2">
                 {section.tips.map((tip, idx) => (
-                  <li key={idx} className="flex items-start gap-2 text-sm text-slate-400">
+                  <li
+                    key={idx}
+                    className="flex items-start gap-2 text-sm text-slate-400"
+                  >
                     <span className="text-amber-400 mt-1">•</span>
                     <span>{tip}</span>
                   </li>
@@ -383,7 +477,9 @@ export function GuideView() {
                 className="bg-slate-800/30 rounded-lg p-4 border border-slate-700/50"
               >
                 <div className="flex items-center justify-between mb-2">
-                  <h3 className="text-slate-200 font-medium">{activity.title}</h3>
+                  <h3 className="text-slate-200 font-medium">
+                    {activity.title}
+                  </h3>
                   <span
                     className={`text-xs px-2 py-0.5 rounded border ${priorityColors[activity.priority as keyof typeof priorityColors]}`}
                   >
@@ -431,44 +527,62 @@ export function GuideView() {
           <Sword size={28} /> Progression Checklist
         </h2>
         <p className="text-slate-400 text-sm mb-4">
-          Track your journey through Warframe's content. Click to mark as complete.
+          Track your journey through Warframe's content. Click to mark as
+          complete.
         </p>
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-          {Object.entries(milestonesByCategory).map(([category, milestones]) => (
-            <div key={category} className="bg-slate-800/30 rounded-lg p-4 border border-slate-700/50">
-              <h3 className="text-slate-200 font-medium mb-3 flex items-center gap-2">
-                <Shield size={16} className="text-purple-400" />
-                {category} Game
-              </h3>
-              <div className="space-y-2">
-                {milestones.map((milestone) => {
-                  const isComplete = completedMilestones.has(milestone.id);
-                  return (
-                    <button
-                      key={milestone.id}
-                      onClick={() => toggleMilestone(milestone.id)}
-                      className={`w-full flex items-center gap-2 p-2 rounded transition-all text-left text-sm ${isComplete
-                        ? "bg-purple-900/20 text-purple-300"
-                        : "hover:bg-slate-700/50 text-slate-400"
+          {Object.entries(milestonesByCategory).map(
+            ([category, milestones]) => (
+              <div
+                key={category}
+                className="bg-slate-800/30 rounded-lg p-4 border border-slate-700/50"
+              >
+                <h3 className="text-slate-200 font-medium mb-3 flex items-center gap-2">
+                  <Shield size={16} className="text-purple-400" />
+                  {category} Game
+                </h3>
+                <div className="space-y-2">
+                  {milestones.map((milestone) => {
+                    const isComplete = completedMilestones.has(milestone.id);
+                    return (
+                      <button
+                        key={milestone.id}
+                        onClick={() => toggleMilestone(milestone.id)}
+                        className={`w-full flex items-center gap-2 p-2 rounded transition-all text-left text-sm ${
+                          isComplete
+                            ? "bg-purple-900/20 text-purple-300"
+                            : "hover:bg-slate-700/50 text-slate-400"
                         }`}
-                    >
-                      {isComplete ? (
-                        <CheckCircle2 size={16} className="text-green-400 flex-shrink-0" />
-                      ) : (
-                        <Circle size={16} className="text-slate-500 flex-shrink-0" />
-                      )}
-                      <span className={isComplete ? "line-through opacity-70" : ""}>
-                        {milestone.text}
-                      </span>
-                    </button>
-                  );
-                })}
+                      >
+                        {isComplete ? (
+                          <CheckCircle2
+                            size={16}
+                            className="text-green-400 flex-shrink-0"
+                          />
+                        ) : (
+                          <Circle
+                            size={16}
+                            className="text-slate-500 flex-shrink-0"
+                          />
+                        )}
+                        <span
+                          className={
+                            isComplete ? "line-through opacity-70" : ""
+                          }
+                        >
+                          {milestone.text}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
               </div>
-            </div>
-          ))}
+            ),
+          )}
         </div>
         <p className="text-center text-slate-500 text-sm mt-4">
-          {completedMilestones.size} / {PROGRESSION_MILESTONES.length} milestones completed
+          {completedMilestones.size} / {PROGRESSION_MILESTONES.length}{" "}
+          milestones completed
         </p>
       </section>
     </div>

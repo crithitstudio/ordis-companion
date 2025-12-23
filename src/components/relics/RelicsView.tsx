@@ -1,5 +1,15 @@
 import { useState, useMemo, useRef, useEffect } from "react";
-import { Gem, Plus, Trash2, Star, Search, X, ChevronDown, Eye, Coins } from "lucide-react";
+import {
+  Gem,
+  Plus,
+  Trash2,
+  Star,
+  Search,
+  X,
+  ChevronDown,
+  Eye,
+  Coins,
+} from "lucide-react";
 import { itemsData } from "../../utils/translations";
 import { useToast } from "../ui";
 import type { SavedRelic } from "../../types";
@@ -34,7 +44,7 @@ function getRelicsFromData(): { name: string; era: string; drops: string[] }[] {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   Object.values(itemsData).forEach((item: any) => {
     if (item.type === "Relic" || item.category === "Relics") {
-      const era = ERAS.find(e => item.name?.startsWith(e)) || "Other";
+      const era = ERAS.find((e) => item.name?.startsWith(e)) || "Other";
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const drops = item.rewards?.map((r: any) => r.item || r.itemName) || [];
       relics.push({
@@ -74,13 +84,18 @@ export function RelicsView() {
     let totalMax = 0;
     let totalAvg = 0;
 
-    relics.forEach(relic => {
-      const relicData = allRelics.find(r => r.name === relic.name);
+    relics.forEach((relic) => {
+      const relicData = allRelics.find((r) => r.name === relic.name);
       if (relicData && relicData.drops.length > 0) {
         // Min = all commons, Max = all rares, Avg = weighted average
         const minValue = DUCAT_VALUES.common * relic.quantity;
         const maxValue = DUCAT_VALUES.rare * relic.quantity;
-        const avgValue = ((DUCAT_VALUES.common * 3 + DUCAT_VALUES.uncommon * 2 + DUCAT_VALUES.rare) / 6) * relic.quantity;
+        const avgValue =
+          ((DUCAT_VALUES.common * 3 +
+            DUCAT_VALUES.uncommon * 2 +
+            DUCAT_VALUES.rare) /
+            6) *
+          relic.quantity;
         totalMin += minValue;
         totalMax += maxValue;
         totalAvg += avgValue;
@@ -95,7 +110,7 @@ export function RelicsView() {
     if (searchQuery.length < 2) return [];
     const query = searchQuery.toLowerCase();
     return allRelics
-      .filter(r => r.name.toLowerCase().includes(query))
+      .filter((r) => r.name.toLowerCase().includes(query))
       .slice(0, 10);
   }, [allRelics, searchQuery]);
 
@@ -112,7 +127,7 @@ export function RelicsView() {
 
   // Get drops for a relic
   const getRelicDrops = (relicName: string): string[] => {
-    const relic = allRelics.find(r => r.name === relicName);
+    const relic = allRelics.find((r) => r.name === relicName);
     return relic?.drops || [];
   };
 
@@ -160,7 +175,7 @@ export function RelicsView() {
   };
 
   const removeRelic = (id: string) => {
-    const relic = relics.find(r => r.id === id);
+    const relic = relics.find((r) => r.id === id);
     saveRelics(relics.filter((r) => r.id !== id));
     if (relic) addToast(`Removed ${relic.name}`, "info");
   };
@@ -181,7 +196,8 @@ export function RelicsView() {
           </span>
         </h2>
         <p className="text-slate-400 mb-6">
-          Track your void relic inventory and wishlist. Search for relics to see their drops.
+          Track your void relic inventory and wishlist. Search for relics to see
+          their drops.
         </p>
 
         {/* Ducat Value Summary */}
@@ -190,20 +206,28 @@ export function RelicsView() {
             <div className="flex items-center justify-between flex-wrap gap-4">
               <div className="flex items-center gap-2">
                 <Coins size={20} className="text-amber-400" />
-                <span className="text-amber-400 font-medium">Potential Ducats</span>
+                <span className="text-amber-400 font-medium">
+                  Potential Ducats
+                </span>
               </div>
               <div className="flex items-center gap-6 text-sm">
                 <div className="text-center">
                   <div className="text-slate-500">Minimum</div>
-                  <div className="text-slate-300 font-bold">{ducatStats.min.toLocaleString()}</div>
+                  <div className="text-slate-300 font-bold">
+                    {ducatStats.min.toLocaleString()}
+                  </div>
                 </div>
                 <div className="text-center">
                   <div className="text-amber-400">Average</div>
-                  <div className="text-amber-300 font-bold text-lg">{ducatStats.avg.toLocaleString()}</div>
+                  <div className="text-amber-300 font-bold text-lg">
+                    {ducatStats.avg.toLocaleString()}
+                  </div>
                 </div>
                 <div className="text-center">
                   <div className="text-slate-500">Maximum</div>
-                  <div className="text-slate-300 font-bold">{ducatStats.max.toLocaleString()}</div>
+                  <div className="text-slate-300 font-bold">
+                    {ducatStats.max.toLocaleString()}
+                  </div>
                 </div>
               </div>
             </div>
@@ -257,8 +281,12 @@ export function RelicsView() {
                         className="w-full px-4 py-3 flex items-center justify-between hover:bg-slate-700 transition-colors text-left border-b border-slate-700/50 last:border-0"
                       >
                         <div>
-                          <span className="text-slate-200 font-medium">{relic.name}</span>
-                          <span className="text-xs text-slate-500 ml-2">{relic.era} Era</span>
+                          <span className="text-slate-200 font-medium">
+                            {relic.name}
+                          </span>
+                          <span className="text-xs text-slate-500 ml-2">
+                            {relic.era} Era
+                          </span>
                         </div>
                         {relic.drops.length > 0 && (
                           <span className="text-xs text-amber-400">
@@ -335,8 +363,9 @@ export function RelicsView() {
               return (
                 <div
                   key={relic.id}
-                  className={`bg-slate-800/30 rounded-lg border transition-all hover-lift ${relic.wanted ? "border-amber-500/50" : "border-slate-700/50"
-                    }`}
+                  className={`bg-slate-800/30 rounded-lg border transition-all hover-lift ${
+                    relic.wanted ? "border-amber-500/50" : "border-slate-700/50"
+                  }`}
                 >
                   <div className="p-4">
                     <div className="flex items-start justify-between mb-3">
@@ -350,12 +379,16 @@ export function RelicsView() {
                             />
                           )}
                         </h4>
-                        <p className="text-xs text-slate-500">{relic.era} Era</p>
+                        <p className="text-xs text-slate-500">
+                          {relic.era} Era
+                        </p>
                       </div>
                       <div className="flex items-center gap-1">
                         {drops.length > 0 && (
                           <button
-                            onClick={() => setExpandedRelic(isExpanded ? null : relic.id)}
+                            onClick={() =>
+                              setExpandedRelic(isExpanded ? null : relic.id)
+                            }
                             className="p-1 text-slate-500 hover:text-amber-400 transition-colors"
                             title="View drops"
                           >
@@ -377,7 +410,8 @@ export function RelicsView() {
                         value={relic.refinement}
                         onChange={(e) =>
                           updateRelic(relic.id, {
-                            refinement: e.target.value as SavedRelic["refinement"],
+                            refinement: e.target
+                              .value as SavedRelic["refinement"],
                           })
                         }
                         className="flex-1 px-2 py-1 bg-slate-700 border border-slate-600 rounded text-sm text-slate-200"
@@ -405,7 +439,9 @@ export function RelicsView() {
                         </span>
                         <button
                           onClick={() =>
-                            updateRelic(relic.id, { quantity: relic.quantity + 1 })
+                            updateRelic(relic.id, {
+                              quantity: relic.quantity + 1,
+                            })
                           }
                           className="px-2 py-1 bg-slate-700 hover:bg-slate-600 rounded text-slate-300"
                           aria-label="Increase quantity"
@@ -419,10 +455,11 @@ export function RelicsView() {
                       onClick={() =>
                         updateRelic(relic.id, { wanted: !relic.wanted })
                       }
-                      className={`w-full py-1 rounded text-sm transition-colors ${relic.wanted
-                        ? "bg-amber-600/20 text-amber-400"
-                        : "bg-slate-700/50 text-slate-400 hover:bg-slate-700"
-                        }`}
+                      className={`w-full py-1 rounded text-sm transition-colors ${
+                        relic.wanted
+                          ? "bg-amber-600/20 text-amber-400"
+                          : "bg-slate-700/50 text-slate-400 hover:bg-slate-700"
+                      }`}
                     >
                       {relic.wanted ? "★ Wanted" : "☆ Mark as Wanted"}
                     </button>
@@ -432,7 +469,8 @@ export function RelicsView() {
                   {isExpanded && drops.length > 0 && (
                     <div className="px-4 pb-4 border-t border-slate-700/50 pt-3">
                       <div className="text-xs text-slate-500 mb-2 flex items-center gap-1">
-                        <ChevronDown size={14} /> Possible Drops ({drops.length})
+                        <ChevronDown size={14} /> Possible Drops ({drops.length}
+                        )
                       </div>
                       <div className="space-y-1">
                         {drops.map((drop, idx) => (
@@ -441,12 +479,20 @@ export function RelicsView() {
                             className="flex items-center justify-between px-2 py-1 bg-slate-700/50 rounded text-xs"
                           >
                             <span className="text-slate-300">{drop}</span>
-                            <span className={`font-medium ${idx < 3 ? "text-slate-400" :
-                                idx < 5 ? "text-blue-400" :
-                                  "text-amber-400"
-                              }`}>
-                              {getDucatValue(idx)} <Coins size={10} className="inline" />
-                              <span className="text-slate-500 ml-1">({getRarityLabel(idx)})</span>
+                            <span
+                              className={`font-medium ${
+                                idx < 3
+                                  ? "text-slate-400"
+                                  : idx < 5
+                                    ? "text-blue-400"
+                                    : "text-amber-400"
+                              }`}
+                            >
+                              {getDucatValue(idx)}{" "}
+                              <Coins size={10} className="inline" />
+                              <span className="text-slate-500 ml-1">
+                                ({getRarityLabel(idx)})
+                              </span>
                             </span>
                           </div>
                         ))}

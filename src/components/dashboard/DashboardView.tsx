@@ -21,8 +21,12 @@ import {
   Crown,
 } from "lucide-react";
 
-
-import { CycleCard, ErrorDisplay, LoadingSpinner, CollapsibleSection } from "../ui";
+import {
+  CycleCard,
+  ErrorDisplay,
+  LoadingSpinner,
+  CollapsibleSection,
+} from "../ui";
 import { ItemDetailModal } from "../codex/ItemDetailModal";
 import { useLocalStorageSet } from "../../hooks/useLocalStorage";
 import {
@@ -237,14 +241,17 @@ export function DashboardView({
                 <div className="bg-green-900/30 border border-green-700/50 rounded p-3 text-center">
                   <span className="text-green-400 font-bold">ACTIVE NOW</span>
                   <div className="text-slate-400 text-sm mt-1">
-                    Leaves in: {voidTrader.endString || getCountdownString(voidTrader.expiry)}
+                    Leaves in:{" "}
+                    {voidTrader.endString ||
+                      getCountdownString(voidTrader.expiry)}
                   </div>
                 </div>
               ) : (
                 <div className="bg-slate-900/50 border border-slate-700/50 rounded p-3 text-center">
                   <span className="text-slate-300">Arrives in:</span>
                   <div className="text-amber-400 font-bold text-lg">
-                    {voidTrader.startString || getCountdownString(voidTrader.activation)}
+                    {voidTrader.startString ||
+                      getCountdownString(voidTrader.activation)}
                   </div>
                 </div>
               )}
@@ -300,14 +307,22 @@ export function DashboardView({
             </div>
             <div className="text-slate-400">{arbitration.node}</div>
             <div className="flex justify-between items-center text-sm">
-              <span className={`font-bold ${arbitration.enemy === "Grineer" ? "text-red-400" :
-                arbitration.enemy === "Corpus" ? "text-blue-400" :
-                  arbitration.enemy === "Infested" ? "text-green-400" :
-                    "text-yellow-400"
-                }`}>
+              <span
+                className={`font-bold ${
+                  arbitration.enemy === "Grineer"
+                    ? "text-red-400"
+                    : arbitration.enemy === "Corpus"
+                      ? "text-blue-400"
+                      : arbitration.enemy === "Infested"
+                        ? "text-green-400"
+                        : "text-yellow-400"
+                }`}
+              >
                 {arbitration.enemy}
               </span>
-              <span className="text-slate-500 font-mono">{arbitration.eta}</span>
+              <span className="text-slate-500 font-mono">
+                {arbitration.eta}
+              </span>
             </div>
           </div>
         </div>
@@ -325,61 +340,78 @@ export function DashboardView({
         >
           <div className="space-y-3">
             <div className="flex justify-between items-center text-sm text-slate-400">
-              <span>Rotation ends: {primeResurgence.endString || getCountdownString(primeResurgence.expiry)}</span>
+              <span>
+                Rotation ends:{" "}
+                {primeResurgence.endString ||
+                  getCountdownString(primeResurgence.expiry)}
+              </span>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-              {primeResurgence.vaultedItems.slice(0, 12).map((item: VarziaItem, idx: number) => {
-                const imageUrl = getItemImageUrl({ uniqueName: item.uniqueName });
-                const relicDrops = getRelicDrops(item.name);
-                const rarityColors: Record<string, string> = {
-                  Rare: 'text-yellow-400',
-                  Uncommon: 'text-slate-300',
-                  Common: 'text-amber-700',
-                };
-                return (
-                  <div
-                    key={`${item.name}-${idx}`}
-                    className="bg-slate-800 p-3 rounded-lg border border-amber-700/30 hover:border-amber-500/50 transition-colors card-interactive"
-                  >
-                    <div className="flex items-center gap-3">
-                      {imageUrl && (
-                        <img
-                          src={imageUrl}
-                          alt={item.name}
-                          className="w-10 h-10 object-contain rounded bg-slate-900/50 flex-shrink-0"
-                          onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
-                        />
-                      )}
-                      <div className="flex-1 min-w-0">
-                        <span className="text-slate-200 font-medium truncate block">
-                          {item.name}
-                        </span>
-                        <div className="flex items-center gap-1 text-amber-400 font-bold text-sm">
-                          {item.cost}
-                          <span className="text-xs text-amber-500">{item.currency}</span>
-                        </div>
-                      </div>
-                    </div>
-                    {/* Relic Contents */}
-                    {relicDrops.length > 0 && (
-                      <div className="mt-2 pt-2 border-t border-slate-700/50">
-                        <div className="text-xs text-slate-500 mb-1">Contains:</div>
-                        <div className="flex flex-wrap gap-1">
-                          {relicDrops.slice(0, 6).map((drop, dropIdx) => (
-                            <span
-                              key={dropIdx}
-                              className={`text-xs px-1.5 py-0.5 rounded bg-slate-900/50 ${rarityColors[drop.rarity] || 'text-slate-400'}`}
-                              title={`${drop.rarity} - ${(drop.chance * 100).toFixed(1)}%`}
-                            >
-                              {drop.item.replace(' Prime', '').replace(' Blueprint', ' BP')}
+              {primeResurgence.vaultedItems
+                .slice(0, 12)
+                .map((item: VarziaItem, idx: number) => {
+                  const imageUrl = getItemImageUrl({
+                    uniqueName: item.uniqueName,
+                  });
+                  const relicDrops = getRelicDrops(item.name);
+                  const rarityColors: Record<string, string> = {
+                    Rare: "text-yellow-400",
+                    Uncommon: "text-slate-300",
+                    Common: "text-amber-700",
+                  };
+                  return (
+                    <div
+                      key={`${item.name}-${idx}`}
+                      className="bg-slate-800 p-3 rounded-lg border border-amber-700/30 hover:border-amber-500/50 transition-colors card-interactive"
+                    >
+                      <div className="flex items-center gap-3">
+                        {imageUrl && (
+                          <img
+                            src={imageUrl}
+                            alt={item.name}
+                            className="w-10 h-10 object-contain rounded bg-slate-900/50 flex-shrink-0"
+                            onError={(e) => {
+                              (e.target as HTMLImageElement).style.display =
+                                "none";
+                            }}
+                          />
+                        )}
+                        <div className="flex-1 min-w-0">
+                          <span className="text-slate-200 font-medium truncate block">
+                            {item.name}
+                          </span>
+                          <div className="flex items-center gap-1 text-amber-400 font-bold text-sm">
+                            {item.cost}
+                            <span className="text-xs text-amber-500">
+                              {item.currency}
                             </span>
-                          ))}
+                          </div>
                         </div>
                       </div>
-                    )}
-                  </div>
-                );
-              })}
+                      {/* Relic Contents */}
+                      {relicDrops.length > 0 && (
+                        <div className="mt-2 pt-2 border-t border-slate-700/50">
+                          <div className="text-xs text-slate-500 mb-1">
+                            Contains:
+                          </div>
+                          <div className="flex flex-wrap gap-1">
+                            {relicDrops.slice(0, 6).map((drop, dropIdx) => (
+                              <span
+                                key={dropIdx}
+                                className={`text-xs px-1.5 py-0.5 rounded bg-slate-900/50 ${rarityColors[drop.rarity] || "text-slate-400"}`}
+                                title={`${drop.rarity} - ${(drop.chance * 100).toFixed(1)}%`}
+                              >
+                                {drop.item
+                                  .replace(" Prime", "")
+                                  .replace(" Blueprint", " BP")}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
             </div>
           </div>
         </CollapsibleSection>
@@ -438,137 +470,66 @@ export function DashboardView({
           <h2 className="text-lg font-bold text-red-400/50 flex items-center gap-2">
             <Target size={20} /> Archon Hunt
           </h2>
-          <p className="text-slate-500 text-sm mt-2">No Archon Hunt data available. Check back later.</p>
+          <p className="text-slate-500 text-sm mt-2">
+            No Archon Hunt data available. Check back later.
+          </p>
         </section>
-      )
-      }
+      )}
 
       {/* Sortie Section */}
-      {
-        sortie && (
-          <section className="bg-slate-800/60 border border-slate-700 rounded-xl overflow-hidden shadow-lg relative">
-            <div className="bg-gradient-to-r from-yellow-900/50 to-slate-800/80 p-4 border-b border-yellow-700/30 flex justify-between items-center relative z-10">
-              <h2 className="text-lg font-bold text-yellow-500 flex items-center gap-2">
-                <Crosshair size={20} /> Sortie: {sortie.faction}
-              </h2>
-              <span className="text-slate-400 text-sm font-mono">
-                {sortie.eta} remaining
-              </span>
-            </div>
-            <div className="p-4">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="col-span-1 md:col-span-3 text-center mb-2">
-                  <span className="text-slate-400 text-sm">Boss:</span>
-                  <span className="text-slate-200 font-bold ml-2 text-lg">
-                    {sortie.boss}
-                  </span>
-                </div>
-                {sortie.variants.map((mission, idx) => {
-                  const missionId = `sortie-${sortie.boss}-${idx}`;
-                  const completed = isCompleted(missionId);
-                  return (
-                    <div
-                      key={idx}
-                      className={`bg-slate-900/50 p-3 rounded border flex flex-col gap-1 relative overflow-hidden cursor-pointer transition-colors ${completed ? "border-green-600/50 bg-green-900/10" : "border-slate-700/50 hover:border-yellow-500/50"}`}
-                      onClick={() => toggleCompleted(missionId)}
-                    >
-                      <div className="absolute top-0 right-0 p-1">
-                        <span className="text-[10px] text-slate-600 font-mono">
-                          0{idx + 1}
-                        </span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <div
-                          className={`w-5 h-5 rounded border-2 flex items-center justify-center flex-shrink-0 ${completed ? "bg-green-600 border-green-600" : "border-slate-500"}`}
-                        >
-                          {completed && (
-                            <Check size={14} className="text-white" />
-                          )}
-                        </div>
-                        <div className="flex-1">
-                          <span className="text-yellow-500/80 font-bold text-xs uppercase">
-                            Mission {idx + 1}
-                          </span>
-                          <div
-                            className={`font-medium ${completed ? "text-slate-400 line-through" : "text-slate-200"}`}
-                          >
-                            {mission.missionType} - {mission.node}
-                          </div>
-                          <div
-                            className={`text-xs italic ${completed ? "text-slate-500" : "text-slate-400"}`}
-                          >
-                            {mission.modifier}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  );
-                })}
+      {sortie && (
+        <section className="bg-slate-800/60 border border-slate-700 rounded-xl overflow-hidden shadow-lg relative">
+          <div className="bg-gradient-to-r from-yellow-900/50 to-slate-800/80 p-4 border-b border-yellow-700/30 flex justify-between items-center relative z-10">
+            <h2 className="text-lg font-bold text-yellow-500 flex items-center gap-2">
+              <Crosshair size={20} /> Sortie: {sortie.faction}
+            </h2>
+            <span className="text-slate-400 text-sm font-mono">
+              {sortie.eta} remaining
+            </span>
+          </div>
+          <div className="p-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="col-span-1 md:col-span-3 text-center mb-2">
+                <span className="text-slate-400 text-sm">Boss:</span>
+                <span className="text-slate-200 font-bold ml-2 text-lg">
+                  {sortie.boss}
+                </span>
               </div>
-            </div>
-          </section>
-        )
-      }
-
-      {/* Nightwave Challenges */}
-      {
-        nightwave.length > 0 && (
-          <CollapsibleSection
-            title="Nightwave Challenges"
-            icon={<Radio size={24} />}
-            iconColorClass="text-purple-400"
-            badge={nightwave.length}
-            badgeColorClass="bg-purple-900/50 text-purple-300"
-            storageKey="nightwave"
-          >
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-              {nightwave.slice(0, 9).map((challenge: NightwaveChallenge) => {
-                const completed = isCompleted(`nightwave-${challenge.id}`);
+              {sortie.variants.map((mission, idx) => {
+                const missionId = `sortie-${sortie.boss}-${idx}`;
+                const completed = isCompleted(missionId);
                 return (
                   <div
-                    key={challenge.id}
-                    className={`bg-slate-800 p-3 rounded border cursor-pointer transition-colors ${completed
-                      ? "border-green-600/50 bg-green-900/10"
-                      : challenge.isElite
-                        ? "border-purple-600 hover:border-purple-400"
-                        : challenge.isDaily
-                          ? "border-blue-700 hover:border-blue-500"
-                          : "border-slate-700 hover:border-slate-500"
-                      }`}
-                    onClick={() => toggleCompleted(`nightwave-${challenge.id}`)}
+                    key={idx}
+                    className={`bg-slate-900/50 p-3 rounded border flex flex-col gap-1 relative overflow-hidden cursor-pointer transition-colors ${completed ? "border-green-600/50 bg-green-900/10" : "border-slate-700/50 hover:border-yellow-500/50"}`}
+                    onClick={() => toggleCompleted(missionId)}
                   >
-                    <div className="flex items-start gap-2">
+                    <div className="absolute top-0 right-0 p-1">
+                      <span className="text-[10px] text-slate-600 font-mono">
+                        0{idx + 1}
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-2">
                       <div
-                        className={`w-5 h-5 mt-0.5 rounded border-2 flex items-center justify-center flex-shrink-0 ${completed ? "bg-green-600 border-green-600" : "border-slate-500"}`}
+                        className={`w-5 h-5 rounded border-2 flex items-center justify-center flex-shrink-0 ${completed ? "bg-green-600 border-green-600" : "border-slate-500"}`}
                       >
-                        {completed && <Check size={14} className="text-white" />}
+                        {completed && (
+                          <Check size={14} className="text-white" />
+                        )}
                       </div>
                       <div className="flex-1">
-                        <div className="flex justify-between items-start">
-                          <span
-                            className={`font-medium ${completed ? "text-slate-400 line-through" : "text-slate-200"}`}
-                          >
-                            {challenge.title}
-                          </span>
-                          <span
-                            className={`text-xs px-2 py-0.5 rounded font-bold ${challenge.isElite ? "bg-purple-900/50 text-purple-300" : challenge.isDaily ? "bg-blue-900/50 text-blue-300" : "bg-slate-700 text-slate-300"}`}
-                          >
-                            {challenge.isElite
-                              ? "Elite"
-                              : challenge.isDaily
-                                ? "Daily"
-                                : "Weekly"}
-                          </span>
+                        <span className="text-yellow-500/80 font-bold text-xs uppercase">
+                          Mission {idx + 1}
+                        </span>
+                        <div
+                          className={`font-medium ${completed ? "text-slate-400 line-through" : "text-slate-200"}`}
+                        >
+                          {mission.missionType} - {mission.node}
                         </div>
                         <div
-                          className={`text-sm ${completed ? "text-slate-500" : "text-slate-400"}`}
+                          className={`text-xs italic ${completed ? "text-slate-500" : "text-slate-400"}`}
                         >
-                          {challenge.description}
-                        </div>
-                        <div
-                          className={`text-sm mt-1 ${completed ? "text-slate-500" : "text-slate-400"}`}
-                        >
-                          +{challenge.standing.toLocaleString()} Standing
+                          {mission.modifier}
                         </div>
                       </div>
                     </div>
@@ -576,97 +537,162 @@ export function DashboardView({
                 );
               })}
             </div>
-          </CollapsibleSection>
-        )
-      }
+          </div>
+        </section>
+      )}
+
+      {/* Nightwave Challenges */}
+      {nightwave.length > 0 && (
+        <CollapsibleSection
+          title="Nightwave Challenges"
+          icon={<Radio size={24} />}
+          iconColorClass="text-purple-400"
+          badge={nightwave.length}
+          badgeColorClass="bg-purple-900/50 text-purple-300"
+          storageKey="nightwave"
+        >
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+            {nightwave.slice(0, 9).map((challenge: NightwaveChallenge) => {
+              const completed = isCompleted(`nightwave-${challenge.id}`);
+              return (
+                <div
+                  key={challenge.id}
+                  className={`bg-slate-800 p-3 rounded border cursor-pointer transition-colors ${
+                    completed
+                      ? "border-green-600/50 bg-green-900/10"
+                      : challenge.isElite
+                        ? "border-purple-600 hover:border-purple-400"
+                        : challenge.isDaily
+                          ? "border-blue-700 hover:border-blue-500"
+                          : "border-slate-700 hover:border-slate-500"
+                  }`}
+                  onClick={() => toggleCompleted(`nightwave-${challenge.id}`)}
+                >
+                  <div className="flex items-start gap-2">
+                    <div
+                      className={`w-5 h-5 mt-0.5 rounded border-2 flex items-center justify-center flex-shrink-0 ${completed ? "bg-green-600 border-green-600" : "border-slate-500"}`}
+                    >
+                      {completed && <Check size={14} className="text-white" />}
+                    </div>
+                    <div className="flex-1">
+                      <div className="flex justify-between items-start">
+                        <span
+                          className={`font-medium ${completed ? "text-slate-400 line-through" : "text-slate-200"}`}
+                        >
+                          {challenge.title}
+                        </span>
+                        <span
+                          className={`text-xs px-2 py-0.5 rounded font-bold ${challenge.isElite ? "bg-purple-900/50 text-purple-300" : challenge.isDaily ? "bg-blue-900/50 text-blue-300" : "bg-slate-700 text-slate-300"}`}
+                        >
+                          {challenge.isElite
+                            ? "Elite"
+                            : challenge.isDaily
+                              ? "Daily"
+                              : "Weekly"}
+                        </span>
+                      </div>
+                      <div
+                        className={`text-sm ${completed ? "text-slate-500" : "text-slate-400"}`}
+                      >
+                        {challenge.description}
+                      </div>
+                      <div
+                        className={`text-sm mt-1 ${completed ? "text-slate-500" : "text-slate-400"}`}
+                      >
+                        +{challenge.standing.toLocaleString()} Standing
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </CollapsibleSection>
+      )}
 
       {/* Invasions */}
-      {
-        invasions.length > 0 && (
-          <CollapsibleSection
-            title="Active Invasions"
-            icon={<Swords size={24} />}
-            iconColorClass="text-red-400"
-            badge={invasions.length}
-            badgeColorClass="bg-red-900/50 text-red-300"
-            storageKey="invasions"
-          >
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
-              {invasions.slice(0, 8).map((invasion: Invasion) => (
-                <div
-                  key={invasion.id}
-                  className="bg-slate-800 p-3 rounded border border-slate-700 hover:border-slate-600 transition-colors"
-                >
-                  <div className="text-slate-200 font-medium mb-2">
-                    {invasion.node}
-                  </div>
-                  <div className="flex items-center gap-2 text-sm mb-2">
-                    <span
-                      className={`font-bold ${invasion.attackingFaction === "Grineer" ? "text-red-400" : invasion.attackingFaction === "Corpus" ? "text-blue-400" : "text-green-400"}`}
-                    >
-                      {invasion.attackingFaction}
-                    </span>
-                    <span className="text-slate-500">vs</span>
-                    <span
-                      className={`font-bold ${invasion.defendingFaction === "Grineer" ? "text-red-400" : invasion.defendingFaction === "Corpus" ? "text-blue-400" : "text-green-400"}`}
-                    >
-                      {invasion.defendingFaction}
-                    </span>
-                  </div>
-                  <div className="flex justify-between text-xs text-slate-400">
-                    <span>{invasion.attackerReward}</span>
-                    <span>{invasion.defenderReward}</span>
-                  </div>
-                  <div className="mt-2 h-2 bg-slate-700 rounded-full overflow-hidden">
-                    <div
-                      className={`h-full transition-all ${invasion.progress > 0 ? "bg-red-500" : "bg-blue-500"}`}
-                      style={{
-                        width: `${Math.abs(invasion.progress)}%`,
-                        marginLeft:
-                          invasion.progress < 0
-                            ? "0%"
-                            : `${100 - invasion.progress}%`,
-                      }}
-                    />
-                  </div>
+      {invasions.length > 0 && (
+        <CollapsibleSection
+          title="Active Invasions"
+          icon={<Swords size={24} />}
+          iconColorClass="text-red-400"
+          badge={invasions.length}
+          badgeColorClass="bg-red-900/50 text-red-300"
+          storageKey="invasions"
+        >
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
+            {invasions.slice(0, 8).map((invasion: Invasion) => (
+              <div
+                key={invasion.id}
+                className="bg-slate-800 p-3 rounded border border-slate-700 hover:border-slate-600 transition-colors"
+              >
+                <div className="text-slate-200 font-medium mb-2">
+                  {invasion.node}
                 </div>
-              ))}
-            </div>
-          </CollapsibleSection>
-        )
-      }
+                <div className="flex items-center gap-2 text-sm mb-2">
+                  <span
+                    className={`font-bold ${invasion.attackingFaction === "Grineer" ? "text-red-400" : invasion.attackingFaction === "Corpus" ? "text-blue-400" : "text-green-400"}`}
+                  >
+                    {invasion.attackingFaction}
+                  </span>
+                  <span className="text-slate-500">vs</span>
+                  <span
+                    className={`font-bold ${invasion.defendingFaction === "Grineer" ? "text-red-400" : invasion.defendingFaction === "Corpus" ? "text-blue-400" : "text-green-400"}`}
+                  >
+                    {invasion.defendingFaction}
+                  </span>
+                </div>
+                <div className="flex justify-between text-xs text-slate-400">
+                  <span>{invasion.attackerReward}</span>
+                  <span>{invasion.defenderReward}</span>
+                </div>
+                <div className="mt-2 h-2 bg-slate-700 rounded-full overflow-hidden">
+                  <div
+                    className={`h-full transition-all ${invasion.progress > 0 ? "bg-red-500" : "bg-blue-500"}`}
+                    style={{
+                      width: `${Math.abs(invasion.progress)}%`,
+                      marginLeft:
+                        invasion.progress < 0
+                          ? "0%"
+                          : `${100 - invasion.progress}%`,
+                    }}
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
+        </CollapsibleSection>
+      )}
 
       {/* Alerts */}
-      {
-        alerts.length > 0 && (
-          <section>
-            <h2 className="text-xl font-bold text-slate-200 mb-4 flex items-center gap-2">
-              <Bell className="text-yellow-400" /> Active Alerts
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-              {alerts.map((alert: Alert) => (
-                <div
-                  key={alert.id}
-                  className="bg-slate-800 p-3 rounded border border-yellow-700/30 hover:border-yellow-600/50 transition-colors"
-                >
-                  <div className="flex justify-between">
-                    <span className="text-slate-200 font-medium">
-                      {alert.mission}
-                    </span>
-                    <span className="text-xs text-slate-500 font-mono">
-                      {alert.eta}
-                    </span>
-                  </div>
-                  <div className="text-slate-400 text-sm">{alert.node}</div>
-                  <div className="text-yellow-400 text-sm mt-1 font-medium">
-                    {alert.reward}
-                  </div>
+      {alerts.length > 0 && (
+        <section>
+          <h2 className="text-xl font-bold text-slate-200 mb-4 flex items-center gap-2">
+            <Bell className="text-yellow-400" /> Active Alerts
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+            {alerts.map((alert: Alert) => (
+              <div
+                key={alert.id}
+                className="bg-slate-800 p-3 rounded border border-yellow-700/30 hover:border-yellow-600/50 transition-colors"
+              >
+                <div className="flex justify-between">
+                  <span className="text-slate-200 font-medium">
+                    {alert.mission}
+                  </span>
+                  <span className="text-xs text-slate-500 font-mono">
+                    {alert.eta}
+                  </span>
                 </div>
-              ))}
-            </div>
-          </section>
-        )
-      }
+                <div className="text-slate-400 text-sm">{alert.node}</div>
+                <div className="text-yellow-400 text-sm mt-1 font-medium">
+                  {alert.reward}
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* Fissures List */}
       <CollapsibleSection
@@ -714,6 +740,6 @@ export function DashboardView({
         itemKey={selectedItemForDetails}
         onClose={() => setSelectedItemForDetails(null)}
       />
-    </div >
+    </div>
   );
 }

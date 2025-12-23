@@ -300,10 +300,11 @@ export default function OrdisApp() {
                 role="tab"
                 aria-selected={activeTab === tab.id}
                 aria-controls={`${tab.id}-panel`}
-                className={`flex items-center gap-2 px-4 py-3 text-sm font-medium border-b-2 transition-colors whitespace-nowrap ${activeTab === tab.id
-                  ? "border-cyan-500 text-cyan-400"
-                  : "border-transparent text-slate-500 hover:text-slate-300 hover:border-slate-700"
-                  }`}
+                className={`flex items-center gap-2 px-4 py-3 text-sm font-medium border-b-2 transition-colors whitespace-nowrap ${
+                  activeTab === tab.id
+                    ? "border-cyan-500 text-cyan-400"
+                    : "border-transparent text-slate-500 hover:text-slate-300 hover:border-slate-700"
+                }`}
               >
                 <tab.icon size={18} />
                 <span className="hidden sm:inline">{tab.label}</span>

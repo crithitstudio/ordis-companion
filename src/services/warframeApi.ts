@@ -73,17 +73,31 @@ export async function fetchWorldState(): Promise<WorldState | null> {
           if (reward.itemString) return reward.itemString;
           if (reward.asString) return reward.asString;
           if (reward.countedItems && reward.countedItems.length > 0) {
-            return reward.countedItems.map((item: any) => `${item.count}x ${item.type}`).join(", ");
+            return reward.countedItems
+              .map((item: any) => `${item.count}x ${item.type}`)
+              .join(", ");
           }
           if (typeof reward === "string") return reward;
           return "Credits";
         };
 
         // Handle different API response structures
-        const attackingFaction = inv.attackingFaction || inv.attacker?.faction || inv.attackerMissionInfo?.faction || "Unknown";
-        const defendingFaction = inv.defendingFaction || inv.defender?.faction || inv.defenderMissionInfo?.faction || "Unknown";
-        const attackerReward = getRewardString(inv.attackerReward || inv.attacker?.reward);
-        const defenderReward = getRewardString(inv.defenderReward || inv.defender?.reward);
+        const attackingFaction =
+          inv.attackingFaction ||
+          inv.attacker?.faction ||
+          inv.attackerMissionInfo?.faction ||
+          "Unknown";
+        const defendingFaction =
+          inv.defendingFaction ||
+          inv.defender?.faction ||
+          inv.defenderMissionInfo?.faction ||
+          "Unknown";
+        const attackerReward = getRewardString(
+          inv.attackerReward || inv.attacker?.reward,
+        );
+        const defenderReward = getRewardString(
+          inv.defenderReward || inv.defender?.reward,
+        );
 
         return {
           id: inv.id,
@@ -200,7 +214,8 @@ export async function fetchWorldState(): Promise<WorldState | null> {
       // Handle different API response formats (some use solnode/typeKey)
       arbitration = {
         node: arbData.node || arbData.solnode || "Unknown",
-        type: arbData.type || arbData.typeKey || arbData.missionType || "Unknown",
+        type:
+          arbData.type || arbData.typeKey || arbData.missionType || "Unknown",
         enemy: arbData.enemy || arbData.faction || "Unknown",
         eta: arbData.eta || arbData.expiry || "",
       };
@@ -216,36 +231,44 @@ export async function fetchWorldState(): Promise<WorldState | null> {
         if (!name) return "Unknown";
 
         // Handle Vanguard vault items - preserve the vault letter
-        const vanguardMatch = name.match(/Vanguard Vault ([A-D])/i) ||
+        const vanguardMatch =
+          name.match(/Vanguard Vault ([A-D])/i) ||
           uniqueName?.match(/T\d+VanguardVault([A-D])/i);
         if (vanguardMatch) {
           const vaultLetter = vanguardMatch[1].toUpperCase();
           return `Vanguard Vault ${vaultLetter}`;
         }
         return name
-          .replace(/^M P V /, "")           // Remove "M P V " prefix
-          .replace(/^T\d+ /, "")            // Remove T1/T2/T3/T4 prefixes
-          .replace(/Void Projection /, "")  // Remove "Void Projection"
-          .replace(/ Prime Single Pack$/, " Prime")  // Clean pack names
-          .replace(/ Prime Dual Pack$/, " Prime")    // Clean pack names
-          .replace(/ Single Pack$/, "")     // Remove "Single Pack"
-          .replace(/ Dual Pack$/, "")       // Remove "Dual Pack"
-          .replace(/ Wep$/, "")             // Remove " Wep" suffix
-          .replace(/ Bronze$/, "")          // Remove " Bronze" suffix
-          .replace(/ Vault [A-Z]$/, "")     // Remove "Vault A/B/C/D"
-          .replace(/Vault [A-Z] /, "")      // Remove "Vault A " prefix
-          .replace(/ Melee Dangle$/, " Sugatra")  // Fix sugatra names
-          .replace(/^Prime /, "")           // Remove leading "Prime "
-          .replace(/^Ak /, "Ak")            // Fix "Ak " to "Ak"
+          .replace(/^M P V /, "") // Remove "M P V " prefix
+          .replace(/^T\d+ /, "") // Remove T1/T2/T3/T4 prefixes
+          .replace(/Void Projection /, "") // Remove "Void Projection"
+          .replace(/ Prime Single Pack$/, " Prime") // Clean pack names
+          .replace(/ Prime Dual Pack$/, " Prime") // Clean pack names
+          .replace(/ Single Pack$/, "") // Remove "Single Pack"
+          .replace(/ Dual Pack$/, "") // Remove "Dual Pack"
+          .replace(/ Wep$/, "") // Remove " Wep" suffix
+          .replace(/ Bronze$/, "") // Remove " Bronze" suffix
+          .replace(/ Vault [A-Z]$/, "") // Remove "Vault A/B/C/D"
+          .replace(/Vault [A-Z] /, "") // Remove "Vault A " prefix
+          .replace(/ Melee Dangle$/, " Sugatra") // Fix sugatra names
+          .replace(/^Prime /, "") // Remove leading "Prime "
+          .replace(/^Ak /, "Ak") // Fix "Ak " to "Ak"
           .trim();
       };
 
       const parseItems = (items: any[]): VarziaItem[] => {
         return (items || []).map((item: any) => ({
-          name: cleanItemName(item.item || item.name || "Unknown", item.uniqueName),
+          name: cleanItemName(
+            item.item || item.name || "Unknown",
+            item.uniqueName,
+          ),
           uniqueName: item.uniqueName || "",
           cost: item.ducats || item.credits || 0,
-          currency: item.credits ? "Aya" : item.ducats ? "Regal Aya" : "Credits",
+          currency: item.credits
+            ? "Aya"
+            : item.ducats
+              ? "Regal Aya"
+              : "Credits",
         }));
       };
       primeResurgence = {

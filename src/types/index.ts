@@ -28,8 +28,8 @@ export interface Invasion {
 export interface VoidTrader {
   active: boolean;
   location: string;
-  activation: string;  // ISO timestamp
-  expiry: string;      // ISO timestamp
+  activation: string; // ISO timestamp
+  expiry: string; // ISO timestamp
   startString?: string;
   endString?: string;
 }
@@ -113,8 +113,8 @@ export interface VarziaItem {
 
 export interface PrimeResurgence {
   active: boolean;
-  activation: string;   // ISO timestamp
-  expiry: string;       // ISO timestamp
+  activation: string; // ISO timestamp
+  expiry: string; // ISO timestamp
   startString?: string;
   endString?: string;
   vaultedItems: VarziaItem[];

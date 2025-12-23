@@ -50,7 +50,8 @@ export default defineConfig({
       "/api/warframe": {
         target: "https://api.warframe.com",
         changeOrigin: true,
-        rewrite: (path: string) => path.replace(/^\/api\/warframe\/dynamic/, "/cdn"),
+        rewrite: (path: string) =>
+          path.replace(/^\/api\/warframe\/dynamic/, "/cdn"),
       },
     },
   },

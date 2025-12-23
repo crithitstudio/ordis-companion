@@ -1,7 +1,18 @@
 import { useState, useEffect } from "react";
-import { X, ExternalLink, Clock, Coins, TrendingUp, Loader2 } from "lucide-react";
+import {
+  X,
+  ExternalLink,
+  Clock,
+  Coins,
+  TrendingUp,
+  Loader2,
+} from "lucide-react";
 import { itemsData, getItemImageUrl } from "../../utils/translations";
-import { fetchMarketPrice, getMarketUrl, type MarketPrice } from "../../services/marketApi";
+import {
+  fetchMarketPrice,
+  getMarketUrl,
+  type MarketPrice,
+} from "../../services/marketApi";
 import type { SavedItem } from "../../types";
 
 interface ItemDetailModalProps {
@@ -58,7 +69,6 @@ export function ItemDetailModal({ itemKey, onClose }: ItemDetailModalProps) {
 
   const wikiUrl = `https://wiki.warframe.com/${encodeURIComponent(itemData.name.replace(/ /g, "_"))}`;
   const marketUrl = getMarketUrl(itemData.name);
-
 
   return (
     <div
@@ -232,14 +242,15 @@ export function ItemDetailModal({ itemKey, onClose }: ItemDetailModalProps) {
                         {drop.location}
                       </span>
                       <span
-                        className={`text-xs px-2 py-1 rounded ${drop.rarity === "Common"
-                          ? "bg-slate-600 text-slate-200"
-                          : drop.rarity === "Uncommon"
-                            ? "bg-green-700 text-green-100"
-                            : drop.rarity === "Rare"
-                              ? "bg-blue-700 text-blue-100"
-                              : "bg-yellow-700 text-yellow-100"
-                          }`}
+                        className={`text-xs px-2 py-1 rounded ${
+                          drop.rarity === "Common"
+                            ? "bg-slate-600 text-slate-200"
+                            : drop.rarity === "Uncommon"
+                              ? "bg-green-700 text-green-100"
+                              : drop.rarity === "Rare"
+                                ? "bg-blue-700 text-blue-100"
+                                : "bg-yellow-700 text-yellow-100"
+                        }`}
                       >
                         {drop.rarity || "Unknown"}
                       </span>
@@ -268,7 +279,9 @@ export function ItemDetailModal({ itemKey, onClose }: ItemDetailModalProps) {
                     <span>Fetching prices...</span>
                   </div>
                 ) : priceError ? (
-                  <p className="text-slate-500 text-sm">Unable to fetch market prices</p>
+                  <p className="text-slate-500 text-sm">
+                    Unable to fetch market prices
+                  </p>
                 ) : marketPrice ? (
                   <div className="grid grid-cols-3 gap-4">
                     <div>
@@ -291,7 +304,9 @@ export function ItemDetailModal({ itemKey, onClose }: ItemDetailModalProps) {
                     </div>
                   </div>
                 ) : (
-                  <p className="text-slate-500 text-sm">Not listed on warframe.market</p>
+                  <p className="text-slate-500 text-sm">
+                    Not listed on warframe.market
+                  </p>
                 )}
               </div>
             </div>
@@ -354,10 +369,11 @@ function AddToTrackerButton({ itemName }: { itemName: string }) {
         e.stopPropagation();
         handleAdd();
       }}
-      className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm transition-colors ${added
-        ? "bg-green-600/20 text-green-400"
-        : "bg-cyan-600/20 text-cyan-400 hover:bg-cyan-600/30"
-        }`}
+      className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm transition-colors ${
+        added
+          ? "bg-green-600/20 text-green-400"
+          : "bg-cyan-600/20 text-cyan-400 hover:bg-cyan-600/30"
+      }`}
     >
       {added ? "✓" : "+"} {added ? "Added!" : "Track"}
     </button>
