@@ -339,16 +339,15 @@ export default function OrdisApp() {
                 role="tab"
                 aria-selected={activeTab === tab.id}
                 aria-controls={`${tab.id}-panel`}
-                className={`flex items-center gap-2 px-4 py-3 text-sm font-medium border-b-2 transition-colors whitespace-nowrap ${activeTab === tab.id
-                  ? "border-cyan-500 text-cyan-400"
-                  : "border-transparent text-slate-500 hover:text-slate-300 hover:border-slate-700"
-                  }`}
+                className={`flex items-center gap-2 px-4 py-3 text-sm font-medium border-b-2 transition-colors whitespace-nowrap ${
+                  activeTab === tab.id
+                    ? "border-cyan-500 text-cyan-400"
+                    : "border-transparent text-slate-500 hover:text-slate-300 hover:border-slate-700"
+                }`}
               >
                 <tab.icon size={18} />
                 <span>{tab.label}</span>
-                <span className="text-[10px] text-slate-600">
-                  ({idx + 1})
-                </span>
+                <span className="text-[10px] text-slate-600">({idx + 1})</span>
               </button>
             ))}
           </nav>
@@ -505,7 +504,7 @@ export default function OrdisApp() {
           {/* More Button */}
           <button
             onClick={() => setShowMoreTabs(true)}
-            className={`bottom-nav-item flex-1 ${MORE_TABS.some(t => t.id === activeTab) ? "active text-cyan-400" : "text-slate-500"}`}
+            className={`bottom-nav-item flex-1 ${MORE_TABS.some((t) => t.id === activeTab) ? "active text-cyan-400" : "text-slate-500"}`}
             aria-label="More tabs"
           >
             <MoreHorizontal size={22} />
@@ -530,7 +529,9 @@ export default function OrdisApp() {
             </div>
 
             <div className="p-4 space-y-2">
-              <h3 className="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-3">Settings & Tools</h3>
+              <h3 className="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-3">
+                Settings & Tools
+              </h3>
 
               {/* Export */}
               <button
@@ -611,7 +612,9 @@ export default function OrdisApp() {
             </div>
 
             <div className="p-4 space-y-1">
-              <h3 className="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-3">More Views</h3>
+              <h3 className="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-3">
+                More Views
+              </h3>
 
               {MORE_TABS.map((tab) => (
                 <button
@@ -620,12 +623,18 @@ export default function OrdisApp() {
                     setActiveTab(tab.id);
                     setShowMoreTabs(false);
                   }}
-                  className={`flex items-center gap-3 w-full p-3 rounded-lg transition-colors ${activeTab === tab.id
+                  className={`flex items-center gap-3 w-full p-3 rounded-lg transition-colors ${
+                    activeTab === tab.id
                       ? "bg-cyan-900/30 text-cyan-400"
                       : "text-slate-200 hover:bg-slate-800"
-                    }`}
+                  }`}
                 >
-                  <tab.icon size={20} className={activeTab === tab.id ? "text-cyan-400" : "text-slate-400"} />
+                  <tab.icon
+                    size={20}
+                    className={
+                      activeTab === tab.id ? "text-cyan-400" : "text-slate-400"
+                    }
+                  />
                   <span>{tab.label}</span>
                 </button>
               ))}
