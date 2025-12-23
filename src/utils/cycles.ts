@@ -32,6 +32,7 @@ export interface CycleInfo {
   isWarm?: boolean;
   active?: "fass" | "vome";
   timeLeft: string;
+  progress: number; // 0-100 percentage of current phase elapsed
 }
 
 /**
@@ -43,14 +44,18 @@ export const getCetusCycle = (): CycleInfo => {
   const cyclePosition = (nowSec - CETUS_EPOCH) % CYCLE_LENGTH;
 
   const isDay = cyclePosition < DAY_LENGTH;
+  const phaseLength = isDay ? DAY_LENGTH : CYCLE_LENGTH - DAY_LENGTH;
+  const phaseElapsed = isDay ? cyclePosition : cyclePosition - DAY_LENGTH;
   const timeLeftSec = isDay
     ? DAY_LENGTH - cyclePosition
     : CYCLE_LENGTH - cyclePosition;
+  const progress = (phaseElapsed / phaseLength) * 100;
 
   return {
     state: isDay ? "Day" : "Night",
     isDay,
     timeLeft: formatTime(timeLeftSec),
+    progress,
   };
 };
 
@@ -70,14 +75,18 @@ export const getCambionCycle = (): CycleInfo => {
   const cyclePosition = (nowSec - CETUS_EPOCH) % CYCLE_LENGTH;
 
   const isFass = cyclePosition < FASS_LENGTH;
+  const phaseLength = isFass ? FASS_LENGTH : CYCLE_LENGTH - FASS_LENGTH;
+  const phaseElapsed = isFass ? cyclePosition : cyclePosition - FASS_LENGTH;
   const timeLeftSec = isFass
     ? FASS_LENGTH - cyclePosition
     : CYCLE_LENGTH - cyclePosition;
+  const progress = (phaseElapsed / phaseLength) * 100;
 
   return {
     state: isFass ? "Fass" : "Vome",
     active: isFass ? "fass" : "vome",
     timeLeft: formatTime(timeLeftSec),
+    progress,
   };
 };
 
@@ -90,11 +99,15 @@ export const getVallisCycle = (): CycleInfo => {
   const time = (nowSec - VALLIS_EPOCH) % VALLIS_CYCLE;
 
   const isWarm = time < VALLIS_WARM;
+  const phaseLength = isWarm ? VALLIS_WARM : VALLIS_CYCLE - VALLIS_WARM;
+  const phaseElapsed = isWarm ? time : time - VALLIS_WARM;
   const timeLeftSec = isWarm ? VALLIS_WARM - time : VALLIS_CYCLE - time;
+  const progress = (phaseElapsed / phaseLength) * 100;
 
   return {
     state: isWarm ? "Warm" : "Cold",
     isWarm,
     timeLeft: formatTime(timeLeftSec),
+    progress,
   };
 };

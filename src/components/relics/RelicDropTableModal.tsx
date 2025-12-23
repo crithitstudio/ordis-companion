@@ -33,11 +33,12 @@ interface RelicInfo {
 /**
  * Extract Prime drops that come FROM relics
  * Searches items for drops where location contains "Relic"
+ * Uses drop.type for the actual Prime part name
  */
 function getPrimeDrops(): PrimeDrop[] {
   const dropMap = new Map<string, PrimeDrop>();
 
-  Object.entries(itemsData).forEach(([path, item]) => {
+  Object.entries(itemsData).forEach(([, item]) => {
     if (!item.drops) return;
 
     item.drops.forEach((drop) => {
@@ -53,7 +54,10 @@ function getPrimeDrops(): PrimeDrop[] {
       const relicName = relicMatch[1];
       const refinement = relicMatch[2] || "Intact";
 
-      const existing = dropMap.get(item.name);
+      // Use drop.type for the actual Prime part name (e.g. "Kogake Prime Boot")
+      const itemName = drop.type || item.name;
+
+      const existing = dropMap.get(itemName);
       if (existing) {
         existing.sources.push({
           relic: relicName,
@@ -62,10 +66,10 @@ function getPrimeDrops(): PrimeDrop[] {
           chance: drop.chance || 0,
         });
       } else {
-        dropMap.set(item.name, {
-          item: item.name,
+        dropMap.set(itemName, {
+          item: itemName,
           imageName: item.imageName || undefined,
-          uniqueName: path,
+          uniqueName: undefined, // drop.type items may not have uniqueName
           sources: [
             {
               relic: relicName,
@@ -90,6 +94,7 @@ function getPrimeDrops(): PrimeDrop[] {
 
 /**
  * Build reverse mapping: relic -> items it contains
+ * Uses drop.type for the actual Prime part name
  */
 function getRelicContents(): RelicInfo[] {
   const relicMap = new Map<string, RelicInfo>();
@@ -109,12 +114,15 @@ function getRelicContents(): RelicInfo[] {
       const eraMatch = relicName.match(RELIC_PATTERN);
       const era = eraMatch ? eraMatch[1] : "Unknown";
 
+      // Use drop.type for the actual Prime part name
+      const itemName = drop.type || item.name;
+
       const existing = relicMap.get(relicName);
       if (existing) {
         // Only add if not already in rewards
-        if (!existing.rewards.some((r) => r.item === item.name)) {
+        if (!existing.rewards.some((r) => r.item === itemName)) {
           existing.rewards.push({
-            item: item.name,
+            item: itemName,
             rarity: drop.rarity || "Common",
             chance: drop.chance || 0,
           });
@@ -125,7 +133,7 @@ function getRelicContents(): RelicInfo[] {
           era,
           rewards: [
             {
-              item: item.name,
+              item: itemName,
               rarity: drop.rarity || "Common",
               chance: drop.chance || 0,
             },
@@ -249,12 +257,12 @@ export function RelicDropTableModal({
               onClick={() => {
                 setSearchMode("item");
                 setExpandedItem(null);
+                setSearchQuery("");
               }}
-              className={`flex-1 py-2 rounded-lg text-sm font-medium transition-colors ${
-                searchMode === "item"
-                  ? "bg-amber-600 text-white"
-                  : "bg-slate-800 text-slate-400 hover:bg-slate-700"
-              }`}
+              className={`flex-1 py-2 rounded-lg text-sm font-medium transition-colors ${searchMode === "item"
+                ? "bg-amber-600 text-white"
+                : "bg-slate-800 text-slate-400 hover:bg-slate-700"
+                }`}
             >
               Search by Item
             </button>
@@ -262,12 +270,12 @@ export function RelicDropTableModal({
               onClick={() => {
                 setSearchMode("relic");
                 setExpandedItem(null);
+                setSearchQuery("");
               }}
-              className={`flex-1 py-2 rounded-lg text-sm font-medium transition-colors ${
-                searchMode === "relic"
-                  ? "bg-amber-600 text-white"
-                  : "bg-slate-800 text-slate-400 hover:bg-slate-700"
-              }`}
+              className={`flex-1 py-2 rounded-lg text-sm font-medium transition-colors ${searchMode === "relic"
+                ? "bg-amber-600 text-white"
+                : "bg-slate-800 text-slate-400 hover:bg-slate-700"
+                }`}
             >
               Search by Relic
             </button>

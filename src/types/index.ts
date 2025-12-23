@@ -28,8 +28,10 @@ export interface Invasion {
 export interface VoidTrader {
   active: boolean;
   location: string;
-  startString: string;
-  endString: string;
+  activation: string;  // ISO timestamp
+  expiry: string;      // ISO timestamp
+  startString?: string;
+  endString?: string;
 }
 
 export interface NightwaveChallenge {
@@ -87,12 +89,36 @@ export interface Sortie {
   }[];
 }
 
+export interface Arbitration {
+  node: string;
+  type: string;
+  enemy: string;
+  eta: string;
+}
+
 export interface CycleState {
   state: string;
   isDay?: boolean;
   isWarm?: boolean;
   active?: string;
   timeLeft: string;
+}
+
+export interface VarziaItem {
+  name: string;
+  uniqueName: string;
+  cost: number;
+  currency: string; // 'Aya' or 'Regal Aya'
+}
+
+export interface PrimeResurgence {
+  active: boolean;
+  activation: string;   // ISO timestamp
+  expiry: string;       // ISO timestamp
+  startString?: string;
+  endString?: string;
+  vaultedItems: VarziaItem[];
+  accessoryItems: VarziaItem[];
 }
 
 export interface WorldState {
@@ -105,6 +131,8 @@ export interface WorldState {
   alerts: Alert[];
   voidStorms: VoidStorm[];
   darvoDeal: DarvoDeal | null;
+  arbitration: Arbitration | null;
+  primeResurgence: PrimeResurgence | null;
   rawSyndicateMissions: unknown[];
 }
 
@@ -168,6 +196,9 @@ export type TabName =
   | "codex"
   | "tracker"
   | "relics"
+  | "farming"
+  | "syndicates"
+  | "steelpath"
   | "guide"
   | "mastery";
 

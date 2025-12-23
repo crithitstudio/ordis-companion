@@ -2,7 +2,7 @@
   "SolNode0": {
     "value": "SolNode0",
     "enemy": "Sentient",
-    "type": "Ancient Retribution"
+    "type": "Obsolete"
   },
   "SolNode1": {
     "value": "Galatea (Neptune)",
@@ -17,7 +17,7 @@
   "SolNode3": {
     "value": "Cordelia (Uranus)",
     "enemy": "Sentient",
-    "type": "Ancient Retribution"
+    "type": "Obsolete"
   },
   "SolNode4": {
     "value": "Acheron (Pluto)",
@@ -27,7 +27,7 @@
   "SolNode5": {
     "value": "Perdita (Uranus)",
     "enemy": "Grineer",
-    "type": "Ancient Retribution"
+    "type": "Obsolete"
   },
   "SolNode6": {
     "value": "Despina (Neptune)",
@@ -37,12 +37,12 @@
   "SolNode7": {
     "value": "Epimetheus (Saturn)",
     "enemy": "Grineer",
-    "type": "Ancient Retribution"
+    "type": "Obsolete"
   },
   "SolNode8": {
     "value": "Nix (Pluto)",
     "enemy": "Corpus",
-    "type": "Ancient Retribution"
+    "type": "Obsolete"
   },
   "SolNode9": {
     "value": "Rosalind (Uranus)",
@@ -67,7 +67,7 @@
   "SolNode13": {
     "value": "Bianca (Uranus)",
     "enemy": "Grineer",
-    "type": "Ancient Retribution"
+    "type": "Obsolete"
   },
   "SolNode14": {
     "value": "Ultor (Mars)",
@@ -147,7 +147,7 @@
   "SolNode29": {
     "value": "Oberon (Uranus)",
     "enemy": "Grineer",
-    "type": "Ancient Retribution"
+    "type": "Obsolete"
   },
   "SolNode30": {
     "value": "Olympus (Mars)",
@@ -177,7 +177,7 @@
   "SolNode35": {
     "value": "Arcadia (Mars)",
     "enemy": "Grineer",
-    "type": "Ancient Retribution"
+    "type": "Obsolete"
   },
   "SolNode36": {
     "value": "Martialis (Mars)",
@@ -187,7 +187,7 @@
   "SolNode37": {
     "value": "Pallene (Saturn)",
     "enemy": "Grineer",
-    "type": "Ancient Retribution"
+    "type": "Obsolete"
   },
   "SolNode38": {
     "value": "Minthe (Pluto)",
@@ -202,7 +202,7 @@
   "SolNode40": {
     "value": "Prospero (Uranus)",
     "enemy": "Grineer",
-    "type": "Ancient Retribution"
+    "type": "Obsolete"
   },
   "SolNode41": {
     "value": "Arval (Mars)",
@@ -222,7 +222,7 @@
   "SolNode44": {
     "value": "Mimas (Saturn)",
     "enemy": "Grineer",
-    "type": "Ancient Retribution"
+    "type": "Obsolete"
   },
   "SolNode45": {
     "value": "Ara (Mars)",
@@ -237,7 +237,7 @@
   "SolNode47": {
     "value": "Janus (Saturn)",
     "enemy": "Grineer",
-    "type": "Ancient Retribution"
+    "type": "Obsolete"
   },
   "SolNode48": {
     "value": "Regna (Pluto)",
@@ -262,7 +262,7 @@
   "SolNode52": {
     "value": "Portia (Uranus)",
     "enemy": "Grineer",
-    "type": "Ancient Retribution"
+    "type": "Obsolete"
   },
   "SolNode53": {
     "value": "Themisto (Jupiter)",
@@ -272,12 +272,12 @@
   "SolNode54": {
     "value": "Silvanus (Mars)",
     "enemy": "Grineer",
-    "type": "Ancient Retribution"
+    "type": "Obsolete"
   },
   "SolNode55": {
     "value": "Methone (Saturn)",
     "enemy": "Grineer",
-    "type": "Ancient Retribution"
+    "type": "Obsolete"
   },
   "SolNode56": {
     "value": "Cypress (Pluto)",
@@ -387,7 +387,7 @@
   "SolNode77": {
     "value": "Cupid (Uranus)",
     "enemy": "Grineer",
-    "type": "Ancient Retribution"
+    "type": "Obsolete"
   },
   "SolNode78": {
     "value": "Triton (Neptune)",
@@ -402,7 +402,7 @@
   "SolNode80": {
     "value": "Phoebe (Saturn)",
     "enemy": "Grineer",
-    "type": "Ancient Retribution"
+    "type": "Obsolete"
   },
   "SolNode81": {
     "value": "Palus (Pluto)",
@@ -432,7 +432,7 @@
   "SolNode86": {
     "value": "Aegaeon (Saturn)",
     "enemy": "Grineer",
-    "type": "Ancient Retribution"
+    "type": "Obsolete"
   },
   "SolNode87": {
     "value": "Ganymede (Jupiter)",
@@ -452,17 +452,17 @@
   "SolNode90": {
     "value": "Miranda",
     "enemy": "Sentient",
-    "type": "Ancient Retribution"
+    "type": "Obsolete"
   },
   "SolNode91": {
     "value": "Iapetus (Saturn)",
     "enemy": "Grineer",
-    "type": "Ancient Retribution"
+    "type": "Obsolete"
   },
   "SolNode92": {
     "value": "Charon (Pluto)",
     "enemy": "Corpus",
-    "type": "Ancient Retribution"
+    "type": "Obsolete"
   },
   "SolNode93": {
     "value": "Keeler (Saturn)",
@@ -477,7 +477,7 @@
   "SolNode95": {
     "value": "Thalassa (Neptune)",
     "enemy": "Corpus",
-    "type": "Ancient Retribution"
+    "type": "Obsolete"
   },
   "SolNode96": {
     "value": "Titan (Saturn)",
@@ -552,17 +552,17 @@
   "SolNode110": {
     "value": "Hyperion (Saturn)",
     "enemy": "Grineer",
-    "type": "Ancient Retribution"
+    "type": "Obsolete"
   },
   "SolNode111": {
     "value": "Juliet (Uranus)",
     "enemy": "Grineer",
-    "type": "Ancient Retribution"
+    "type": "Obsolete"
   },
   "SolNode112": {
     "value": "Setebos (Uranus)",
     "enemy": "Grineer",
-    "type": "Ancient Retribution"
+    "type": "Obsolete"
   },
   "SolNode113": {
     "value": "Ares (Mars)",
@@ -577,17 +577,17 @@
   "SolNode115": {
     "value": "Quirinus (Mars)",
     "enemy": "Grineer",
-    "type": "Ancient Retribution"
+    "type": "Obsolete"
   },
   "SolNode116": {
     "value": "Mab (Uranus)",
     "enemy": "Grineer",
-    "type": "Ancient Retribution"
+    "type": "Obsolete"
   },
   "SolNode117": {
     "value": "Naiad (Neptune)",
     "enemy": "Corpus",
-    "type": "Ancient Retribution"
+    "type": "Obsolete"
   },
   "SolNode118": {
     "value": "Laomedeia (Neptune)",
@@ -602,7 +602,7 @@
   "SolNode120": {
     "value": "Halimede (Neptune)",
     "enemy": "Corpus",
-    "type": "Ancient Retribution"
+    "type": "Obsolete"
   },
   "SolNode121": {
     "value": "Carpo (Jupiter)",
@@ -622,7 +622,7 @@
   "SolNode124": {
     "value": "Trinculo (Uranus)",
     "enemy": "Grineer",
-    "type": "Ancient Retribution"
+    "type": "Obsolete"
   },
   "SolNode125": {
     "value": "Io (Jupiter)",
@@ -667,12 +667,12 @@
   "SolNode133": {
     "value": "Vedic (Ceres)",
     "enemy": "Grineer",
-    "type": "Ancient Retribution"
+    "type": "Obsolete"
   },
   "SolNode134": {
     "value": "Varro (Ceres)",
     "enemy": "Grineer",
-    "type": "Ancient Retribution"
+    "type": "Obsolete"
   },
   "SolNode135": {
     "value": "Thon (Ceres)",
@@ -682,7 +682,7 @@
   "SolNode136": {
     "value": "Olla (Ceres)",
     "enemy": "Grineer",
-    "type": "Ancient Retribution"
+    "type": "Obsolete"
   },
   "SolNode137": {
     "value": "Nuovo (Ceres)",
@@ -712,12 +712,12 @@
   "SolNode142": {
     "value": "Hapke (Ceres)",
     "enemy": "Grineer",
-    "type": "Ancient Retribution"
+    "type": "Obsolete"
   },
   "SolNode143": {
     "value": "Gefion (Ceres)",
     "enemy": "Grineer",
-    "type": "Ancient Retribution"
+    "type": "Obsolete"
   },
   "SolNode144": {
     "value": "Exta (Ceres)",
@@ -727,7 +727,7 @@
   "SolNode145": {
     "value": "Egeria (Ceres)",
     "enemy": "Grineer",
-    "type": "Ancient Retribution"
+    "type": "Obsolete"
   },
   "SolNode146": {
     "value": "Draco (Ceres)",
@@ -750,17 +750,17 @@
   "SolNode150": {
     "value": "Albedo (Ceres)",
     "enemy": "Grineer",
-    "type": "Ancient Retribution"
+    "type": "Obsolete"
   },
   "SolNode151": {
     "value": "Acanth (Eris)",
     "enemy": "Infested",
-    "type": "Ancient Retribution"
+    "type": "Obsolete"
   },
   "SolNode152": {
     "value": "Ascar (Eris)",
     "enemy": "Infested",
-    "type": "Ancient Retribution"
+    "type": "Obsolete"
   },
   "SolNode153": {
     "value": "Brugia (Eris)",
@@ -770,42 +770,42 @@
   "SolNode154": {
     "value": "Candiru (Eris)",
     "enemy": "Infested",
-    "type": "Ancient Retribution"
+    "type": "Obsolete"
   },
   "SolNode155": {
     "value": "Cosis (Eris)",
     "enemy": "Infested",
-    "type": "Ancient Retribution"
+    "type": "Obsolete"
   },
   "SolNode156": {
     "value": "Cyath (Eris)",
     "enemy": "Infested",
-    "type": "Ancient Retribution"
+    "type": "Obsolete"
   },
   "SolNode157": {
     "value": "Giardia (Eris)",
     "enemy": "Infested",
-    "type": "Ancient Retribution"
+    "type": "Obsolete"
   },
   "SolNode158": {
     "value": "Gnathos (Eris)",
     "enemy": "Infested",
-    "type": "Ancient Retribution"
+    "type": "Obsolete"
   },
   "SolNode159": {
     "value": "Lepis (Eris)",
     "enemy": "Infested",
-    "type": "Ancient Retribution"
+    "type": "Obsolete"
   },
   "SolNode160": {
     "value": "Histo (Eris)",
     "enemy": "Infested",
-    "type": "Ancient Retribution"
+    "type": "Obsolete"
   },
   "SolNode161": {
     "value": "Hymeno (Eris)",
     "enemy": "Infested",
-    "type": "Ancient Retribution"
+    "type": "Obsolete"
   },
   "SolNode162": {
     "value": "Isos (Eris)",
@@ -838,17 +838,17 @@
   "SolNode168": {
     "value": "Phalan (Eris)",
     "enemy": "Infested",
-    "type": "Ancient Retribution"
+    "type": "Obsolete"
   },
   "SolNode169": {
     "value": "Psoro (Eris)",
     "enemy": "Infested",
-    "type": "Ancient Retribution"
+    "type": "Obsolete"
   },
   "SolNode170": {
     "value": "Ranova (Eris)",
     "enemy": "Infested",
-    "type": "Ancient Retribution"
+    "type": "Obsolete"
   },
   "SolNode171": {
     "value": "Saxis (Eris)",
@@ -868,7 +868,7 @@
   "SolNode174": {
     "value": "Sparga (Eris)",
     "enemy": "Infested",
-    "type": "Ancient Retribution"
+    "type": "Obsolete"
   },
   "SolNode175": {
     "value": "Naeglar (Eris)",
@@ -878,7 +878,7 @@
   "SolNode176": {
     "value": "Viver (Eris)",
     "enemy": "Infested",
-    "type": "Ancient Retribution"
+    "type": "Obsolete"
   },
   "SolNode177": {
     "value": "Kappa (Sedna)",
@@ -888,17 +888,17 @@
   "SolNode178": {
     "value": "Hyosube (Sedna)",
     "enemy": "Grineer",
-    "type": "Ancient Retribution"
+    "type": "Obsolete"
   },
   "SolNode179": {
     "value": "Jengu (Sedna)",
     "enemy": "Grineer",
-    "type": "Ancient Retribution"
+    "type": "Obsolete"
   },
   "SolNode180": {
     "value": "Undine (Sedna)",
     "enemy": "Grineer",
-    "type": "Ancient Retribution"
+    "type": "Obsolete"
   },
   "SolNode181": {
     "value": "Adaro (Sedna)",
@@ -908,7 +908,7 @@
   "SolNode182": {
     "value": "Camenae (Sedna)",
     "enemy": "Grineer",
-    "type": "Ancient Retribution"
+    "type": "Obsolete"
   },
   "SolNode183": {
     "value": "Vodyanoi (Sedna)",
@@ -968,7 +968,7 @@
   "SolNode194": {
     "value": "Ponaturi (Sedna)",
     "enemy": "Grineer",
-    "type": "Ancient Retribution"
+    "type": "Obsolete"
   },
   "SolNode195": {
     "value": "Hydron (Sedna)",
@@ -983,12 +983,12 @@
   "SolNode197": {
     "value": "Graeae (Sedna)",
     "enemy": "Grineer",
-    "type": "Ancient Retribution"
+    "type": "Obsolete"
   },
   "SolNode198": {
     "value": "Scylla (Sedna)",
     "enemy": "Grineer",
-    "type": "Ancient Retribution"
+    "type": "Obsolete"
   },
   "SolNode199": {
     "value": "Yam (Sedna)",
@@ -998,17 +998,17 @@
   "SolNode200": {
     "value": "Veles (Sedna)",
     "enemy": "Grineer",
-    "type": "Ancient Retribution"
+    "type": "Obsolete"
   },
   "SolNode201": {
     "value": "Tiamat (Sedna)",
     "enemy": "Grineer",
-    "type": "Ancient Retribution"
+    "type": "Obsolete"
   },
   "SolNode202": {
     "value": "Yemaja (Sedna)",
     "enemy": "Grineer",
-    "type": "Ancient Retribution"
+    "type": "Obsolete"
   },
   "SolNode203": {
     "value": "Abaddon (Europa)",
@@ -1031,12 +1031,12 @@
   "SolNode207": {
     "value": "Gamygyn (Europa)",
     "enemy": "Corpus",
-    "type": "Ancient Retribution"
+    "type": "Obsolete"
   },
   "SolNode208": {
     "value": "Lillith (Europa)",
     "enemy": "Corpus",
-    "type": "Ancient Retribution"
+    "type": "Obsolete"
   },
   "SolNode209": {
     "value": "Morax (Europa)",
@@ -1084,12 +1084,12 @@
   "SolNode218": {
     "value": "Zagan (Europa)",
     "enemy": "Corpus",
-    "type": "Ancient Retribution"
+    "type": "Obsolete"
   },
   "SolNode219": {
     "value": "Beleth (Europa)",
     "enemy": "Corpus",
-    "type": "Ancient Retribution"
+    "type": "Obsolete"
   },
   "SolNode220": {
     "value": "Kokabiel (Europa)",
@@ -1099,12 +1099,12 @@
   "SolNode221": {
     "value": "Neruda (Mercury)",
     "enemy": "Grineer",
-    "type": "Ancient Retribution"
+    "type": "Obsolete"
   },
   "SolNode222": {
     "value": "Eminescu (Mercury)",
     "enemy": "Grineer",
-    "type": "Ancient Retribution"
+    "type": "Obsolete"
   },
   "SolNode223": {
     "value": "Boethius (Mercury)",
@@ -1257,7 +1257,7 @@
   "SolNode413": {
     "value": "SolNode413 (Void)",
     "enemy": "Corrupted",
-    "type": "Ancient Retribution"
+    "type": "Obsolete"
   },
   "SolNode450": {
     "value": "Tyana Pass (Mars)",
@@ -1402,7 +1402,7 @@
   "SolNode901": {
     "value": "Caduceus",
     "enemy": "Sentient",
-    "type": "Ancient Retribution"
+    "type": "Obsolete"
   },
   "SolNode902": {
     "value": "Montes (Venus)",
@@ -1507,32 +1507,32 @@
   "SettlementNode4": {
     "value": "Drunlo (Phobos)",
     "enemy": "Corpus",
-    "type": "Ancient Retribution"
+    "type": "Obsolete"
   },
   "SettlementNode5": {
     "value": "Grildrig (Phobos)",
     "enemy": "Corpus",
-    "type": "Ancient Retribution"
+    "type": "Obsolete"
   },
   "SettlementNode6": {
     "value": "Limtoc (Phobos)",
     "enemy": "Corpus",
-    "type": "Ancient Retribution"
+    "type": "Obsolete"
   },
   "SettlementNode7": {
     "value": "Hall (Phobos)",
     "enemy": "Corpus",
-    "type": "Ancient Retribution"
+    "type": "Obsolete"
   },
   "SettlementNode8": {
     "value": "Reldresal (Phobos)",
     "enemy": "Corpus",
-    "type": "Ancient Retribution"
+    "type": "Obsolete"
   },
   "SettlementNode9": {
     "value": "Clustril (Phobos)",
     "enemy": "Corpus",
-    "type": "Ancient Retribution"
+    "type": "Obsolete"
   },
   "SettlementNode10": {
     "value": "Kepler (Phobos)",
@@ -1552,7 +1552,7 @@
   "SettlementNode13": {
     "value": "D'Arrest (Phobos)",
     "enemy": "Corpus",
-    "type": "Ancient Retribution"
+    "type": "Obsolete"
   },
   "SettlementNode14": {
     "value": "Shklovsky (Phobos)",
@@ -1567,22 +1567,22 @@
   "SettlementNode16": {
     "value": "Wendell (Phobos)",
     "enemy": "Corpus",
-    "type": "Ancient Retribution"
+    "type": "Obsolete"
   },
   "SettlementNode17": {
     "value": "Flimnap (Phobos)",
     "enemy": "Corpus",
-    "type": "Ancient Retribution"
+    "type": "Obsolete"
   },
   "SettlementNode18": {
     "value": "Opik (Phobos)",
     "enemy": "Corpus",
-    "type": "Ancient Retribution"
+    "type": "Obsolete"
   },
   "SettlementNode19": {
     "value": "Todd (Phobos)",
     "enemy": "Corpus",
-    "type": "Ancient Retribution"
+    "type": "Obsolete"
   },
   "SettlementNode20": {
     "value": "Iliad (Phobos)",
@@ -1628,191 +1628,6 @@
     "value": "Maroo's Bazaar (Mars)",
     "enemy": "Corpus",
     "type": "Relay"
-  },
-  "EventNode0": {
-    "value": "Balor",
-    "enemy": "Sentient",
-    "type": "Ancient Retribution"
-  },
-  "EventNode1": {
-    "value": "Tethra",
-    "enemy": "Sentient",
-    "type": "Ancient Retribution"
-  },
-  "EventNode2": {
-    "value": "Operation Gate Crash",
-    "enemy": "Sentient",
-    "type": "Ancient Retribution"
-  },
-  "EventNode3": {
-    "value": "Elatha",
-    "enemy": "Sentient",
-    "type": "Ancient Retribution"
-  },
-  "EventNode4": {
-    "value": "Proxy Rebellion",
-    "enemy": "Corpus",
-    "type": "Survival"
-  },
-  "EventNode5": {
-    "value": "Birog",
-    "enemy": "Sentient",
-    "type": "Ancient Retribution"
-  },
-  "EventNode6": {
-    "value": "Tyl Reygor Seal Lab",
-    "enemy": "Sentient",
-    "type": "Ancient Retribution"
-  },
-  "EventNode7": {
-    "value": "Proxy Rebellion",
-    "enemy": "Corpus",
-    "type": "Interception"
-  },
-  "EventNode8": {
-    "value": "Corb",
-    "enemy": "Sentient",
-    "type": "Ancient Retribution"
-  },
-  "EventNode9": {
-    "value": "Operation Gate Crash Pt. 2",
-    "enemy": "Sentient",
-    "type": "Ancient Retribution"
-  },
-  "EventNode10": {
-    "value": "Lugh",
-    "enemy": "Sentient",
-    "type": "Ancient Retribution"
-  },
-  "EventNode11": {
-    "value": "Nemed",
-    "enemy": "Sentient",
-    "type": "Ancient Retribution"
-  },
-  "EventNode12": {
-    "value": "Operation Cryotic Front",
-    "enemy": "Sentient",
-    "type": "Ancient Retribution"
-  },
-  "EventNode13": {
-    "value": "Shifting Sands",
-    "enemy": "Sentient",
-    "type": "Ancient Retribution"
-  },
-  "EventNode14": {
-    "value": "Gate Crash",
-    "enemy": "Sentient",
-    "type": "Ancient Retribution"
-  },
-  "EventNode15": {
-    "value": "Operation Cryotic Front",
-    "enemy": "Sentient",
-    "type": "Ancient Retribution"
-  },
-  "EventNode16": {
-    "value": "Operation Cryotic Front",
-    "enemy": "Sentient",
-    "type": "Ancient Retribution"
-  },
-  "EventNode17": {
-    "value": "Proxy Rebellion",
-    "enemy": "Corpus",
-    "type": "Defense"
-  },
-  "EventNode18": {
-    "value": "Proxy Rebellion",
-    "enemy": "Corpus",
-    "type": "Defense"
-  },
-  "EventNode19": {
-    "value": "Mars",
-    "enemy": "Grineer",
-    "type": "Defense"
-  },
-  "EventNode20": {
-    "value": "Tyl Regor Sea Lab",
-    "enemy": "Sentient",
-    "type": "Ancient Retribution"
-  },
-  "EventNode22": {
-    "value": "Tyl Regor Sea Lab",
-    "enemy": "Sentient",
-    "type": "Ancient Retribution"
-  },
-  "EventNode24": {
-    "value": "Earth",
-    "enemy": "Grineer",
-    "type": "Arena"
-  },
-  "EventNode25": {
-    "value": "Earth",
-    "enemy": "Grineer",
-    "type": "Arena"
-  },
-  "EventNode26": {
-    "value": "Earth",
-    "enemy": "Grineer",
-    "type": "Extermination"
-  },
-  "EventNode27": {
-    "value": "Void",
-    "enemy": "Corrupted",
-    "type": "Survival"
-  },
-  "EventNode28": {
-    "value": "Saturn",
-    "enemy": "Grineer",
-    "type": "Assassination"
-  },
-  "EventNode29": {
-    "value": "Saturn",
-    "enemy": "Grineer",
-    "type": "Assassination"
-  },
-  "EventNode30": {
-    "value": "Ganymede (Jupiter)",
-    "enemy": "Corpus",
-    "type": "Disruption"
-  },
-  "EventNode31": {
-    "value": "Ganymede (Jupiter)",
-    "enemy": "Corpus",
-    "type": "Disruption"
-  },
-  "EventNode32": {
-    "value": "Ganymede (Jupiter)",
-    "enemy": "Corpus",
-    "type": "Disruption"
-  },
-  "EventNode33": {
-    "value": "Ganymede (Jupiter)",
-    "enemy": "Corpus",
-    "type": "Disruption"
-  },
-  "EventNode34": {
-    "value": "Earth",
-    "enemy": "Grineer",
-    "type": "Arena"
-  },
-  "EventNode35": {
-    "value": "Earth",
-    "enemy": "Grineer",
-    "type": "Arena"
-  },
-  "EventNode761": {
-    "value": "The Index",
-    "enemy": "Corpus",
-    "type": "Arena"
-  },
-  "EventNode762": {
-    "value": "The Index pt 2",
-    "enemy": "Corpus",
-    "type": "Arena"
-  },
-  "EventNode763": {
-    "value": "The Index Endurance",
-    "enemy": "Corpus",
-    "type": "Arena"
   },
   "PvpNode0": {
     "value": "Conclave Capture the Cephalon",
