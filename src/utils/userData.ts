@@ -77,7 +77,7 @@ export function importUserData(jsonString: string): {
       const data = parsed.data as Record<string, unknown>;
 
       Object.entries(data).forEach(([key, value]) => {
-        if (USER_DATA_KEYS.includes(key as typeof USER_DATA_KEYS[number])) {
+        if (USER_DATA_KEYS.includes(key as (typeof USER_DATA_KEYS)[number])) {
           localStorage.setItem(key, JSON.stringify(value));
         }
       });

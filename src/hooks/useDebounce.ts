@@ -18,19 +18,19 @@ import { useState, useEffect } from "react";
  * }, [debouncedQuery]);
  */
 export function useDebounce<T>(value: T, delay: number = 300): T {
-    const [debouncedValue, setDebouncedValue] = useState<T>(value);
+  const [debouncedValue, setDebouncedValue] = useState<T>(value);
 
-    useEffect(() => {
-        // Set up timer to update debounced value after delay
-        const timer = setTimeout(() => {
-            setDebouncedValue(value);
-        }, delay);
+  useEffect(() => {
+    // Set up timer to update debounced value after delay
+    const timer = setTimeout(() => {
+      setDebouncedValue(value);
+    }, delay);
 
-        // Clear timeout if value changes or component unmounts
-        return () => {
-            clearTimeout(timer);
-        };
-    }, [value, delay]);
+    // Clear timeout if value changes or component unmounts
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [value, delay]);
 
-    return debouncedValue;
+  return debouncedValue;
 }

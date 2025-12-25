@@ -309,10 +309,11 @@ export function CodexView() {
                   <button
                     key={option}
                     onClick={() => toggleSort(option)}
-                    className={`px-3 py-1 rounded text-sm transition-colors ${sortBy === option
-                      ? "bg-cyan-600 text-white"
-                      : "bg-slate-800/50 text-slate-400 hover:bg-slate-700"
-                      }`}
+                    className={`px-3 py-1 rounded text-sm transition-colors ${
+                      sortBy === option
+                        ? "bg-cyan-600 text-white"
+                        : "bg-slate-800/50 text-slate-400 hover:bg-slate-700"
+                    }`}
                   >
                     {option.charAt(0).toUpperCase() + option.slice(1)}
                     {sortBy === option && (
@@ -333,10 +334,11 @@ export function CodexView() {
             <button
               key={cat}
               onClick={() => setSelectedCategory(cat)}
-              className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${selectedCategory === cat
-                ? "bg-cyan-600 text-white"
-                : "bg-slate-800/50 text-slate-400 hover:bg-slate-700 hover:text-slate-300"
-                }`}
+              className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${
+                selectedCategory === cat
+                  ? "bg-cyan-600 text-white"
+                  : "bg-slate-800/50 text-slate-400 hover:bg-slate-700 hover:text-slate-300"
+              }`}
             >
               {cat === "all" ? "All" : cat}
             </button>
@@ -405,10 +407,11 @@ function AddToTrackerButton({ itemName }: { itemName: string }) {
         e.stopPropagation();
         handleAdd();
       }}
-      className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm transition-colors ${added
-        ? "bg-green-600/20 text-green-400"
-        : "bg-cyan-600/20 text-cyan-400 hover:bg-cyan-600/30"
-        }`}
+      className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm transition-colors ${
+        added
+          ? "bg-green-600/20 text-green-400"
+          : "bg-cyan-600/20 text-cyan-400 hover:bg-cyan-600/30"
+      }`}
     >
       {added ? <Check size={14} /> : <Plus size={14} />}
       {added ? "Added!" : "Track"}

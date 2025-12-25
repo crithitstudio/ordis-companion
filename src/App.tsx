@@ -155,7 +155,10 @@ const PRIMARY_TABS: { id: TabName; label: string; icon: typeof Home }[] = [
 ];
 
 // Secondary tabs shown in "More" dropdown, grouped by category
-const SECONDARY_TABS: { group: string; tabs: { id: TabName; label: string; icon: typeof Home }[] }[] = [
+const SECONDARY_TABS: {
+  group: string;
+  tabs: { id: TabName; label: string; icon: typeof Home }[];
+}[] = [
   {
     group: "Progress",
     tabs: [
@@ -184,10 +187,7 @@ const SECONDARY_TABS: { group: string; tabs: { id: TabName; label: string; icon:
 ];
 
 // All tabs for reference
-const ALL_TABS = [
-  ...PRIMARY_TABS,
-  ...SECONDARY_TABS.flatMap(g => g.tabs),
-];
+const ALL_TABS = [...PRIMARY_TABS, ...SECONDARY_TABS.flatMap((g) => g.tabs)];
 
 // Mobile bottom nav shows first 4 tabs + More
 const MOBILE_TABS = PRIMARY_TABS.slice(0, 4);
@@ -470,10 +470,7 @@ export default function OrdisApp() {
 
         {/* Desktop Tab Navigation */}
         <div className="hidden md:block max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border-t border-slate-800/50">
-          <nav
-            className="flex items-center -mb-px"
-            role="tablist"
-          >
+          <nav className="flex items-center -mb-px" role="tablist">
             {PRIMARY_TABS.map((tab, idx) => (
               <button
                 key={tab.id}
@@ -481,10 +478,11 @@ export default function OrdisApp() {
                 role="tab"
                 aria-selected={activeTab === tab.id}
                 aria-controls={`${tab.id}-panel`}
-                className={`flex items-center gap-2 px-4 py-3 text-sm font-medium border-b-2 transition-colors whitespace-nowrap ${activeTab === tab.id
-                  ? "border-cyan-500 text-cyan-400"
-                  : "border-transparent text-slate-500 hover:text-slate-300 hover:border-slate-700"
-                  }`}
+                className={`flex items-center gap-2 px-4 py-3 text-sm font-medium border-b-2 transition-colors whitespace-nowrap ${
+                  activeTab === tab.id
+                    ? "border-cyan-500 text-cyan-400"
+                    : "border-transparent text-slate-500 hover:text-slate-300 hover:border-slate-700"
+                }`}
               >
                 <tab.icon size={18} />
                 <span>{tab.label}</span>
@@ -496,12 +494,18 @@ export default function OrdisApp() {
             <div className="relative ml-auto">
               <button
                 onClick={() => setShowMoreTabs(!showMoreTabs)}
-                className={`flex items-center gap-2 px-4 py-3 text-sm font-medium border-b-2 transition-colors whitespace-nowrap ${SECONDARY_TABS.flatMap(g => g.tabs).some(t => t.id === activeTab)
-                  ? "border-cyan-500 text-cyan-400"
-                  : "border-transparent text-slate-500 hover:text-slate-300 hover:border-slate-700"
-                  }`}
+                className={`flex items-center gap-2 px-4 py-3 text-sm font-medium border-b-2 transition-colors whitespace-nowrap ${
+                  SECONDARY_TABS.flatMap((g) => g.tabs).some(
+                    (t) => t.id === activeTab,
+                  )
+                    ? "border-cyan-500 text-cyan-400"
+                    : "border-transparent text-slate-500 hover:text-slate-300 hover:border-slate-700"
+                }`}
               >
-                <ChevronDown size={18} className={`transition-transform ${showMoreTabs ? "rotate-180" : ""}`} />
+                <ChevronDown
+                  size={18}
+                  className={`transition-transform ${showMoreTabs ? "rotate-180" : ""}`}
+                />
                 <span>More</span>
               </button>
 
@@ -515,21 +519,24 @@ export default function OrdisApp() {
                   <div className="absolute right-0 top-full mt-1 w-64 bg-slate-900 border border-slate-700 rounded-xl shadow-xl z-50 overflow-hidden">
                     {SECONDARY_TABS.map((group, gIdx) => (
                       <div key={group.group}>
-                        {gIdx > 0 && <div className="border-t border-slate-700" />}
+                        {gIdx > 0 && (
+                          <div className="border-t border-slate-700" />
+                        )}
                         <div className="px-3 py-1.5 text-xs text-slate-500 uppercase tracking-wider bg-slate-800/50">
                           {group.group}
                         </div>
-                        {group.tabs.map(tab => (
+                        {group.tabs.map((tab) => (
                           <button
                             key={tab.id}
                             onClick={() => {
                               setActiveTab(tab.id);
                               setShowMoreTabs(false);
                             }}
-                            className={`w-full flex items-center gap-3 px-4 py-2 text-sm transition-colors ${activeTab === tab.id
-                              ? "bg-cyan-900/30 text-cyan-400"
-                              : "text-slate-300 hover:bg-slate-800"
-                              }`}
+                            className={`w-full flex items-center gap-3 px-4 py-2 text-sm transition-colors ${
+                              activeTab === tab.id
+                                ? "bg-cyan-900/30 text-cyan-400"
+                                : "text-slate-300 hover:bg-slate-800"
+                            }`}
                           >
                             <tab.icon size={16} />
                             <span>{tab.label}</span>
@@ -854,10 +861,11 @@ export default function OrdisApp() {
                     setActiveTab(tab.id);
                     setShowMoreTabs(false);
                   }}
-                  className={`flex items-center gap-3 w-full p-3 rounded-lg transition-colors ${activeTab === tab.id
-                    ? "bg-cyan-900/30 text-cyan-400"
-                    : "text-slate-200 hover:bg-slate-800"
-                    }`}
+                  className={`flex items-center gap-3 w-full p-3 rounded-lg transition-colors ${
+                    activeTab === tab.id
+                      ? "bg-cyan-900/30 text-cyan-400"
+                      : "text-slate-200 hover:bg-slate-800"
+                  }`}
                 >
                   <tab.icon
                     size={20}

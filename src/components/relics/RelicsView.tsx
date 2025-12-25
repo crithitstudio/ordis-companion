@@ -46,7 +46,10 @@ const ERAS = ["Lith", "Meso", "Neo", "Axi", "Requiem"];
 
 // Normalize relic name for matching (handles "Lith A1" vs "Lith A1 Relic")
 const normalizeRelicName = (name: string): string => {
-  return name.toLowerCase().replace(/ relic$/i, "").trim();
+  return name
+    .toLowerCase()
+    .replace(/ relic$/i, "")
+    .trim();
 };
 
 // Extract all relics from itemsData
@@ -86,7 +89,9 @@ export function RelicsView({ fissures = [] }: RelicsViewProps) {
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [expandedRelic, setExpandedRelic] = useState<string | null>(null);
   const searchRef = useRef<HTMLDivElement>(null);
-  const [activeTab, setActiveTab] = useState<"manager" | "planner" | "fissures">("manager");
+  const [activeTab, setActiveTab] = useState<
+    "manager" | "planner" | "fissures"
+  >("manager");
 
   // Get all relics from item data
   const allRelics = useMemo(() => getRelicsFromData(), []);
@@ -97,11 +102,10 @@ export function RelicsView({ fissures = [] }: RelicsViewProps) {
     let totalMax = 0;
     let totalAvg = 0;
 
-
     relics.forEach((relic) => {
       const normalizedName = normalizeRelicName(relic.name);
       const relicData = allRelics.find(
-        (r) => normalizeRelicName(r.name) === normalizedName
+        (r) => normalizeRelicName(r.name) === normalizedName,
       );
       if (relicData && relicData.drops.length > 0) {
         // Min = all commons, Max = all rares, Avg = weighted average
@@ -146,7 +150,7 @@ export function RelicsView({ fissures = [] }: RelicsViewProps) {
   const getRelicDrops = (relicName: string): string[] => {
     const normalizedName = normalizeRelicName(relicName);
     const relic = allRelics.find(
-      (r) => normalizeRelicName(r.name) === normalizedName
+      (r) => normalizeRelicName(r.name) === normalizedName,
     );
     return relic?.drops || [];
   };
@@ -212,28 +216,31 @@ export function RelicsView({ fissures = [] }: RelicsViewProps) {
       <div className="flex gap-2">
         <button
           onClick={() => setActiveTab("manager")}
-          className={`flex-1 py-3 px-4 rounded-lg font-medium transition-colors flex items-center justify-center gap-2 ${activeTab === "manager"
-            ? "bg-amber-600 text-white"
-            : "bg-slate-800 text-slate-400 hover:bg-slate-700"
-            }`}
+          className={`flex-1 py-3 px-4 rounded-lg font-medium transition-colors flex items-center justify-center gap-2 ${
+            activeTab === "manager"
+              ? "bg-amber-600 text-white"
+              : "bg-slate-800 text-slate-400 hover:bg-slate-700"
+          }`}
         >
           <Gem size={18} /> My Relics
         </button>
         <button
           onClick={() => setActiveTab("planner")}
-          className={`flex-1 py-3 px-4 rounded-lg font-medium transition-colors flex items-center justify-center gap-2 ${activeTab === "planner"
-            ? "bg-purple-600 text-white"
-            : "bg-slate-800 text-slate-400 hover:bg-slate-700"
-            }`}
+          className={`flex-1 py-3 px-4 rounded-lg font-medium transition-colors flex items-center justify-center gap-2 ${
+            activeTab === "planner"
+              ? "bg-purple-600 text-white"
+              : "bg-slate-800 text-slate-400 hover:bg-slate-700"
+          }`}
         >
           <TrendingUp size={18} /> Relic Planner
         </button>
         <button
           onClick={() => setActiveTab("fissures")}
-          className={`flex-1 py-3 px-4 rounded-lg font-medium transition-colors flex items-center justify-center gap-2 ${activeTab === "fissures"
-            ? "bg-cyan-600 text-white"
-            : "bg-slate-800 text-slate-400 hover:bg-slate-700"
-            }`}
+          className={`flex-1 py-3 px-4 rounded-lg font-medium transition-colors flex items-center justify-center gap-2 ${
+            activeTab === "fissures"
+              ? "bg-cyan-600 text-white"
+              : "bg-slate-800 text-slate-400 hover:bg-slate-700"
+          }`}
         >
           <Zap size={18} /> Fissure Optimizer
         </button>
@@ -255,8 +262,8 @@ export function RelicsView({ fissures = [] }: RelicsViewProps) {
             </span>
           </h2>
           <p className="text-slate-400 mb-6">
-            Track your void relic inventory and wishlist. Search for relics to see
-            their drops.
+            Track your void relic inventory and wishlist. Search for relics to
+            see their drops.
           </p>
 
           {/* Ducat Value Summary */}
@@ -360,7 +367,9 @@ export function RelicsView({ fissures = [] }: RelicsViewProps) {
 
                 {/* Quick Add Buttons */}
                 <div className="flex flex-wrap gap-2">
-                  <span className="text-slate-400 text-sm">Or add manually:</span>
+                  <span className="text-slate-400 text-sm">
+                    Or add manually:
+                  </span>
                   {ERAS.map((era) => (
                     <button
                       key={era}
@@ -422,8 +431,11 @@ export function RelicsView({ fissures = [] }: RelicsViewProps) {
                 return (
                   <div
                     key={relic.id}
-                    className={`bg-slate-800/30 rounded-lg border transition-all hover-lift ${relic.wanted ? "border-amber-500/50" : "border-slate-700/50"
-                      }`}
+                    className={`bg-slate-800/30 rounded-lg border transition-all hover-lift ${
+                      relic.wanted
+                        ? "border-amber-500/50"
+                        : "border-slate-700/50"
+                    }`}
                   >
                     <div className="p-4">
                       <div className="flex items-start justify-between mb-3">
@@ -514,10 +526,11 @@ export function RelicsView({ fissures = [] }: RelicsViewProps) {
                         onClick={() =>
                           updateRelic(relic.id, { wanted: !relic.wanted })
                         }
-                        className={`w-full py-1 rounded text-sm transition-colors ${relic.wanted
-                          ? "bg-amber-600/20 text-amber-400"
-                          : "bg-slate-700/50 text-slate-400 hover:bg-slate-700"
-                          }`}
+                        className={`w-full py-1 rounded text-sm transition-colors ${
+                          relic.wanted
+                            ? "bg-amber-600/20 text-amber-400"
+                            : "bg-slate-700/50 text-slate-400 hover:bg-slate-700"
+                        }`}
                       >
                         {relic.wanted ? "★ Wanted" : "☆ Mark as Wanted"}
                       </button>
@@ -527,8 +540,8 @@ export function RelicsView({ fissures = [] }: RelicsViewProps) {
                     {isExpanded && drops.length > 0 && (
                       <div className="px-4 pb-4 border-t border-slate-700/50 pt-3">
                         <div className="text-xs text-slate-500 mb-2 flex items-center gap-1">
-                          <ChevronDown size={14} /> Possible Drops ({drops.length}
-                          )
+                          <ChevronDown size={14} /> Possible Drops (
+                          {drops.length})
                         </div>
                         <div className="space-y-1">
                           {drops.map((drop, idx) => (
@@ -538,12 +551,13 @@ export function RelicsView({ fissures = [] }: RelicsViewProps) {
                             >
                               <span className="text-slate-300">{drop}</span>
                               <span
-                                className={`font-medium ${idx < 3
-                                  ? "text-slate-400"
-                                  : idx < 5
-                                    ? "text-blue-400"
-                                    : "text-amber-400"
-                                  }`}
+                                className={`font-medium ${
+                                  idx < 3
+                                    ? "text-slate-400"
+                                    : idx < 5
+                                      ? "text-blue-400"
+                                      : "text-amber-400"
+                                }`}
                               >
                                 {getDucatValue(idx)}{" "}
                                 <DucatIcon size={10} className="inline" />

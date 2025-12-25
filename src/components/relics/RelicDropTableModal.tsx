@@ -260,10 +260,11 @@ export function RelicDropTableModal({
                 setExpandedItem(null);
                 setSearchQuery("");
               }}
-              className={`flex-1 py-2 rounded-lg text-sm font-medium transition-colors ${searchMode === "item"
+              className={`flex-1 py-2 rounded-lg text-sm font-medium transition-colors ${
+                searchMode === "item"
                   ? "bg-amber-600 text-white"
                   : "bg-slate-800 text-slate-400 hover:bg-slate-700"
-                }`}
+              }`}
             >
               Search by Item
             </button>
@@ -273,10 +274,11 @@ export function RelicDropTableModal({
                 setExpandedItem(null);
                 setSearchQuery("");
               }}
-              className={`flex-1 py-2 rounded-lg text-sm font-medium transition-colors ${searchMode === "relic"
+              className={`flex-1 py-2 rounded-lg text-sm font-medium transition-colors ${
+                searchMode === "relic"
                   ? "bg-amber-600 text-white"
                   : "bg-slate-800 text-slate-400 hover:bg-slate-700"
-                }`}
+              }`}
             >
               Search by Relic
             </button>

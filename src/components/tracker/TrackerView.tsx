@@ -247,7 +247,8 @@ export function TrackerView() {
     const pending = filtered.filter((i) => !i.completed).sort(sortByPriority);
     const completed = filtered.filter((i) => i.completed);
     const total = pending.length + completed.length;
-    const percent = total > 0 ? Math.round((completed.length / total) * 100) : 0;
+    const percent =
+      total > 0 ? Math.round((completed.length / total) * 100) : 0;
 
     return {
       pendingItems: pending,
@@ -259,17 +260,21 @@ export function TrackerView() {
   // Bulk actions
   const completeAllItems = useCallback(() => {
     if (pendingItems.length === 0) return;
-    saveItems(
-      items.map((item) => ({ ...item, completed: true }))
+    saveItems(items.map((item) => ({ ...item, completed: true })));
+    addToast(
+      `Completed ${pendingItems.length} ${pendingItems.length === 1 ? "item" : "items"}!`,
+      "success",
     );
-    addToast(`Completed ${pendingItems.length} ${pendingItems.length === 1 ? 'item' : 'items'}!`, "success");
   }, [items, pendingItems.length, saveItems, addToast]);
 
   const clearCompletedItems = useCallback(() => {
     if (completedItems.length === 0) return;
     const count = completedItems.length;
     saveItems(items.filter((item) => !item.completed));
-    addToast(`Cleared ${count} completed ${count === 1 ? 'item' : 'items'}`, "info");
+    addToast(
+      `Cleared ${count} completed ${count === 1 ? "item" : "items"}`,
+      "info",
+    );
   }, [items, completedItems.length, saveItems, addToast]);
 
   // Export data
@@ -279,7 +284,9 @@ export function TrackerView() {
       exportedAt: new Date().toISOString(),
       version: 1,
     };
-    const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+    const blob = new Blob([JSON.stringify(data, null, 2)], {
+      type: "application/json",
+    });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
@@ -322,12 +329,24 @@ export function TrackerView() {
         <h2 className="text-2xl font-bold text-purple-400 mb-4 flex items-center gap-3">
           <Package size={28} /> Build Tracker
           <span className="text-sm font-normal text-slate-500 ml-auto flex items-center gap-3">
-            <span className="text-cyan-400 font-medium">{progressPercent}%</span>
-            <span>{pendingItems.length} pending, {completedItems.length} done</span>
-            <button onClick={exportData} className="p-1.5 bg-slate-700 hover:bg-slate-600 rounded text-slate-300" title="Export Data">
+            <span className="text-cyan-400 font-medium">
+              {progressPercent}%
+            </span>
+            <span>
+              {pendingItems.length} pending, {completedItems.length} done
+            </span>
+            <button
+              onClick={exportData}
+              className="p-1.5 bg-slate-700 hover:bg-slate-600 rounded text-slate-300"
+              title="Export Data"
+            >
               <Download size={14} />
             </button>
-            <button onClick={importData} className="p-1.5 bg-slate-700 hover:bg-slate-600 rounded text-slate-300" title="Import Data">
+            <button
+              onClick={importData}
+              className="p-1.5 bg-slate-700 hover:bg-slate-600 rounded text-slate-300"
+              title="Import Data"
+            >
               <Upload size={14} />
             </button>
           </span>
@@ -422,14 +441,15 @@ export function TrackerView() {
                 <button
                   key={p}
                   onClick={() => setNewItemPriority(p)}
-                  className={`px-3 py-1 rounded text-xs font-medium transition-colors ${newItemPriority === p
-                    ? p === "high"
-                      ? "bg-red-600 text-white"
-                      : p === "medium"
-                        ? "bg-yellow-600 text-white"
-                        : "bg-slate-600 text-white"
-                    : "bg-slate-800 text-slate-400 hover:bg-slate-700"
-                    }`}
+                  className={`px-3 py-1 rounded text-xs font-medium transition-colors ${
+                    newItemPriority === p
+                      ? p === "high"
+                        ? "bg-red-600 text-white"
+                        : p === "medium"
+                          ? "bg-yellow-600 text-white"
+                          : "bg-slate-600 text-white"
+                      : "bg-slate-800 text-slate-400 hover:bg-slate-700"
+                  }`}
                 >
                   {p.charAt(0).toUpperCase() + p.slice(1)}
                 </button>
@@ -445,10 +465,11 @@ export function TrackerView() {
               <button
                 key={tag}
                 onClick={() => toggleTag(tag)}
-                className={`px-2 py-0.5 rounded text-xs transition-colors ${selectedTags.includes(tag)
-                  ? "bg-purple-600 text-white"
-                  : "bg-slate-800 text-slate-400 hover:bg-slate-700"
-                  }`}
+                className={`px-2 py-0.5 rounded text-xs transition-colors ${
+                  selectedTags.includes(tag)
+                    ? "bg-purple-600 text-white"
+                    : "bg-slate-800 text-slate-400 hover:bg-slate-700"
+                }`}
               >
                 {tag}
               </button>
@@ -469,10 +490,11 @@ export function TrackerView() {
         <div className="flex flex-wrap items-center gap-3 mb-4">
           <button
             onClick={() => setShowFilters(!showFilters)}
-            className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm transition-colors ${showFilters
-              ? "bg-purple-600 text-white"
-              : "bg-slate-800 text-slate-400 hover:bg-slate-700"
-              }`}
+            className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm transition-colors ${
+              showFilters
+                ? "bg-purple-600 text-white"
+                : "bg-slate-800 text-slate-400 hover:bg-slate-700"
+            }`}
           >
             <Filter size={16} /> Filters
           </button>
@@ -574,12 +596,13 @@ export function TrackerView() {
                         <div className="flex items-center gap-2 text-xs">
                           {item.priority && (
                             <span
-                              className={`${item.priority === "high"
-                                ? "text-red-400"
-                                : item.priority === "medium"
-                                  ? "text-yellow-400"
-                                  : "text-slate-500"
-                                }`}
+                              className={`${
+                                item.priority === "high"
+                                  ? "text-red-400"
+                                  : item.priority === "medium"
+                                    ? "text-yellow-400"
+                                    : "text-slate-500"
+                              }`}
                             >
                               {PRIORITY_LABELS[item.priority]}
                             </span>
@@ -658,16 +681,18 @@ export function TrackerView() {
                                 onClick={() =>
                                   toggleComponent(item.id, comp.name)
                                 }
-                                className={`flex items-center gap-2 p-2 rounded text-xs transition-colors ${completed
-                                  ? "bg-green-900/30 text-green-400 border border-green-600/30"
-                                  : "bg-slate-800/50 text-slate-400 border border-slate-700/50 hover:border-slate-600"
-                                  }`}
+                                className={`flex items-center gap-2 p-2 rounded text-xs transition-colors ${
+                                  completed
+                                    ? "bg-green-900/30 text-green-400 border border-green-600/30"
+                                    : "bg-slate-800/50 text-slate-400 border border-slate-700/50 hover:border-slate-600"
+                                }`}
                               >
                                 <div
-                                  className={`w-4 h-4 rounded border flex items-center justify-center flex-shrink-0 ${completed
-                                    ? "bg-green-600 border-green-600"
-                                    : "border-slate-600"
-                                    }`}
+                                  className={`w-4 h-4 rounded border flex items-center justify-center flex-shrink-0 ${
+                                    completed
+                                      ? "bg-green-600 border-green-600"
+                                      : "border-slate-600"
+                                  }`}
                                 >
                                   {completed && (
                                     <Check size={10} className="text-white" />
@@ -733,6 +758,6 @@ export function TrackerView() {
           </div>
         )}
       </div>
-    </div >
+    </div>
   );
 }

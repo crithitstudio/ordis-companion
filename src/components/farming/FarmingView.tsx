@@ -22,137 +22,137 @@ const RESOURCE_FARMING_LOCATIONS: {
   resource: string;
   missions: { name: string; planet: string; type: string; notes: string }[];
 }[] = [
-    {
-      resource: "Orokin Cell",
-      missions: [
-        {
-          name: "Helene",
-          planet: "Saturn",
-          type: "Defense",
-          notes: "20 waves, General Sargas Ruk drops",
-        },
-        {
-          name: "Gabii",
-          planet: "Ceres",
-          type: "Dark Sector Survival",
-          notes: "Stay 20+ minutes",
-        },
-      ],
-    },
-    {
-      resource: "Neurodes",
-      missions: [
-        {
-          name: "Tycho",
-          planet: "Lua",
-          type: "Survival",
-          notes: "Sentients drop guaranteed",
-        },
-        {
-          name: "Mariana",
-          planet: "Earth",
-          type: "Exterminate",
-          notes: "Low level, fast runs",
-        },
-      ],
-    },
-    {
-      resource: "Argon Crystal",
-      missions: [
-        {
-          name: "Void Capture",
-          planet: "Void",
-          type: "Capture",
-          notes: "Quick runs, check containers",
-        },
-        {
-          name: "Mot",
-          planet: "Void",
-          type: "Survival",
-          notes: "High level, good drops",
-        },
-      ],
-    },
-    {
-      resource: "Polymer Bundle",
-      missions: [
-        {
-          name: "Ophelia",
-          planet: "Uranus",
-          type: "Survival",
-          notes: "Also drops Plastids and Tellurium",
-        },
-        {
-          name: "Assur",
-          planet: "Uranus",
-          type: "Dark Sector Survival",
-          notes: "35% bonus resources",
-        },
-      ],
-    },
-    {
-      resource: "Plastids",
-      missions: [
-        {
-          name: "Ophelia",
-          planet: "Uranus",
-          type: "Survival",
-          notes: "Multi-resource farm",
-        },
-        {
-          name: "Piscinas",
-          planet: "Saturn",
-          type: "Dark Sector Survival",
-          notes: "20% bonus resources",
-        },
-      ],
-    },
-    {
-      resource: "Cryotic",
-      missions: [
-        {
-          name: "Hieracon",
-          planet: "Pluto",
-          type: "Excavation",
-          notes: "100 per excavator",
-        },
-      ],
-    },
-    {
-      resource: "Oxium",
-      missions: [
-        {
-          name: "Io",
-          planet: "Jupiter",
-          type: "Defense",
-          notes: "Oxium Ospreys spawn often",
-        },
-        {
-          name: "Outer Terminus",
-          planet: "Pluto",
-          type: "Defense",
-          notes: "Higher enemy levels",
-        },
-      ],
-    },
-    {
-      resource: "Tellurium",
-      missions: [
-        {
-          name: "Ophelia",
-          planet: "Uranus",
-          type: "Survival",
-          notes: "Best farm location",
-        },
-        {
-          name: "Archwing",
-          planet: "Any",
-          type: "Archwing Mission",
-          notes: "Any Archwing mission",
-        },
-      ],
-    },
-  ];
+  {
+    resource: "Orokin Cell",
+    missions: [
+      {
+        name: "Helene",
+        planet: "Saturn",
+        type: "Defense",
+        notes: "20 waves, General Sargas Ruk drops",
+      },
+      {
+        name: "Gabii",
+        planet: "Ceres",
+        type: "Dark Sector Survival",
+        notes: "Stay 20+ minutes",
+      },
+    ],
+  },
+  {
+    resource: "Neurodes",
+    missions: [
+      {
+        name: "Tycho",
+        planet: "Lua",
+        type: "Survival",
+        notes: "Sentients drop guaranteed",
+      },
+      {
+        name: "Mariana",
+        planet: "Earth",
+        type: "Exterminate",
+        notes: "Low level, fast runs",
+      },
+    ],
+  },
+  {
+    resource: "Argon Crystal",
+    missions: [
+      {
+        name: "Void Capture",
+        planet: "Void",
+        type: "Capture",
+        notes: "Quick runs, check containers",
+      },
+      {
+        name: "Mot",
+        planet: "Void",
+        type: "Survival",
+        notes: "High level, good drops",
+      },
+    ],
+  },
+  {
+    resource: "Polymer Bundle",
+    missions: [
+      {
+        name: "Ophelia",
+        planet: "Uranus",
+        type: "Survival",
+        notes: "Also drops Plastids and Tellurium",
+      },
+      {
+        name: "Assur",
+        planet: "Uranus",
+        type: "Dark Sector Survival",
+        notes: "35% bonus resources",
+      },
+    ],
+  },
+  {
+    resource: "Plastids",
+    missions: [
+      {
+        name: "Ophelia",
+        planet: "Uranus",
+        type: "Survival",
+        notes: "Multi-resource farm",
+      },
+      {
+        name: "Piscinas",
+        planet: "Saturn",
+        type: "Dark Sector Survival",
+        notes: "20% bonus resources",
+      },
+    ],
+  },
+  {
+    resource: "Cryotic",
+    missions: [
+      {
+        name: "Hieracon",
+        planet: "Pluto",
+        type: "Excavation",
+        notes: "100 per excavator",
+      },
+    ],
+  },
+  {
+    resource: "Oxium",
+    missions: [
+      {
+        name: "Io",
+        planet: "Jupiter",
+        type: "Defense",
+        notes: "Oxium Ospreys spawn often",
+      },
+      {
+        name: "Outer Terminus",
+        planet: "Pluto",
+        type: "Defense",
+        notes: "Higher enemy levels",
+      },
+    ],
+  },
+  {
+    resource: "Tellurium",
+    missions: [
+      {
+        name: "Ophelia",
+        planet: "Uranus",
+        type: "Survival",
+        notes: "Best farm location",
+      },
+      {
+        name: "Archwing",
+        planet: "Any",
+        type: "Archwing Mission",
+        notes: "Any Archwing mission",
+      },
+    ],
+  },
+];
 
 // Relic era pattern
 const RELIC_PATTERN = /^(Lith|Meso|Neo|Axi|Requiem)\s+([A-Z]\d+)\s+Relic/i;
@@ -590,10 +590,11 @@ export function FarmingView({ fissures }: FarmingViewProps) {
                           e.stopPropagation();
                           toggleWanted(item.item);
                         }}
-                        className={`p-2 rounded-lg transition-colors ${isWanted
-                          ? "bg-green-600/20 text-green-400"
-                          : "bg-slate-700 text-slate-400 hover:bg-slate-600"
-                          }`}
+                        className={`p-2 rounded-lg transition-colors ${
+                          isWanted
+                            ? "bg-green-600/20 text-green-400"
+                            : "bg-slate-700 text-slate-400 hover:bg-slate-600"
+                        }`}
                         title={
                           isWanted
                             ? "Remove from farming list"
@@ -683,13 +684,14 @@ export function FarmingView({ fissures }: FarmingViewProps) {
                               {src.chance > 0 && (
                                 <div className="h-1 bg-slate-700 rounded-full overflow-hidden">
                                   <div
-                                    className={`h-full transition-all ${src.rarity.toLowerCase() === "rare"
-                                      ? "bg-yellow-500"
-                                      : src.rarity.toLowerCase() ===
-                                        "uncommon"
-                                        ? "bg-blue-500"
-                                        : "bg-amber-600"
-                                      }`}
+                                    className={`h-full transition-all ${
+                                      src.rarity.toLowerCase() === "rare"
+                                        ? "bg-yellow-500"
+                                        : src.rarity.toLowerCase() ===
+                                            "uncommon"
+                                          ? "bg-blue-500"
+                                          : "bg-amber-600"
+                                    }`}
                                     style={{
                                       width: `${Math.min(100, src.chance * 3)}%`,
                                     }}
