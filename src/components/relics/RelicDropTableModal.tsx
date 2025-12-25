@@ -7,7 +7,8 @@ import {
   ExternalLink,
   X,
 } from "lucide-react";
-import { itemsData, getItemImageUrl } from "../../utils/translations";
+import { itemsData } from "../../utils/translations";
+import { ItemImage } from "../ui";
 
 // Relic era pattern
 const RELIC_PATTERN = /^(Lith|Meso|Neo|Axi|Requiem)\s+([A-Z]\d+)\s+Relic/i;
@@ -259,11 +260,10 @@ export function RelicDropTableModal({
                 setExpandedItem(null);
                 setSearchQuery("");
               }}
-              className={`flex-1 py-2 rounded-lg text-sm font-medium transition-colors ${
-                searchMode === "item"
+              className={`flex-1 py-2 rounded-lg text-sm font-medium transition-colors ${searchMode === "item"
                   ? "bg-amber-600 text-white"
                   : "bg-slate-800 text-slate-400 hover:bg-slate-700"
-              }`}
+                }`}
             >
               Search by Item
             </button>
@@ -273,11 +273,10 @@ export function RelicDropTableModal({
                 setExpandedItem(null);
                 setSearchQuery("");
               }}
-              className={`flex-1 py-2 rounded-lg text-sm font-medium transition-colors ${
-                searchMode === "relic"
+              className={`flex-1 py-2 rounded-lg text-sm font-medium transition-colors ${searchMode === "relic"
                   ? "bg-amber-600 text-white"
                   : "bg-slate-800 text-slate-400 hover:bg-slate-700"
-              }`}
+                }`}
             >
               Search by Relic
             </button>
@@ -339,22 +338,12 @@ export function RelicDropTableModal({
                     className="w-full p-3 flex items-center justify-between text-left"
                   >
                     <div className="flex items-center gap-3">
-                      {item.uniqueName &&
-                        getItemImageUrl({ uniqueName: item.uniqueName }) && (
-                          <img
-                            src={
-                              getItemImageUrl({
-                                uniqueName: item.uniqueName,
-                              }) || ""
-                            }
-                            alt=""
-                            className="w-8 h-8 object-contain rounded"
-                            onError={(e) => {
-                              (e.target as HTMLImageElement).style.display =
-                                "none";
-                            }}
-                          />
-                        )}
+                      <ItemImage
+                        itemPath={item.uniqueName}
+                        name={item.item}
+                        category="Prime"
+                        size={32}
+                      />
                       <span className="text-slate-200 font-medium">
                         {item.item}
                       </span>

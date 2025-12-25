@@ -3,11 +3,11 @@ import {
   X,
   ExternalLink,
   Clock,
-  Coins,
   TrendingUp,
   Loader2,
 } from "lucide-react";
-import { itemsData, getItemImageUrl } from "../../utils/translations";
+import { itemsData } from "../../utils/translations";
+import { CreditsIcon, ItemImage } from "../ui";
 import {
   fetchMarketPrice,
   getMarketUrl,
@@ -72,7 +72,7 @@ export function ItemDetailModal({ itemKey, onClose }: ItemDetailModalProps) {
 
   return (
     <div
-      className="fixed inset-0 z-[60] flex items-center justify-center bg-black/70 backdrop-blur-sm p-4"
+      className="fixed inset-0 z-[100] flex items-center justify-center bg-black/70 backdrop-blur-sm p-4"
       onClick={onClose}
     >
       <div
@@ -82,16 +82,12 @@ export function ItemDetailModal({ itemKey, onClose }: ItemDetailModalProps) {
         {/* Header */}
         <div className="sticky top-0 bg-slate-900 border-b border-slate-700 p-4 flex items-start justify-between">
           <div className="flex items-center gap-4">
-            {getItemImageUrl(itemData) && (
-              <img
-                src={getItemImageUrl(itemData) || ""}
-                alt={itemData.name}
-                className="w-16 h-16 object-contain rounded-lg bg-slate-800"
-                onError={(e) => {
-                  (e.target as HTMLImageElement).style.display = "none";
-                }}
-              />
-            )}
+            <ItemImage
+              itemData={itemData}
+              name={itemData.name}
+              category={itemData.category}
+              size={64}
+            />
             <div>
               <h2 className="text-xl font-bold text-cyan-400">
                 {itemData.name}
@@ -166,7 +162,7 @@ export function ItemDetailModal({ itemKey, onClose }: ItemDetailModalProps) {
                 <div className="flex gap-4 mb-4 pb-4 border-b border-slate-700/50">
                   {itemData.buildPrice && (
                     <div className="flex items-center gap-2">
-                      <Coins className="w-5 h-5 text-yellow-500" />
+                      <CreditsIcon size={18} />
                       <span className="text-slate-200 font-bold">
                         {itemData.buildPrice.toLocaleString()}
                       </span>
@@ -183,32 +179,24 @@ export function ItemDetailModal({ itemKey, onClose }: ItemDetailModalProps) {
                 {/* Components Grid */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   {itemData.components.map((comp, i) => {
-                    let compImage = getItemImageUrl(comp);
-                    if (!compImage) {
-                      const matchedItem = Object.values(itemsData).find(
-                        (item) => item.name === comp.name,
-                      );
-                      if (matchedItem) {
-                        compImage = getItemImageUrl(matchedItem);
-                      }
-                    }
+                    // Find full item data for this component by name
+                    const compItemEntry = Object.entries(itemsData).find(
+                      ([, item]) => item.name === comp.name
+                    );
+                    const compItemPath = compItemEntry ? compItemEntry[0] : undefined;
 
                     return (
                       <div
                         key={i}
                         className="flex items-center gap-3 p-2 bg-slate-900/40 rounded border border-slate-700/30"
                       >
-                        {compImage ? (
-                          <img
-                            src={compImage}
-                            alt={comp.name}
-                            className="w-8 h-8 object-contain"
-                          />
-                        ) : (
-                          <div className="w-8 h-8 bg-slate-800 rounded flex items-center justify-center text-xs text-slate-500">
-                            ?
-                          </div>
-                        )}
+                        <ItemImage
+                          itemPath={compItemPath}
+                          itemData={comp}
+                          name={comp.name}
+                          category="Resource"
+                          size={32}
+                        />
                         <div className="flex flex-col">
                           <span className="text-slate-200 text-sm font-medium">
                             {comp.name}
@@ -242,15 +230,14 @@ export function ItemDetailModal({ itemKey, onClose }: ItemDetailModalProps) {
                         {drop.location}
                       </span>
                       <span
-                        className={`text-xs px-2 py-1 rounded ${
-                          drop.rarity === "Common"
-                            ? "bg-slate-600 text-slate-200"
-                            : drop.rarity === "Uncommon"
-                              ? "bg-green-700 text-green-100"
-                              : drop.rarity === "Rare"
-                                ? "bg-blue-700 text-blue-100"
-                                : "bg-yellow-700 text-yellow-100"
-                        }`}
+                        className={`text-xs px-2 py-1 rounded ${drop.rarity === "Common"
+                          ? "bg-slate-600 text-slate-200"
+                          : drop.rarity === "Uncommon"
+                            ? "bg-green-700 text-green-100"
+                            : drop.rarity === "Rare"
+                              ? "bg-blue-700 text-blue-100"
+                              : "bg-yellow-700 text-yellow-100"
+                          }`}
                       >
                         {drop.rarity || "Unknown"}
                       </span>
@@ -369,11 +356,10 @@ function AddToTrackerButton({ itemName }: { itemName: string }) {
         e.stopPropagation();
         handleAdd();
       }}
-      className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm transition-colors ${
-        added
-          ? "bg-green-600/20 text-green-400"
-          : "bg-cyan-600/20 text-cyan-400 hover:bg-cyan-600/30"
-      }`}
+      className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm transition-colors ${added
+        ? "bg-green-600/20 text-green-400"
+        : "bg-cyan-600/20 text-cyan-400 hover:bg-cyan-600/30"
+        }`}
     >
       {added ? "✓" : "+"} {added ? "Added!" : "Track"}
     </button>

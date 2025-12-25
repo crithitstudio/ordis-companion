@@ -15,6 +15,10 @@ import {
   Wrench,
   Search,
   X,
+  CheckCheck,
+  XCircle,
+  Download,
+  Upload,
 } from "lucide-react";
 import { useToast } from "../ui";
 import { itemsData } from "../../utils/translations";
@@ -80,10 +84,15 @@ export function TrackerView() {
   const [showSuggestions, setShowSuggestions] = useState(false);
   const searchRef = useRef<HTMLDivElement>(null);
 
-  // Get all item names for autocomplete
+  // Get all item names for autocomplete (deduplicated)
   const allItemNames = useMemo(() => {
+    const seen = new Set<string>();
     return Object.values(itemsData)
-      .filter((item) => item.name)
+      .filter((item) => {
+        if (!item.name || seen.has(item.name)) return false;
+        seen.add(item.name);
+        return true;
+      })
       .map((item) => ({
         name: item.name!,
         type: item.type || item.category || "Unknown",
@@ -219,7 +228,7 @@ export function TrackerView() {
   }, []);
 
   // Filter and sort items
-  const { pendingItems, completedItems } = useMemo(() => {
+  const { pendingItems, completedItems, progressPercent } = useMemo(() => {
     let filtered = items;
 
     if (filterPriority !== "all") {
@@ -235,21 +244,105 @@ export function TrackerView() {
       );
     };
 
+    const pending = filtered.filter((i) => !i.completed).sort(sortByPriority);
+    const completed = filtered.filter((i) => i.completed);
+    const total = pending.length + completed.length;
+    const percent = total > 0 ? Math.round((completed.length / total) * 100) : 0;
+
     return {
-      pendingItems: filtered.filter((i) => !i.completed).sort(sortByPriority),
-      completedItems: filtered.filter((i) => i.completed),
+      pendingItems: pending,
+      completedItems: completed,
+      progressPercent: percent,
     };
   }, [items, filterPriority]);
+
+  // Bulk actions
+  const completeAllItems = useCallback(() => {
+    if (pendingItems.length === 0) return;
+    saveItems(
+      items.map((item) => ({ ...item, completed: true }))
+    );
+    addToast(`Completed ${pendingItems.length} ${pendingItems.length === 1 ? 'item' : 'items'}!`, "success");
+  }, [items, pendingItems.length, saveItems, addToast]);
+
+  const clearCompletedItems = useCallback(() => {
+    if (completedItems.length === 0) return;
+    const count = completedItems.length;
+    saveItems(items.filter((item) => !item.completed));
+    addToast(`Cleared ${count} completed ${count === 1 ? 'item' : 'items'}`, "info");
+  }, [items, completedItems.length, saveItems, addToast]);
+
+  // Export data
+  const exportData = useCallback(() => {
+    const data = {
+      tracker: items,
+      exportedAt: new Date().toISOString(),
+      version: 1,
+    };
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `ordis-tracker-${new Date().toISOString().split("T")[0]}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+    addToast("Tracker data exported!", "success");
+  }, [items, addToast]);
+
+  // Import data
+  const importData = useCallback(() => {
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = ".json";
+    input.onchange = (e) => {
+      const file = (e.target as HTMLInputElement).files?.[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        try {
+          const data = JSON.parse(ev.target?.result as string);
+          if (data.tracker && Array.isArray(data.tracker)) {
+            saveItems(data.tracker);
+            addToast(`Imported ${data.tracker.length} items!`, "success");
+          } else {
+            addToast("Invalid file format", "error");
+          }
+        } catch {
+          addToast("Failed to parse file", "error");
+        }
+      };
+      reader.readAsText(file);
+    };
+    input.click();
+  }, [saveItems, addToast]);
 
   return (
     <div className="space-y-6">
       <div className="bg-slate-900/50 rounded-xl border border-purple-900/30 p-6">
         <h2 className="text-2xl font-bold text-purple-400 mb-4 flex items-center gap-3">
           <Package size={28} /> Build Tracker
-          <span className="text-sm font-normal text-slate-500 ml-auto">
-            {pendingItems.length} pending, {completedItems.length} done
+          <span className="text-sm font-normal text-slate-500 ml-auto flex items-center gap-3">
+            <span className="text-cyan-400 font-medium">{progressPercent}%</span>
+            <span>{pendingItems.length} pending, {completedItems.length} done</span>
+            <button onClick={exportData} className="p-1.5 bg-slate-700 hover:bg-slate-600 rounded text-slate-300" title="Export Data">
+              <Download size={14} />
+            </button>
+            <button onClick={importData} className="p-1.5 bg-slate-700 hover:bg-slate-600 rounded text-slate-300" title="Import Data">
+              <Upload size={14} />
+            </button>
           </span>
         </h2>
+
+        {/* Progress Bar */}
+        {items.length > 0 && (
+          <div className="h-2 bg-slate-800 rounded-full overflow-hidden mb-4">
+            <div
+              className="h-full bg-gradient-to-r from-purple-600 to-cyan-500 transition-all duration-500"
+              style={{ width: `${progressPercent}%` }}
+            />
+          </div>
+        )}
+
         <p className="text-slate-400 mb-6">
           Track items you're crafting, farming, or working towards. Set
           priorities and organize with tags.
@@ -293,9 +386,9 @@ export function TrackerView() {
               {/* Suggestions Dropdown */}
               {showSuggestions && suggestions.length > 0 && (
                 <div className="absolute top-full left-0 right-0 mt-1 bg-slate-800 border border-slate-600 rounded-lg shadow-xl z-20 max-h-48 overflow-y-auto">
-                  {suggestions.map((item) => (
+                  {suggestions.map((item, idx) => (
                     <button
-                      key={item.name}
+                      key={`${item.name}-${idx}`}
                       onClick={() => {
                         setNewItemName(item.name);
                         setShowSuggestions(false);
@@ -329,15 +422,14 @@ export function TrackerView() {
                 <button
                   key={p}
                   onClick={() => setNewItemPriority(p)}
-                  className={`px-3 py-1 rounded text-xs font-medium transition-colors ${
-                    newItemPriority === p
-                      ? p === "high"
-                        ? "bg-red-600 text-white"
-                        : p === "medium"
-                          ? "bg-yellow-600 text-white"
-                          : "bg-slate-600 text-white"
-                      : "bg-slate-800 text-slate-400 hover:bg-slate-700"
-                  }`}
+                  className={`px-3 py-1 rounded text-xs font-medium transition-colors ${newItemPriority === p
+                    ? p === "high"
+                      ? "bg-red-600 text-white"
+                      : p === "medium"
+                        ? "bg-yellow-600 text-white"
+                        : "bg-slate-600 text-white"
+                    : "bg-slate-800 text-slate-400 hover:bg-slate-700"
+                    }`}
                 >
                   {p.charAt(0).toUpperCase() + p.slice(1)}
                 </button>
@@ -353,11 +445,10 @@ export function TrackerView() {
               <button
                 key={tag}
                 onClick={() => toggleTag(tag)}
-                className={`px-2 py-0.5 rounded text-xs transition-colors ${
-                  selectedTags.includes(tag)
-                    ? "bg-purple-600 text-white"
-                    : "bg-slate-800 text-slate-400 hover:bg-slate-700"
-                }`}
+                className={`px-2 py-0.5 rounded text-xs transition-colors ${selectedTags.includes(tag)
+                  ? "bg-purple-600 text-white"
+                  : "bg-slate-800 text-slate-400 hover:bg-slate-700"
+                  }`}
               >
                 {tag}
               </button>
@@ -375,14 +466,13 @@ export function TrackerView() {
         </div>
 
         {/* Filter Bar */}
-        <div className="flex items-center gap-3 mb-4">
+        <div className="flex flex-wrap items-center gap-3 mb-4">
           <button
             onClick={() => setShowFilters(!showFilters)}
-            className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm transition-colors ${
-              showFilters
-                ? "bg-purple-600 text-white"
-                : "bg-slate-800 text-slate-400 hover:bg-slate-700"
-            }`}
+            className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm transition-colors ${showFilters
+              ? "bg-purple-600 text-white"
+              : "bg-slate-800 text-slate-400 hover:bg-slate-700"
+              }`}
           >
             <Filter size={16} /> Filters
           </button>
@@ -400,6 +490,28 @@ export function TrackerView() {
               </select>
             </div>
           )}
+
+          {/* Bulk Actions */}
+          <div className="flex items-center gap-2 ml-auto">
+            {pendingItems.length > 0 && (
+              <button
+                onClick={completeAllItems}
+                className="flex items-center gap-2 px-3 py-1.5 bg-green-600/20 text-green-400 hover:bg-green-600/30 rounded-lg text-sm transition-colors"
+                aria-label="Complete all pending items"
+              >
+                <CheckCheck size={16} /> Complete All
+              </button>
+            )}
+            {completedItems.length > 0 && (
+              <button
+                onClick={clearCompletedItems}
+                className="flex items-center gap-2 px-3 py-1.5 bg-red-600/20 text-red-400 hover:bg-red-600/30 rounded-lg text-sm transition-colors"
+                aria-label="Clear completed items"
+              >
+                <XCircle size={16} /> Clear Done
+              </button>
+            )}
+          </div>
         </div>
 
         {/* Pending Items */}
@@ -462,13 +574,12 @@ export function TrackerView() {
                         <div className="flex items-center gap-2 text-xs">
                           {item.priority && (
                             <span
-                              className={`${
-                                item.priority === "high"
-                                  ? "text-red-400"
-                                  : item.priority === "medium"
-                                    ? "text-yellow-400"
-                                    : "text-slate-500"
-                              }`}
+                              className={`${item.priority === "high"
+                                ? "text-red-400"
+                                : item.priority === "medium"
+                                  ? "text-yellow-400"
+                                  : "text-slate-500"
+                                }`}
                             >
                               {PRIORITY_LABELS[item.priority]}
                             </span>
@@ -547,18 +658,16 @@ export function TrackerView() {
                                 onClick={() =>
                                   toggleComponent(item.id, comp.name)
                                 }
-                                className={`flex items-center gap-2 p-2 rounded text-xs transition-colors ${
-                                  completed
-                                    ? "bg-green-900/30 text-green-400 border border-green-600/30"
-                                    : "bg-slate-800/50 text-slate-400 border border-slate-700/50 hover:border-slate-600"
-                                }`}
+                                className={`flex items-center gap-2 p-2 rounded text-xs transition-colors ${completed
+                                  ? "bg-green-900/30 text-green-400 border border-green-600/30"
+                                  : "bg-slate-800/50 text-slate-400 border border-slate-700/50 hover:border-slate-600"
+                                  }`}
                               >
                                 <div
-                                  className={`w-4 h-4 rounded border flex items-center justify-center flex-shrink-0 ${
-                                    completed
-                                      ? "bg-green-600 border-green-600"
-                                      : "border-slate-600"
-                                  }`}
+                                  className={`w-4 h-4 rounded border flex items-center justify-center flex-shrink-0 ${completed
+                                    ? "bg-green-600 border-green-600"
+                                    : "border-slate-600"
+                                    }`}
                                 >
                                   {completed && (
                                     <Check size={10} className="text-white" />
@@ -624,6 +733,6 @@ export function TrackerView() {
           </div>
         )}
       </div>
-    </div>
+    </div >
   );
 }

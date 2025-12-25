@@ -55,6 +55,7 @@ export async function fetchWorldState(): Promise<WorldState | null> {
         boss: sortieData.boss,
         faction: sortieData.faction,
         eta: sortieData.eta || "",
+        expiry: sortieData.expiry || "",
         variants: (sortieData.variants || []).map((v: any) => ({
           missionType: v.missionType,
           modifier: v.modifier,
@@ -151,6 +152,7 @@ export async function fetchWorldState(): Promise<WorldState | null> {
       archonHunt = {
         boss: archonData.boss,
         eta: archonData.eta || "",
+        expiry: archonData.expiry || "",
         missions: (archonData.missions || []).map((m: any) => ({
           missionType: m.type,
           node: m.node,

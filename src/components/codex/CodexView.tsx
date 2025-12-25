@@ -17,11 +17,11 @@ import {
 import {
   itemNames,
   itemsData,
-  getItemImageUrl,
   getItemCategory,
 } from "../../utils/translations";
-import { VirtualizedList, useContainerHeight } from "../ui";
+import { VirtualizedList, useContainerHeight, ItemImage } from "../ui";
 import { ItemDetailModal } from "./ItemDetailModal";
+import { useDebounce } from "../../hooks/useDebounce";
 import type { SavedItem } from "../../types";
 
 const CATEGORIES = [
@@ -52,6 +52,7 @@ interface CodexItem {
 
 export function CodexView() {
   const [searchQuery, setSearchQuery] = useState("");
+  const debouncedSearchQuery = useDebounce(searchQuery, 300);
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [expandedItem, setExpandedItem] = useState<string | null>(null);
   const [selectedItemPath, setSelectedItemPath] = useState<string | null>(null);
@@ -92,9 +93,9 @@ export function CodexView() {
       items = items.filter((item) => item.category === selectedCategory);
     }
 
-    // Search filter
-    if (searchQuery.length >= 2) {
-      const query = searchQuery.toLowerCase();
+    // Search filter (uses debounced value for performance)
+    if (debouncedSearchQuery.length >= 2) {
+      const query = debouncedSearchQuery.toLowerCase();
       items = items.filter((item) => item.name.toLowerCase().includes(query));
     }
 
@@ -126,7 +127,7 @@ export function CodexView() {
     return items;
   }, [
     allItems,
-    searchQuery,
+    debouncedSearchQuery,
     selectedCategory,
     maxMastery,
     showTradableOnly,
@@ -149,8 +150,6 @@ export function CodexView() {
   // Render a single item row
   const renderItem = useCallback(
     (item: CodexItem) => {
-      const itemInfo = itemsData[item.path];
-      const imageUrl = itemInfo ? getItemImageUrl(itemInfo) : null;
       const isExpanded = expandedItem === item.path;
 
       return (
@@ -160,16 +159,12 @@ export function CodexView() {
             className="w-full p-3 flex items-center justify-between text-left"
           >
             <div className="flex items-center gap-3">
-              {imageUrl && (
-                <img
-                  src={imageUrl}
-                  alt={item.name}
-                  className="w-10 h-10 object-contain rounded bg-slate-900"
-                  onError={(e) => {
-                    (e.target as HTMLImageElement).style.display = "none";
-                  }}
-                />
-              )}
+              <ItemImage
+                itemPath={item.path}
+                name={item.name}
+                category={item.category}
+                size={40}
+              />
               <div>
                 <h3 className="text-slate-200 font-medium">{item.name}</h3>
                 <div className="flex items-center gap-2 text-xs text-slate-500">
@@ -191,6 +186,7 @@ export function CodexView() {
                 onClick={(e) => e.stopPropagation()}
                 className="p-2 text-slate-400 hover:text-cyan-400 transition-colors"
                 title="View on Wiki"
+                aria-label={`View ${item.name} on Wiki`}
               >
                 <ExternalLink size={16} />
               </a>
@@ -313,11 +309,10 @@ export function CodexView() {
                   <button
                     key={option}
                     onClick={() => toggleSort(option)}
-                    className={`px-3 py-1 rounded text-sm transition-colors ${
-                      sortBy === option
-                        ? "bg-cyan-600 text-white"
-                        : "bg-slate-800/50 text-slate-400 hover:bg-slate-700"
-                    }`}
+                    className={`px-3 py-1 rounded text-sm transition-colors ${sortBy === option
+                      ? "bg-cyan-600 text-white"
+                      : "bg-slate-800/50 text-slate-400 hover:bg-slate-700"
+                      }`}
                   >
                     {option.charAt(0).toUpperCase() + option.slice(1)}
                     {sortBy === option && (
@@ -338,11 +333,10 @@ export function CodexView() {
             <button
               key={cat}
               onClick={() => setSelectedCategory(cat)}
-              className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${
-                selectedCategory === cat
-                  ? "bg-cyan-600 text-white"
-                  : "bg-slate-800/50 text-slate-400 hover:bg-slate-700 hover:text-slate-300"
-              }`}
+              className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${selectedCategory === cat
+                ? "bg-cyan-600 text-white"
+                : "bg-slate-800/50 text-slate-400 hover:bg-slate-700 hover:text-slate-300"
+                }`}
             >
               {cat === "all" ? "All" : cat}
             </button>
@@ -411,11 +405,10 @@ function AddToTrackerButton({ itemName }: { itemName: string }) {
         e.stopPropagation();
         handleAdd();
       }}
-      className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm transition-colors ${
-        added
-          ? "bg-green-600/20 text-green-400"
-          : "bg-cyan-600/20 text-cyan-400 hover:bg-cyan-600/30"
-      }`}
+      className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm transition-colors ${added
+        ? "bg-green-600/20 text-green-400"
+        : "bg-cyan-600/20 text-cyan-400 hover:bg-cyan-600/30"
+        }`}
     >
       {added ? <Check size={14} /> : <Plus size={14} />}
       {added ? "Added!" : "Track"}

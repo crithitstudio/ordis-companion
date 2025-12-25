@@ -53,6 +53,13 @@ export default defineConfig({
         rewrite: (path: string) =>
           path.replace(/^\/api\/warframe\/dynamic/, "/cdn"),
       },
+      "/api/alecaframe": {
+        target: "https://stats.alecaframe.com",
+        changeOrigin: true,
+        secure: false,
+        rewrite: (path: string) =>
+          path.replace(/^\/api\/alecaframe/, "/api/v1/public"),
+      },
     },
   },
 });

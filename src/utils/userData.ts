@@ -2,69 +2,111 @@
  * User data export/import utilities
  */
 
+// All localStorage keys used by the app
+const USER_DATA_KEYS = [
+  "ordis-tracker",
+  "ordis-mastery",
+  "ordis-mastery-nodes",
+  "ordis-mastery-junctions",
+  "ordis-mastery-intrinsics",
+  "savedRelics",
+  "completedNightwaveChallenges",
+  "completedSorties",
+  "completedArchonHunts",
+  "wantedFarmingItems",
+  "steelPathWeeklyRewards",
+  "steelPathIncarnons",
+  "ordis-theme",
+  "ordis-collapsed-sections",
+] as const;
+
 interface UserData {
   version: number;
   exportedAt: string;
-  tracker: unknown[];
-  relics: unknown[];
-  mastery: string[];
-  completed: string[];
+  appName: string;
+  data: Record<string, unknown>;
 }
 
-const CURRENT_VERSION = 1;
+const CURRENT_VERSION = 2; // Bumped version for new format
 
 /**
  * Export all user data from localStorage
  */
 export function exportUserData(): string {
-  const data: UserData = {
+  const data: Record<string, unknown> = {};
+
+  USER_DATA_KEYS.forEach((key) => {
+    const value = localStorage.getItem(key);
+    if (value) {
+      try {
+        data[key] = JSON.parse(value);
+      } catch {
+        data[key] = value;
+      }
+    }
+  });
+
+  const exportData: UserData = {
     version: CURRENT_VERSION,
     exportedAt: new Date().toISOString(),
-    tracker: JSON.parse(localStorage.getItem("ordis-tracker") || "[]"),
-    relics: JSON.parse(localStorage.getItem("ordis-relics") || "[]"),
-    mastery: JSON.parse(localStorage.getItem("ordis-mastery") || "[]"),
-    completed: JSON.parse(localStorage.getItem("ordis-completed") || "[]"),
+    appName: "Ordis Companion",
+    data,
   };
-  return JSON.stringify(data, null, 2);
+
+  return JSON.stringify(exportData, null, 2);
 }
 
 /**
  * Import user data from JSON string
+ * Supports both v1 (legacy) and v2 (new) formats
  */
 export function importUserData(jsonString: string): {
   success: boolean;
   message: string;
 } {
   try {
-    const data = JSON.parse(jsonString) as Partial<UserData>;
+    const parsed = JSON.parse(jsonString);
 
     // Basic validation
-    if (typeof data !== "object" || data === null) {
+    if (typeof parsed !== "object" || parsed === null) {
       return { success: false, message: "Invalid data format" };
     }
 
-    if (!data.version || data.version > CURRENT_VERSION) {
-      return { success: false, message: "Unsupported data version" };
+    // Check for v2 format (new format with data object)
+    if (parsed.appName === "Ordis Companion" && parsed.data) {
+      const data = parsed.data as Record<string, unknown>;
+
+      Object.entries(data).forEach(([key, value]) => {
+        if (USER_DATA_KEYS.includes(key as typeof USER_DATA_KEYS[number])) {
+          localStorage.setItem(key, JSON.stringify(value));
+        }
+      });
+
+      return {
+        success: true,
+        message: `Imported data from ${parsed.exportedAt || "unknown date"}`,
+      };
     }
 
-    // Import each data type if present
-    if (Array.isArray(data.tracker)) {
-      localStorage.setItem("ordis-tracker", JSON.stringify(data.tracker));
-    }
-    if (Array.isArray(data.relics)) {
-      localStorage.setItem("ordis-relics", JSON.stringify(data.relics));
-    }
-    if (Array.isArray(data.mastery)) {
-      localStorage.setItem("ordis-mastery", JSON.stringify(data.mastery));
-    }
-    if (Array.isArray(data.completed)) {
-      localStorage.setItem("ordis-completed", JSON.stringify(data.completed));
+    // Legacy v1 format support
+    if (parsed.version === 1) {
+      if (Array.isArray(parsed.tracker)) {
+        localStorage.setItem("ordis-tracker", JSON.stringify(parsed.tracker));
+      }
+      if (Array.isArray(parsed.relics)) {
+        localStorage.setItem("savedRelics", JSON.stringify(parsed.relics));
+      }
+      if (Array.isArray(parsed.mastery)) {
+        localStorage.setItem("ordis-mastery", JSON.stringify(parsed.mastery));
+      }
+
+      return {
+        success: true,
+        message: `Imported legacy data from ${parsed.exportedAt || "unknown date"}`,
+      };
     }
 
-    return {
-      success: true,
-      message: `Imported data from ${data.exportedAt || "unknown date"}`,
-    };
+    return { success: false, message: "Unrecognized data format" };
   } catch (error) {
     return {
       success: false,

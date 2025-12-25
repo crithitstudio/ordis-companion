@@ -6,8 +6,10 @@ import { registerServiceWorker } from "./utils/serviceWorker";
 import "./index.css";
 import App from "./App.tsx";
 
-// Register service worker for offline support
-registerServiceWorker();
+// Register service worker for offline support (production only)
+if (import.meta.env.PROD) {
+  registerServiceWorker();
+}
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>

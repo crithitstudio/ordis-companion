@@ -13,7 +13,6 @@ import {
   Target,
   Bell,
   ShoppingCart,
-  Gem,
   Check,
   AlertTriangle,
   RefreshCw,
@@ -26,6 +25,8 @@ import {
   ErrorDisplay,
   LoadingSpinner,
   CollapsibleSection,
+  PlatinumIcon,
+  ItemImage,
 } from "../ui";
 import { ItemDetailModal } from "../codex/ItemDetailModal";
 import { useLocalStorageSet } from "../../hooks/useLocalStorage";
@@ -35,7 +36,7 @@ import {
   getCambionCycle,
   getEarthCycle,
 } from "../../utils/cycles";
-import { getItemImageUrl } from "../../utils/translations";
+import { itemsData } from "../../utils/translations";
 import { getRelicDrops } from "../../utils/relicData";
 import type {
   WorldState,
@@ -74,6 +75,23 @@ function getCountdownString(targetDate: string): string {
     return `${minutes}m`;
   }
 }
+
+// Sortie modifier descriptions for tooltips
+const MODIFIER_DESCRIPTIONS: Record<string, string> = {
+  "Augmented Enemy Armor": "Enemies have significantly increased armor",
+  "Enhanced Enemy Shields": "Enemies have significantly increased shields",
+  "Enemy Elemental Enhancement": "Enemies deal additional elemental damage",
+  "Enemy Physical Enhancement": "Enemies deal additional physical damage",
+  "Eximus Stronghold": "More Eximus enemies spawn with increased stats",
+  "Energy Reduction": "Maximum energy capacity is reduced by 80%",
+  "Magnetic Anomalies": "Periodic magnetic pulses drain energy and disrupt shields",
+  "Cryogenic Leakage": "Cold damage periodically applied, slowing movement",
+  "Dense Fog": "Visibility is significantly reduced",
+  "Fire": "Environmental fire damage over time",
+  "Radiation Hazard": "Periodic radiation procs cause friendly fire",
+  "Viral Contagion": "Viral damage reduces max health periodically",
+  "Electromagnetic Anomalies": "Random energy drain and shield disruption",
+};
 
 export function DashboardView({
   worldState,
@@ -265,20 +283,39 @@ export function DashboardView({
               <ShoppingCart size={20} /> Darvo's Deal
             </h2>
             <div className="space-y-2">
-              <button
-                onClick={() => setSelectedItemForDetails(darvoDeal.item)}
-                className="text-slate-200 font-medium text-lg hover:text-cyan-400 transition-colors cursor-pointer underline decoration-dotted underline-offset-4"
-              >
-                {darvoDeal.item}
-              </button>
+              <div className="flex items-center gap-3">
+                {/* Item thumbnail */}
+                {(() => {
+                  // Look up item by name to get uniqueName
+                  const itemEntry = Object.entries(itemsData).find(
+                    ([, i]) => i.name === darvoDeal.item
+                  );
+                  const itemPath = itemEntry ? itemEntry[0] : null;
+                  return (
+                    <ItemImage
+                      itemPath={itemPath}
+                      name={darvoDeal.item}
+                      category="Other"
+                      size={48}
+                    />
+                  );
+                })()}
+                <button
+                  onClick={() => setSelectedItemForDetails(darvoDeal.item)}
+                  className="text-slate-200 font-medium text-lg hover:text-cyan-400 transition-colors cursor-pointer underline decoration-dotted underline-offset-4"
+                  title="View item details"
+                >
+                  {darvoDeal.item}
+                </button>
+              </div>
               <div className="flex items-center gap-2">
                 <span className="line-through text-slate-500 flex items-center">
                   {darvoDeal.originalPrice}
-                  <Gem className="w-3 h-3 ml-0.5 inline opacity-60 text-cyan-500" />
+                  <PlatinumIcon size={12} className="ml-0.5 opacity-60" />
                 </span>
                 <span className="text-green-400 font-bold text-xl flex items-center gap-1">
                   {darvoDeal.salePrice}
-                  <Gem className="w-5 h-5 text-cyan-400" />
+                  <PlatinumIcon size={18} />
                 </span>
                 <span className="bg-green-900/50 text-green-300 px-2 py-0.5 rounded text-sm font-bold">
                   -{darvoDeal.discount}%
@@ -308,15 +345,14 @@ export function DashboardView({
             <div className="text-slate-400">{arbitration.node}</div>
             <div className="flex justify-between items-center text-sm">
               <span
-                className={`font-bold ${
-                  arbitration.enemy === "Grineer"
-                    ? "text-red-400"
-                    : arbitration.enemy === "Corpus"
-                      ? "text-blue-400"
-                      : arbitration.enemy === "Infested"
-                        ? "text-green-400"
-                        : "text-yellow-400"
-                }`}
+                className={`font-bold ${arbitration.enemy === "Grineer"
+                  ? "text-red-400"
+                  : arbitration.enemy === "Corpus"
+                    ? "text-blue-400"
+                    : arbitration.enemy === "Infested"
+                      ? "text-green-400"
+                      : "text-yellow-400"
+                  }`}
               >
                 {arbitration.enemy}
               </span>
@@ -350,9 +386,6 @@ export function DashboardView({
               {primeResurgence.vaultedItems
                 .slice(0, 12)
                 .map((item: VarziaItem, idx: number) => {
-                  const imageUrl = getItemImageUrl({
-                    uniqueName: item.uniqueName,
-                  });
                   const relicDrops = getRelicDrops(item.name);
                   const rarityColors: Record<string, string> = {
                     Rare: "text-yellow-400",
@@ -365,17 +398,12 @@ export function DashboardView({
                       className="bg-slate-800 p-3 rounded-lg border border-amber-700/30 hover:border-amber-500/50 transition-colors card-interactive"
                     >
                       <div className="flex items-center gap-3">
-                        {imageUrl && (
-                          <img
-                            src={imageUrl}
-                            alt={item.name}
-                            className="w-10 h-10 object-contain rounded bg-slate-900/50 flex-shrink-0"
-                            onError={(e) => {
-                              (e.target as HTMLImageElement).style.display =
-                                "none";
-                            }}
-                          />
-                        )}
+                        <ItemImage
+                          itemPath={item.uniqueName}
+                          name={item.name}
+                          category="Relic"
+                          size={40}
+                        />
                         <div className="flex-1 min-w-0">
                           <span className="text-slate-200 font-medium truncate block">
                             {item.name}
@@ -425,7 +453,7 @@ export function DashboardView({
               <Target size={20} /> Archon Hunt: {archonHunt.boss}
             </h2>
             <span className="text-slate-400 text-sm font-mono">
-              {archonHunt.eta} remaining
+              {archonHunt.eta || getCountdownString(archonHunt.expiry)} remaining
             </span>
           </div>
           <div className="p-4 grid grid-cols-1 md:grid-cols-3 gap-3">
@@ -484,7 +512,7 @@ export function DashboardView({
               <Crosshair size={20} /> Sortie: {sortie.faction}
             </h2>
             <span className="text-slate-400 text-sm font-mono">
-              {sortie.eta} remaining
+              {sortie.eta || getCountdownString(sortie.expiry)} remaining
             </span>
           </div>
           <div className="p-4">
@@ -527,7 +555,8 @@ export function DashboardView({
                           {mission.missionType} - {mission.node}
                         </div>
                         <div
-                          className={`text-xs italic ${completed ? "text-slate-500" : "text-slate-400"}`}
+                          className={`text-xs italic cursor-help ${completed ? "text-slate-500" : "text-slate-400"}`}
+                          title={MODIFIER_DESCRIPTIONS[mission.modifier] || "Mission modifier"}
                         >
                           {mission.modifier}
                         </div>
@@ -557,15 +586,14 @@ export function DashboardView({
               return (
                 <div
                   key={challenge.id}
-                  className={`bg-slate-800 p-3 rounded border cursor-pointer transition-colors ${
-                    completed
-                      ? "border-green-600/50 bg-green-900/10"
-                      : challenge.isElite
-                        ? "border-purple-600 hover:border-purple-400"
-                        : challenge.isDaily
-                          ? "border-blue-700 hover:border-blue-500"
-                          : "border-slate-700 hover:border-slate-500"
-                  }`}
+                  className={`bg-slate-800 p-3 rounded border cursor-pointer transition-colors ${completed
+                    ? "border-green-600/50 bg-green-900/10"
+                    : challenge.isElite
+                      ? "border-purple-600 hover:border-purple-400"
+                      : challenge.isDaily
+                        ? "border-blue-700 hover:border-blue-500"
+                        : "border-slate-700 hover:border-slate-500"
+                    }`}
                   onClick={() => toggleCompleted(`nightwave-${challenge.id}`)}
                 >
                   <div className="flex items-start gap-2">
@@ -646,17 +674,29 @@ export function DashboardView({
                   <span>{invasion.attackerReward}</span>
                   <span>{invasion.defenderReward}</span>
                 </div>
-                <div className="mt-2 h-2 bg-slate-700 rounded-full overflow-hidden">
-                  <div
-                    className={`h-full transition-all ${invasion.progress > 0 ? "bg-red-500" : "bg-blue-500"}`}
-                    style={{
-                      width: `${Math.abs(invasion.progress)}%`,
-                      marginLeft:
-                        invasion.progress < 0
-                          ? "0%"
-                          : `${100 - invasion.progress}%`,
-                    }}
-                  />
+                {/* Improved progress bar with center marker */}
+                <div className="mt-2 relative">
+                  <div className="h-2 bg-gradient-to-r from-red-900/50 via-slate-700 to-blue-900/50 rounded-full overflow-hidden relative">
+                    {/* Center marker */}
+                    <div className="absolute left-1/2 top-0 bottom-0 w-0.5 bg-slate-500 -translate-x-1/2 z-10" />
+                    {/* Progress fill */}
+                    <div
+                      className={`h-full transition-all absolute top-0 ${invasion.progress > 0 ? "bg-red-500 right-1/2" : "bg-blue-500 left-1/2"
+                        }`}
+                      style={{
+                        width: `${Math.abs(invasion.progress) / 2}%`,
+                      }}
+                    />
+                  </div>
+                  {/* Percentage labels */}
+                  <div className="flex justify-between text-[10px] text-slate-500 mt-0.5">
+                    <span className={invasion.progress > 0 ? "text-red-400 font-medium" : ""}>
+                      {invasion.progress > 0 ? `+${invasion.progress.toFixed(0)}%` : ""}
+                    </span>
+                    <span className={invasion.progress < 0 ? "text-blue-400 font-medium" : ""}>
+                      {invasion.progress < 0 ? `+${Math.abs(invasion.progress).toFixed(0)}%` : ""}
+                    </span>
+                  </div>
                 </div>
               </div>
             ))}

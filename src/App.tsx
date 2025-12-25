@@ -20,6 +20,17 @@ import {
   Sword,
   Menu,
   MoreHorizontal,
+  Sparkles,
+  Bug,
+  Wallet,
+  Crosshair,
+  Layers,
+  Hexagon,
+  BarChart3,
+  Heart,
+  Building2,
+  ChevronDown,
+  Settings,
 } from "lucide-react";
 
 import { useWorldState, useTickTimer } from "./hooks/useWorldState";
@@ -29,8 +40,14 @@ import {
 } from "./hooks/useKeyboardShortcuts";
 import { useTheme } from "./contexts/ThemeContext";
 import { downloadUserData, triggerImportDialog } from "./utils/userData";
-import { LoadingSpinner } from "./components/ui";
+import {
+  DashboardSkeleton,
+  CodexSkeleton,
+  MasterySkeleton,
+  SectionSkeleton,
+} from "./components/ui";
 import { RelicDropTableModal } from "./components/relics/RelicDropTableModal";
+import { DataManagement } from "./components/settings/DataManagement";
 import type { TabName } from "./types";
 
 // Lazy load view components for code-splitting
@@ -79,8 +96,54 @@ const SteelPathView = lazy(() =>
     default: m.SteelPathView,
   })),
 );
+const FocusView = lazy(() =>
+  import("./components/focus/FocusView").then((m) => ({
+    default: m.FocusView,
+  })),
+);
+const LichWeaponsView = lazy(() =>
+  import("./components/lichweapons/LichWeaponsView").then((m) => ({
+    default: m.LichWeaponsView,
+  })),
+);
+const TradeView = lazy(() =>
+  import("./components/trade/TradeView").then((m) => ({
+    default: m.TradeView,
+  })),
+);
+const RivenView = lazy(() =>
+  import("./components/rivens/RivenView").then((m) => ({
+    default: m.RivenView,
+  })),
+);
+const BuildView = lazy(() =>
+  import("./components/builds/BuildView").then((m) => ({
+    default: m.BuildView,
+  })),
+);
+const FormaView = lazy(() =>
+  import("./components/forma/FormaView").then((m) => ({
+    default: m.FormaView,
+  })),
+);
+const StatsView = lazy(() =>
+  import("./components/stats/StatsView").then((m) => ({
+    default: m.StatsView,
+  })),
+);
+const CompanionView = lazy(() =>
+  import("./components/companions/CompanionView").then((m) => ({
+    default: m.CompanionView,
+  })),
+);
+const DojoView = lazy(() =>
+  import("./components/dojo/DojoView").then((m) => ({
+    default: m.DojoView,
+  })),
+);
 
-const TABS: { id: TabName; label: string; icon: typeof Home }[] = [
+// Primary tabs shown directly in navigation
+const PRIMARY_TABS: { id: TabName; label: string; icon: typeof Home }[] = [
   { id: "dashboard", label: "Dashboard", icon: Home },
   { id: "codex", label: "Codex", icon: Book },
   { id: "tracker", label: "Tracker", icon: Package },
@@ -89,12 +152,46 @@ const TABS: { id: TabName; label: string; icon: typeof Home }[] = [
   { id: "farming", label: "Farming", icon: Target },
   { id: "syndicates", label: "Syndicates", icon: Users },
   { id: "steelpath", label: "Steel Path", icon: Sword },
-  { id: "guide", label: "Guide", icon: Bookmark },
+];
+
+// Secondary tabs shown in "More" dropdown, grouped by category
+const SECONDARY_TABS: { group: string; tabs: { id: TabName; label: string; icon: typeof Home }[] }[] = [
+  {
+    group: "Progress",
+    tabs: [
+      { id: "focus", label: "Focus Schools", icon: Sparkles },
+      { id: "weapons", label: "Adversary Weapons", icon: Bug },
+      { id: "companions", label: "Companions", icon: Heart },
+      { id: "dojo", label: "Dojo Research", icon: Building2 },
+    ],
+  },
+  {
+    group: "Tools",
+    tabs: [
+      { id: "trade", label: "Trade Assistant", icon: Wallet },
+      { id: "rivens", label: "Riven Calculator", icon: Crosshair },
+      { id: "builds", label: "Build Planner", icon: Layers },
+      { id: "forma", label: "Forma Planner", icon: Hexagon },
+    ],
+  },
+  {
+    group: "Info",
+    tabs: [
+      { id: "stats", label: "Statistics", icon: BarChart3 },
+      { id: "guide", label: "New Player Guide", icon: Bookmark },
+    ],
+  },
+];
+
+// All tabs for reference
+const ALL_TABS = [
+  ...PRIMARY_TABS,
+  ...SECONDARY_TABS.flatMap(g => g.tabs),
 ];
 
 // Mobile bottom nav shows first 4 tabs + More
-const MOBILE_TABS = TABS.slice(0, 4);
-const MORE_TABS = TABS.slice(4);
+const MOBILE_TABS = PRIMARY_TABS.slice(0, 4);
+const MORE_TABS = ALL_TABS.slice(4);
 
 export default function OrdisApp() {
   const { worldState, error, refresh } = useWorldState();
@@ -108,6 +205,7 @@ export default function OrdisApp() {
     type: "success" | "error";
     text: string;
   } | null>(null);
+  const [showDataManagement, setShowDataManagement] = useState(false);
 
   // Trigger re-render every second for countdown timers
   useTickTimer(1000);
@@ -197,17 +295,51 @@ export default function OrdisApp() {
       case "mastery":
         return <MasteryView />;
       case "relics":
-        return <RelicsView />;
+        return <RelicsView fissures={worldState?.fissures || []} />;
       case "farming":
         return <FarmingView fissures={worldState?.fissures || []} />;
       case "syndicates":
         return <SyndicateView />;
       case "steelpath":
         return <SteelPathView />;
+      case "focus":
+        return <FocusView />;
+      case "weapons":
+        return <LichWeaponsView />;
+      case "trade":
+        return <TradeView />;
+      case "rivens":
+        return <RivenView />;
+      case "builds":
+        return <BuildView />;
+      case "forma":
+        return <FormaView />;
+      case "stats":
+        return <StatsView />;
+      case "companions":
+        return <CompanionView />;
+      case "dojo":
+        return <DojoView />;
       case "guide":
         return <GuideView />;
       default:
         return null;
+    }
+  };
+
+  // Get view-specific skeleton based on active tab
+  const getLoadingSkeleton = () => {
+    switch (activeTab) {
+      case "dashboard":
+        return <DashboardSkeleton />;
+      case "codex":
+      case "tracker":
+      case "farming":
+        return <CodexSkeleton />;
+      case "mastery":
+        return <MasterySkeleton />;
+      default:
+        return <SectionSkeleton />;
     }
   };
 
@@ -283,6 +415,16 @@ export default function OrdisApp() {
                 <Keyboard size={20} />
               </button>
 
+              {/* Settings/Data Management */}
+              <button
+                onClick={() => setShowDataManagement(true)}
+                className="p-2 rounded-lg text-slate-400 hover:text-slate-200 hover:bg-slate-800 transition-colors"
+                aria-label="Settings and Data Management"
+                title="Settings & Data"
+              >
+                <Settings size={20} />
+              </button>
+
               {/* Auto-updating indicator */}
               <div className="flex items-center gap-2 text-slate-400 text-sm ml-2">
                 <RefreshCw
@@ -329,27 +471,76 @@ export default function OrdisApp() {
         {/* Desktop Tab Navigation */}
         <div className="hidden md:block max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border-t border-slate-800/50">
           <nav
-            className="flex overflow-x-auto scrollbar-hide -mb-px"
+            className="flex items-center -mb-px"
             role="tablist"
           >
-            {TABS.map((tab, idx) => (
+            {PRIMARY_TABS.map((tab, idx) => (
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
                 role="tab"
                 aria-selected={activeTab === tab.id}
                 aria-controls={`${tab.id}-panel`}
-                className={`flex items-center gap-2 px-4 py-3 text-sm font-medium border-b-2 transition-colors whitespace-nowrap ${
-                  activeTab === tab.id
-                    ? "border-cyan-500 text-cyan-400"
-                    : "border-transparent text-slate-500 hover:text-slate-300 hover:border-slate-700"
-                }`}
+                className={`flex items-center gap-2 px-4 py-3 text-sm font-medium border-b-2 transition-colors whitespace-nowrap ${activeTab === tab.id
+                  ? "border-cyan-500 text-cyan-400"
+                  : "border-transparent text-slate-500 hover:text-slate-300 hover:border-slate-700"
+                  }`}
               >
                 <tab.icon size={18} />
                 <span>{tab.label}</span>
                 <span className="text-[10px] text-slate-600">({idx + 1})</span>
               </button>
             ))}
+
+            {/* More Dropdown */}
+            <div className="relative ml-auto">
+              <button
+                onClick={() => setShowMoreTabs(!showMoreTabs)}
+                className={`flex items-center gap-2 px-4 py-3 text-sm font-medium border-b-2 transition-colors whitespace-nowrap ${SECONDARY_TABS.flatMap(g => g.tabs).some(t => t.id === activeTab)
+                  ? "border-cyan-500 text-cyan-400"
+                  : "border-transparent text-slate-500 hover:text-slate-300 hover:border-slate-700"
+                  }`}
+              >
+                <ChevronDown size={18} className={`transition-transform ${showMoreTabs ? "rotate-180" : ""}`} />
+                <span>More</span>
+              </button>
+
+              {/* Dropdown Menu */}
+              {showMoreTabs && (
+                <>
+                  <div
+                    className="fixed inset-0 z-40"
+                    onClick={() => setShowMoreTabs(false)}
+                  />
+                  <div className="absolute right-0 top-full mt-1 w-64 bg-slate-900 border border-slate-700 rounded-xl shadow-xl z-50 overflow-hidden">
+                    {SECONDARY_TABS.map((group, gIdx) => (
+                      <div key={group.group}>
+                        {gIdx > 0 && <div className="border-t border-slate-700" />}
+                        <div className="px-3 py-1.5 text-xs text-slate-500 uppercase tracking-wider bg-slate-800/50">
+                          {group.group}
+                        </div>
+                        {group.tabs.map(tab => (
+                          <button
+                            key={tab.id}
+                            onClick={() => {
+                              setActiveTab(tab.id);
+                              setShowMoreTabs(false);
+                            }}
+                            className={`w-full flex items-center gap-3 px-4 py-2 text-sm transition-colors ${activeTab === tab.id
+                              ? "bg-cyan-900/30 text-cyan-400"
+                              : "text-slate-300 hover:bg-slate-800"
+                              }`}
+                          >
+                            <tab.icon size={16} />
+                            <span>{tab.label}</span>
+                          </button>
+                        ))}
+                      </div>
+                    ))}
+                  </div>
+                </>
+              )}
+            </div>
           </nav>
         </div>
       </header>
@@ -401,9 +592,37 @@ export default function OrdisApp() {
         </div>
       )}
 
+      {/* Data Management Modal */}
+      {showDataManagement && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4"
+          onClick={() => setShowDataManagement(false)}
+        >
+          <div
+            className="bg-slate-900 border border-slate-700 rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="sticky top-0 bg-slate-900 border-b border-slate-700 p-4 flex items-center justify-between">
+              <h2 className="text-lg font-bold text-cyan-400 flex items-center gap-2">
+                <Settings size={20} /> Settings & Data
+              </h2>
+              <button
+                onClick={() => setShowDataManagement(false)}
+                className="text-slate-400 hover:text-white"
+              >
+                <X size={20} />
+              </button>
+            </div>
+            <div className="p-4">
+              <DataManagement onClose={() => setShowDataManagement(false)} />
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Main Content Area */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 pb-24 md:pb-8">
-        <Suspense fallback={<LoadingSpinner message="Loading view..." />}>
+        <Suspense fallback={getLoadingSkeleton()}>
           {renderActiveView()}
         </Suspense>
       </main>
@@ -569,6 +788,18 @@ export default function OrdisApp() {
                 <span>Keyboard Shortcuts</span>
               </button>
 
+              {/* Data Management / AlecaFrame */}
+              <button
+                onClick={() => {
+                  setShowDataManagement(true);
+                  setShowMobileMenu(false);
+                }}
+                className="flex items-center gap-3 w-full p-3 rounded-lg text-slate-200 hover:bg-slate-800 transition-colors"
+              >
+                <Settings size={20} className="text-slate-400" />
+                <span>Data Management</span>
+              </button>
+
               {/* Auto-updating indicator */}
               <div className="flex items-center gap-3 p-3 text-slate-400">
                 <RefreshCw
@@ -623,11 +854,10 @@ export default function OrdisApp() {
                     setActiveTab(tab.id);
                     setShowMoreTabs(false);
                   }}
-                  className={`flex items-center gap-3 w-full p-3 rounded-lg transition-colors ${
-                    activeTab === tab.id
-                      ? "bg-cyan-900/30 text-cyan-400"
-                      : "text-slate-200 hover:bg-slate-800"
-                  }`}
+                  className={`flex items-center gap-3 w-full p-3 rounded-lg transition-colors ${activeTab === tab.id
+                    ? "bg-cyan-900/30 text-cyan-400"
+                    : "text-slate-200 hover:bg-slate-800"
+                    }`}
                 >
                   <tab.icon
                     size={20}

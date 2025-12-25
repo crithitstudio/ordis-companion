@@ -12,7 +12,8 @@ import {
   TrendingUp,
 } from "lucide-react";
 import { useLocalStorageSet } from "../../hooks/useLocalStorage";
-import { itemsData, getItemImageUrl, solNodes } from "../../utils/translations";
+import { itemsData, solNodes } from "../../utils/translations";
+import { ItemImage } from "../ui";
 
 // Mastery XP values per category
 const MASTERY_XP: Record<string, number> = {
@@ -634,51 +635,46 @@ export function MasteryView() {
       <div className="flex gap-2">
         <button
           onClick={() => setActiveTab("equipment")}
-          className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-colors ${
-            activeTab === "equipment"
-              ? "bg-cyan-600 text-white"
-              : "bg-slate-800 text-slate-400 hover:bg-slate-700"
-          }`}
+          className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-colors ${activeTab === "equipment"
+            ? "bg-cyan-600 text-white"
+            : "bg-slate-800 text-slate-400 hover:bg-slate-700"
+            }`}
         >
           <Star size={18} /> Equipment
         </button>
         <button
           onClick={() => setActiveTab("starchart")}
-          className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-colors ${
-            activeTab === "starchart"
-              ? "bg-cyan-600 text-white"
-              : "bg-slate-800 text-slate-400 hover:bg-slate-700"
-          }`}
+          className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-colors ${activeTab === "starchart"
+            ? "bg-cyan-600 text-white"
+            : "bg-slate-800 text-slate-400 hover:bg-slate-700"
+            }`}
         >
           <MapIcon size={18} /> Star Chart
         </button>
         <button
           onClick={() => setActiveTab("junctions")}
-          className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-colors ${
-            activeTab === "junctions"
-              ? "bg-cyan-600 text-white"
-              : "bg-slate-800 text-slate-400 hover:bg-slate-700"
-          }`}
+          className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-colors ${activeTab === "junctions"
+            ? "bg-cyan-600 text-white"
+            : "bg-slate-800 text-slate-400 hover:bg-slate-700"
+            }`}
         >
           <Waypoints size={18} /> Junctions
         </button>
         <button
           onClick={() => setActiveTab("intrinsics")}
-          className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-colors ${
-            activeTab === "intrinsics"
-              ? "bg-cyan-600 text-white"
-              : "bg-slate-800 text-slate-400 hover:bg-slate-700"
-          }`}
+          className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-colors ${activeTab === "intrinsics"
+            ? "bg-cyan-600 text-white"
+            : "bg-slate-800 text-slate-400 hover:bg-slate-700"
+            }`}
         >
           <Anchor size={18} /> Intrinsics
         </button>
         <button
           onClick={() => setActiveTab("recommendations")}
-          className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-colors ${
-            activeTab === "recommendations"
-              ? "bg-yellow-600 text-white"
-              : "bg-slate-800 text-slate-400 hover:bg-slate-700"
-          }`}
+          className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-colors ${activeTab === "recommendations"
+            ? "bg-yellow-600 text-white"
+            : "bg-slate-800 text-slate-400 hover:bg-slate-700"
+            }`}
         >
           <Lightbulb size={18} /> What to Level
         </button>
@@ -687,13 +683,17 @@ export function MasteryView() {
       {/* Equipment Tab */}
       {activeTab === "equipment" && (
         <section className="bg-slate-900/50 rounded-xl border border-slate-700/30 p-6">
-          {/* Category XP Breakdown */}
+          {/* Category XP Breakdown - Click to filter */}
           <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-2 mb-6">
             {Object.entries(xpStats.categoryXP).map(([cat, stats]) => (
-              <div
+              <button
                 key={cat}
-                className="bg-slate-800/50 rounded-lg p-2 text-center cursor-pointer hover:bg-slate-800 transition-colors"
-                onClick={() => setSelectedCategory(cat)}
+                className={`rounded-lg p-2 text-center transition-all ${selectedCategory === cat
+                  ? "bg-cyan-900/50 border-2 border-cyan-500 ring-2 ring-cyan-500/20"
+                  : "bg-slate-800/50 border-2 border-transparent hover:bg-slate-800 hover:border-slate-600"
+                  }`}
+                onClick={() => setSelectedCategory(selectedCategory === cat ? "all" : cat)}
+                title={`Filter by ${cat}`}
               >
                 <div className="text-xs text-slate-500 truncate">{cat}</div>
                 <div className="text-sm font-bold text-slate-200">
@@ -702,7 +702,7 @@ export function MasteryView() {
                 <div className="text-xs text-cyan-400">
                   {stats.mastered.toLocaleString()} XP
                 </div>
-              </div>
+              </button>
             ))}
           </div>
 
@@ -739,43 +739,35 @@ export function MasteryView() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 max-h-[50vh] overflow-y-auto">
             {filteredItems.slice(0, 150).map((item) => {
               const mastered = masteredItems.has(item.path);
-              const imageUrl = getItemImageUrl({ uniqueName: item.path });
               return (
                 <button
                   key={item.path}
                   onClick={() => toggleMastered(item.path)}
-                  className={`flex items-center gap-3 p-3 rounded-lg border transition-colors text-left ${
-                    mastered
-                      ? "bg-green-900/20 border-green-600/50 hover:bg-green-900/30"
-                      : "bg-slate-800/30 border-slate-700/50 hover:border-cyan-600/50"
-                  }`}
+                  className={`flex items-center gap-3 p-3 rounded-lg border transition-colors text-left ${mastered
+                    ? "bg-green-900/20 border-green-600/50 hover:bg-green-900/30"
+                    : "bg-slate-800/30 border-slate-700/50 hover:border-cyan-600/50"
+                    }`}
                 >
                   <div
-                    className={`w-5 h-5 rounded border-2 flex items-center justify-center flex-shrink-0 ${
-                      mastered
-                        ? "bg-green-600 border-green-600"
-                        : "border-slate-500"
-                    }`}
+                    className={`w-5 h-5 rounded border-2 flex items-center justify-center flex-shrink-0 ${mastered
+                      ? "bg-green-600 border-green-600"
+                      : "border-slate-500"
+                      }`}
                   >
                     {mastered && <Check size={14} className="text-white" />}
                   </div>
-                  {imageUrl && (
-                    <img
-                      src={imageUrl}
-                      alt=""
-                      className="w-8 h-8 object-contain rounded"
-                      onError={(e) => {
-                        (e.target as HTMLImageElement).style.display = "none";
-                      }}
-                    />
-                  )}
+                  <ItemImage
+                    itemPath={item.path}
+                    name={item.name}
+                    category={item.category}
+                    size={32}
+                  />
                   <div className="flex-1 min-w-0">
                     <div
-                      className={`font-medium truncate text-sm ${
-                        mastered
-                          ? "text-slate-400 line-through"
-                          : "text-slate-200"
-                      }`}
+                      className={`font-medium truncate text-sm ${mastered
+                        ? "text-slate-400 line-through"
+                        : "text-slate-200"
+                        }`}
                     >
                       {item.name}
                     </div>
@@ -864,18 +856,16 @@ export function MasteryView() {
                               <button
                                 key={node.key}
                                 onClick={() => toggleNode(node.key)}
-                                className={`flex items-center gap-2 p-2 rounded text-sm transition-colors ${
-                                  completed
-                                    ? "bg-green-900/30 text-green-400"
-                                    : "bg-slate-900/50 text-slate-400 hover:bg-slate-900"
-                                }`}
+                                className={`flex items-center gap-2 p-2 rounded text-sm transition-colors ${completed
+                                  ? "bg-green-900/30 text-green-400"
+                                  : "bg-slate-900/50 text-slate-400 hover:bg-slate-900"
+                                  }`}
                               >
                                 <div
-                                  className={`w-4 h-4 rounded border flex items-center justify-center flex-shrink-0 ${
-                                    completed
-                                      ? "bg-green-600 border-green-600"
-                                      : "border-slate-600"
-                                  }`}
+                                  className={`w-4 h-4 rounded border flex items-center justify-center flex-shrink-0 ${completed
+                                    ? "bg-green-600 border-green-600"
+                                    : "border-slate-600"
+                                    }`}
                                 >
                                   {completed && (
                                     <Check size={10} className="text-white" />
@@ -915,18 +905,16 @@ export function MasteryView() {
                 <button
                   key={junction.name}
                   onClick={() => toggleJunction(junction.name)}
-                  className={`flex items-center gap-3 p-3 rounded-lg border transition-colors text-left ${
-                    completed
-                      ? "bg-green-900/20 border-green-600/50 hover:bg-green-900/30"
-                      : "bg-slate-800/30 border-slate-700/50 hover:border-cyan-600/50"
-                  }`}
+                  className={`flex items-center gap-3 p-3 rounded-lg border transition-colors text-left ${completed
+                    ? "bg-green-900/20 border-green-600/50 hover:bg-green-900/30"
+                    : "bg-slate-800/30 border-slate-700/50 hover:border-cyan-600/50"
+                    }`}
                 >
                   <div
-                    className={`w-5 h-5 rounded border-2 flex items-center justify-center flex-shrink-0 ${
-                      completed
-                        ? "bg-green-600 border-green-600"
-                        : "border-slate-500"
-                    }`}
+                    className={`w-5 h-5 rounded border-2 flex items-center justify-center flex-shrink-0 ${completed
+                      ? "bg-green-600 border-green-600"
+                      : "border-slate-500"
+                      }`}
                   >
                     {completed && <Check size={14} className="text-white" />}
                   </div>
@@ -1087,24 +1075,18 @@ export function MasteryView() {
                 )
                 .slice(0, 12)
                 .map((item) => {
-                  const imageUrl = getItemImageUrl({ uniqueName: item.path });
                   return (
                     <button
                       key={item.path}
                       onClick={() => toggleMastered(item.path)}
                       className="flex items-center gap-3 p-3 rounded-lg border border-yellow-700/30 bg-yellow-900/10 hover:bg-yellow-900/20 transition-colors text-left"
                     >
-                      {imageUrl && (
-                        <img
-                          src={imageUrl}
-                          alt=""
-                          className="w-8 h-8 object-contain rounded"
-                          onError={(e) => {
-                            (e.target as HTMLImageElement).style.display =
-                              "none";
-                          }}
-                        />
-                      )}
+                      <ItemImage
+                        itemPath={item.path}
+                        name={item.name}
+                        category={item.category}
+                        size={32}
+                      />
                       <div className="flex-1 min-w-0">
                         <div className="font-medium text-sm text-slate-200 truncate">
                           {item.name}
@@ -1123,10 +1105,10 @@ export function MasteryView() {
             {masterableItems.filter(
               (item) => !masteredItems.has(item.path) && item.xp >= 6000,
             ).length === 0 && (
-              <p className="text-center text-green-400 py-4">
-                All high XP items mastered! 🎉
-              </p>
-            )}
+                <p className="text-center text-green-400 py-4">
+                  All high XP items mastered! 🎉
+                </p>
+              )}
           </div>
 
           {/* Standard XP Items */}

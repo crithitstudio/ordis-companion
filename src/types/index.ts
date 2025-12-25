@@ -46,6 +46,7 @@ export interface NightwaveChallenge {
 export interface ArchonHunt {
   boss: string;
   eta: string;
+  expiry: string; // ISO timestamp for countdown
   missions: {
     missionType: string;
     node: string;
@@ -82,6 +83,7 @@ export interface Sortie {
   boss: string;
   faction: string;
   eta: string;
+  expiry: string; // ISO timestamp for countdown
   variants: {
     missionType: string;
     modifier: string;
@@ -200,7 +202,16 @@ export type TabName =
   | "syndicates"
   | "steelpath"
   | "guide"
-  | "mastery";
+  | "mastery"
+  | "focus"
+  | "weapons"
+  | "trade"
+  | "rivens"
+  | "builds"
+  | "forma"
+  | "stats"
+  | "companions"
+  | "dojo";
 
 // --- Static Data Types ---
 

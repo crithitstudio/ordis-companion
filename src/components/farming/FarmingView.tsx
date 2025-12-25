@@ -12,7 +12,9 @@ import {
   Check,
   MapPin,
 } from "lucide-react";
-import { itemsData, getItemImageUrl } from "../../utils/translations";
+import { itemsData } from "../../utils/translations";
+import { ItemImage } from "../ui";
+import { useDebounce } from "../../hooks/useDebounce";
 import type { Fissure, SavedItem } from "../../types";
 
 // Common resource farming locations
@@ -20,137 +22,137 @@ const RESOURCE_FARMING_LOCATIONS: {
   resource: string;
   missions: { name: string; planet: string; type: string; notes: string }[];
 }[] = [
-  {
-    resource: "Orokin Cell",
-    missions: [
-      {
-        name: "Helene",
-        planet: "Saturn",
-        type: "Defense",
-        notes: "20 waves, General Sargas Ruk drops",
-      },
-      {
-        name: "Gabii",
-        planet: "Ceres",
-        type: "Dark Sector Survival",
-        notes: "Stay 20+ minutes",
-      },
-    ],
-  },
-  {
-    resource: "Neurodes",
-    missions: [
-      {
-        name: "Tycho",
-        planet: "Lua",
-        type: "Survival",
-        notes: "Sentients drop guaranteed",
-      },
-      {
-        name: "Mariana",
-        planet: "Earth",
-        type: "Exterminate",
-        notes: "Low level, fast runs",
-      },
-    ],
-  },
-  {
-    resource: "Argon Crystal",
-    missions: [
-      {
-        name: "Void Capture",
-        planet: "Void",
-        type: "Capture",
-        notes: "Quick runs, check containers",
-      },
-      {
-        name: "Mot",
-        planet: "Void",
-        type: "Survival",
-        notes: "High level, good drops",
-      },
-    ],
-  },
-  {
-    resource: "Polymer Bundle",
-    missions: [
-      {
-        name: "Ophelia",
-        planet: "Uranus",
-        type: "Survival",
-        notes: "Also drops Plastids and Tellurium",
-      },
-      {
-        name: "Assur",
-        planet: "Uranus",
-        type: "Dark Sector Survival",
-        notes: "35% bonus resources",
-      },
-    ],
-  },
-  {
-    resource: "Plastids",
-    missions: [
-      {
-        name: "Ophelia",
-        planet: "Uranus",
-        type: "Survival",
-        notes: "Multi-resource farm",
-      },
-      {
-        name: "Piscinas",
-        planet: "Saturn",
-        type: "Dark Sector Survival",
-        notes: "20% bonus resources",
-      },
-    ],
-  },
-  {
-    resource: "Cryotic",
-    missions: [
-      {
-        name: "Hieracon",
-        planet: "Pluto",
-        type: "Excavation",
-        notes: "100 per excavator",
-      },
-    ],
-  },
-  {
-    resource: "Oxium",
-    missions: [
-      {
-        name: "Io",
-        planet: "Jupiter",
-        type: "Defense",
-        notes: "Oxium Ospreys spawn often",
-      },
-      {
-        name: "Outer Terminus",
-        planet: "Pluto",
-        type: "Defense",
-        notes: "Higher enemy levels",
-      },
-    ],
-  },
-  {
-    resource: "Tellurium",
-    missions: [
-      {
-        name: "Ophelia",
-        planet: "Uranus",
-        type: "Survival",
-        notes: "Best farm location",
-      },
-      {
-        name: "Archwing",
-        planet: "Any",
-        type: "Archwing Mission",
-        notes: "Any Archwing mission",
-      },
-    ],
-  },
-];
+    {
+      resource: "Orokin Cell",
+      missions: [
+        {
+          name: "Helene",
+          planet: "Saturn",
+          type: "Defense",
+          notes: "20 waves, General Sargas Ruk drops",
+        },
+        {
+          name: "Gabii",
+          planet: "Ceres",
+          type: "Dark Sector Survival",
+          notes: "Stay 20+ minutes",
+        },
+      ],
+    },
+    {
+      resource: "Neurodes",
+      missions: [
+        {
+          name: "Tycho",
+          planet: "Lua",
+          type: "Survival",
+          notes: "Sentients drop guaranteed",
+        },
+        {
+          name: "Mariana",
+          planet: "Earth",
+          type: "Exterminate",
+          notes: "Low level, fast runs",
+        },
+      ],
+    },
+    {
+      resource: "Argon Crystal",
+      missions: [
+        {
+          name: "Void Capture",
+          planet: "Void",
+          type: "Capture",
+          notes: "Quick runs, check containers",
+        },
+        {
+          name: "Mot",
+          planet: "Void",
+          type: "Survival",
+          notes: "High level, good drops",
+        },
+      ],
+    },
+    {
+      resource: "Polymer Bundle",
+      missions: [
+        {
+          name: "Ophelia",
+          planet: "Uranus",
+          type: "Survival",
+          notes: "Also drops Plastids and Tellurium",
+        },
+        {
+          name: "Assur",
+          planet: "Uranus",
+          type: "Dark Sector Survival",
+          notes: "35% bonus resources",
+        },
+      ],
+    },
+    {
+      resource: "Plastids",
+      missions: [
+        {
+          name: "Ophelia",
+          planet: "Uranus",
+          type: "Survival",
+          notes: "Multi-resource farm",
+        },
+        {
+          name: "Piscinas",
+          planet: "Saturn",
+          type: "Dark Sector Survival",
+          notes: "20% bonus resources",
+        },
+      ],
+    },
+    {
+      resource: "Cryotic",
+      missions: [
+        {
+          name: "Hieracon",
+          planet: "Pluto",
+          type: "Excavation",
+          notes: "100 per excavator",
+        },
+      ],
+    },
+    {
+      resource: "Oxium",
+      missions: [
+        {
+          name: "Io",
+          planet: "Jupiter",
+          type: "Defense",
+          notes: "Oxium Ospreys spawn often",
+        },
+        {
+          name: "Outer Terminus",
+          planet: "Pluto",
+          type: "Defense",
+          notes: "Higher enemy levels",
+        },
+      ],
+    },
+    {
+      resource: "Tellurium",
+      missions: [
+        {
+          name: "Ophelia",
+          planet: "Uranus",
+          type: "Survival",
+          notes: "Best farm location",
+        },
+        {
+          name: "Archwing",
+          planet: "Any",
+          type: "Archwing Mission",
+          notes: "Any Archwing mission",
+        },
+      ],
+    },
+  ];
 
 // Relic era pattern
 const RELIC_PATTERN = /^(Lith|Meso|Neo|Axi|Requiem)\s+([A-Z]\d+)\s+Relic/i;
@@ -282,6 +284,7 @@ interface FarmingViewProps {
 
 export function FarmingView({ fissures }: FarmingViewProps) {
   const [searchQuery, setSearchQuery] = useState("");
+  const debouncedSearchQuery = useDebounce(searchQuery, 300);
   const [expandedItem, setExpandedItem] = useState<string | null>(null);
   const [wantedItems, setWantedItems] = useState<Set<string>>(() => {
     const saved = localStorage.getItem("ordis-wanted-items");
@@ -290,14 +293,14 @@ export function FarmingView({ fissures }: FarmingViewProps) {
 
   const primeDrops = useMemo(() => getPrimeDrops(), []);
 
-  // Filter items based on search
+  // Filter items based on search (uses debounced value for performance)
   const filteredItems = useMemo(() => {
-    if (searchQuery.length < 2) return [];
-    const q = searchQuery.toLowerCase();
+    if (debouncedSearchQuery.length < 2) return [];
+    const q = debouncedSearchQuery.toLowerCase();
     return primeDrops
       .filter((p) => p.item.toLowerCase().includes(q))
       .slice(0, 50);
-  }, [primeDrops, searchQuery]);
+  }, [primeDrops, debouncedSearchQuery]);
 
   // Calculate farming routes for wanted items
   const farmingRoutes = useMemo((): FarmingRoute[] => {
@@ -420,6 +423,7 @@ export function FarmingView({ fissures }: FarmingViewProps) {
                     onClick={() => toggleWanted(route.item)}
                     className="p-2 text-red-400 hover:bg-red-900/20 rounded-lg transition-colors"
                     title="Remove from wanted"
+                    aria-label={`Remove ${route.item} from wanted list`}
                   >
                     ×
                   </button>
@@ -563,22 +567,12 @@ export function FarmingView({ fissures }: FarmingViewProps) {
                     className="w-full p-3 flex items-center justify-between text-left"
                   >
                     <div className="flex items-center gap-3">
-                      {item.uniqueName &&
-                        getItemImageUrl({ uniqueName: item.uniqueName }) && (
-                          <img
-                            src={
-                              getItemImageUrl({
-                                uniqueName: item.uniqueName,
-                              }) || ""
-                            }
-                            alt=""
-                            className="w-8 h-8 object-contain rounded"
-                            onError={(e) => {
-                              (e.target as HTMLImageElement).style.display =
-                                "none";
-                            }}
-                          />
-                        )}
+                      <ItemImage
+                        itemPath={item.uniqueName}
+                        name={item.item}
+                        category="Prime"
+                        size={32}
+                      />
                       <div>
                         <span className="text-slate-200 font-medium">
                           {item.item}
@@ -596,11 +590,10 @@ export function FarmingView({ fissures }: FarmingViewProps) {
                           e.stopPropagation();
                           toggleWanted(item.item);
                         }}
-                        className={`p-2 rounded-lg transition-colors ${
-                          isWanted
-                            ? "bg-green-600/20 text-green-400"
-                            : "bg-slate-700 text-slate-400 hover:bg-slate-600"
-                        }`}
+                        className={`p-2 rounded-lg transition-colors ${isWanted
+                          ? "bg-green-600/20 text-green-400"
+                          : "bg-slate-700 text-slate-400 hover:bg-slate-600"
+                          }`}
                         title={
                           isWanted
                             ? "Remove from farming list"
@@ -690,14 +683,13 @@ export function FarmingView({ fissures }: FarmingViewProps) {
                               {src.chance > 0 && (
                                 <div className="h-1 bg-slate-700 rounded-full overflow-hidden">
                                   <div
-                                    className={`h-full transition-all ${
-                                      src.rarity.toLowerCase() === "rare"
-                                        ? "bg-yellow-500"
-                                        : src.rarity.toLowerCase() ===
-                                            "uncommon"
-                                          ? "bg-blue-500"
-                                          : "bg-amber-600"
-                                    }`}
+                                    className={`h-full transition-all ${src.rarity.toLowerCase() === "rare"
+                                      ? "bg-yellow-500"
+                                      : src.rarity.toLowerCase() ===
+                                        "uncommon"
+                                        ? "bg-blue-500"
+                                        : "bg-amber-600"
+                                      }`}
                                     style={{
                                       width: `${Math.min(100, src.chance * 3)}%`,
                                     }}
